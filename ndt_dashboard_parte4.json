@@ -1,0 +1,386 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "allData": {},
+        "config": {},
+        "data": [],
+        "imgFormat": "png",
+        "layout": {
+          "font": {
+            "family": "Inter, Helvetica, Arial, sans-serif"
+          },
+          "margin": {
+            "b": 0,
+            "l": 0,
+            "r": 0,
+            "t": 0
+          },
+          "title": {
+            "automargin": true
+          },
+          "xaxis": {
+            "automargin": true,
+            "autorange": true,
+            "type": "category"
+          },
+          "yaxis": {
+            "automargin": true,
+            "autorange": true
+          }
+        },
+        "onclick": "",
+        "resScale": 2,
+        "script": "if (!data || !data.series || data.series.length === 0 || !data.series[0].fields || data.series[0].fields.length < 2) {\n    return { data: [], layout: { title: 'Sem dados para o filtro selecionado' } };\n}\n\nvar valores = Array.from(data.series[0].fields[0].values);\nvar provedores = Array.from(data.series[0].fields[1].values);\n\nvar trace = {\n    type: 'box',\n    y: valores,\n    x: provedores,\n    name: 'Download (Mbps)',\n    box: { visible: true },\n    meanline: { visible: true },\n    points: 'outliers',\n    marker: { color: '#8e44ad', size: 3 },\n    line: { color: '#8e44ad', width: 1.5 },\n    fillcolor: 'rgba(142, 68, 173, 0.3)'\n};\n\nvar layout = {\n    title: 'Distribuicao de Download por Provedor',\n    xaxis: { title: 'Provedor', type: 'category', automargin: true },\n    yaxis: { title: 'Download (Mbps)', automargin: true },\n    margin: { t: 40, r: 20, b: 60, l: 60 }\n};\n\nreturn { data: [trace], layout: layout };",
+        "syncTimeRange": true,
+        "timeCol": ""
+      },
+      "pluginVersion": "1.8.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.mean_throughput_mbps AS \"Download (Mbps)\",\n    CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END AS \"Provedor\"\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.mean_throughput_mbps >= 0\n    AND CASE WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN c.asn IN ('265303') THEN 'TV Alphaville' WHEN c.asn IN ('14868') THEN 'COPEL Telecom' WHEN c.asn IN ('53184') THEN 'INB Telecom' WHEN c.asn IN ('262907') THEN 'Avato Tecnologia' WHEN c.asn IN ('61844') THEN 'New Master' WHEN c.asn IN ('28258') THEN 'Powerline Internet' WHEN c.asn IN ('273683') THEN 'Desconhecido' WHEN c.asn IN ('22689') THEN 'Sercomtel' WHEN c.asn IN ('53062') THEN 'G G Net' WHEN c.asn IN ('264228') THEN 'Brasil Starlink' WHEN c.asn IN ('28669') THEN 'America Net' WHEN c.asn IN ('263645') THEN 'Fixtell Telecom' WHEN c.asn IN ('266949') THEN 'Divifibra' WHEN c.asn IN ('262700') THEN 'Efibra Telecom' WHEN c.asn IN ('28658') THEN 'Gigalink' WHEN c.asn IN ('262673') THEN 'Lafaiete' WHEN c.asn IN ('52900') THEN 'Quality Telecom' WHEN c.asn IN ('263629') THEN 'Celloni' WHEN c.asn IN ('52940') THEN 'Nemesis' WHEN c.asn IN ('262671') THEN 'S & M Informática' WHEN c.asn IN ('28241') THEN 'Viaceu Internet' WHEN c.asn IN ('53191') THEN 'Plug Telecom' WHEN c.asn IN ('28263') THEN 'Ensite Brasil' WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom' WHEN c.asn IN ('53171') THEN 'Omni Telecom' ELSE c.as_name END IN ($isp)\n    AND d.server_site IN ($server)",
+          "refId": "A"
+        }
+      ],
+      "title": "Box Plot - Download por Provedor",
+      "type": "nline-plotlyjs-panel"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 21,
+      "options": {
+        "allData": {},
+        "config": {},
+        "data": [],
+        "imgFormat": "png",
+        "layout": {
+          "font": {
+            "family": "Inter, Helvetica, Arial, sans-serif"
+          },
+          "margin": {
+            "b": 0,
+            "l": 0,
+            "r": 0,
+            "t": 0
+          },
+          "title": {
+            "automargin": true
+          },
+          "xaxis": {
+            "automargin": true,
+            "autorange": true,
+            "type": "category"
+          },
+          "yaxis": {
+            "automargin": true,
+            "autorange": true
+          }
+        },
+        "onclick": "",
+        "resScale": 2,
+        "script": "if (!data || !data.series || data.series.length === 0 || !data.series[0].fields || data.series[0].fields.length < 2) {\n    return { data: [], layout: { title: 'Sem dados' } };\n}\nvar valores = Array.from(data.series[0].fields[0].values);\nvar provedores = Array.from(data.series[0].fields[1].values);\nvar trace = {\n    type: 'box',\n    y: valores,\n    x: provedores,\n    name: 'Upload (Mbps)',\n    box: { visible: true },\n    meanline: { visible: true },\n    points: 'outliers',\n    marker: { color: '#e67e22', size: 3 },\n    line: { color: '#e67e22', width: 1.5 },\n    fillcolor: 'rgba(230, 126, 34, 0.3)'\n};\nvar layout = {\n    title: 'Distribuicao de Upload por Provedor',\n    xaxis: { title: 'Provedor', type: 'category', automargin: true },\n    yaxis: { title: 'Upload (Mbps)', automargin: true },\n    margin: { t: 40, r: 20, b: 60, l: 60 }\n};\nreturn { data: [trace], layout: layout };",
+        "syncTimeRange": true,
+        "timeCol": ""
+      },
+      "pluginVersion": "1.8.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.mean_throughput_mbps AS \"Upload (Mbps)\",\n    CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END AS \"Provedor\"\nFROM upload d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.mean_throughput_mbps >= 0\n    AND CASE WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN c.asn IN ('265303') THEN 'TV Alphaville' WHEN c.asn IN ('14868') THEN 'COPEL Telecom' WHEN c.asn IN ('53184') THEN 'INB Telecom' WHEN c.asn IN ('262907') THEN 'Avato Tecnologia' WHEN c.asn IN ('61844') THEN 'New Master' WHEN c.asn IN ('28258') THEN 'Powerline Internet' WHEN c.asn IN ('273683') THEN 'Desconhecido' WHEN c.asn IN ('22689') THEN 'Sercomtel' WHEN c.asn IN ('53062') THEN 'G G Net' WHEN c.asn IN ('264228') THEN 'Brasil Starlink' WHEN c.asn IN ('28669') THEN 'America Net' WHEN c.asn IN ('263645') THEN 'Fixtell Telecom' WHEN c.asn IN ('266949') THEN 'Divifibra' WHEN c.asn IN ('262700') THEN 'Efibra Telecom' WHEN c.asn IN ('28658') THEN 'Gigalink' WHEN c.asn IN ('262673') THEN 'Lafaiete' WHEN c.asn IN ('52900') THEN 'Quality Telecom' WHEN c.asn IN ('263629') THEN 'Celloni' WHEN c.asn IN ('52940') THEN 'Nemesis' WHEN c.asn IN ('262671') THEN 'S & M Informática' WHEN c.asn IN ('28241') THEN 'Viaceu Internet' WHEN c.asn IN ('53191') THEN 'Plug Telecom' WHEN c.asn IN ('28263') THEN 'Ensite Brasil' WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom' WHEN c.asn IN ('53171') THEN 'Omni Telecom' ELSE c.as_name END IN ($isp)\n    AND d.server_site IN ($server)",
+          "refId": "A"
+        }
+      ],
+      "title": "Box Plot - Upload por Provedor",
+      "type": "nline-plotlyjs-panel"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 22,
+      "options": {
+        "allData": {},
+        "config": {},
+        "data": [],
+        "imgFormat": "png",
+        "layout": {
+          "font": {
+            "family": "Inter, Helvetica, Arial, sans-serif"
+          },
+          "margin": {
+            "b": 0,
+            "l": 0,
+            "r": 0,
+            "t": 0
+          },
+          "title": {
+            "automargin": true
+          },
+          "xaxis": {
+            "automargin": true,
+            "autorange": true,
+            "type": "category"
+          },
+          "yaxis": {
+            "automargin": true,
+            "autorange": true
+          }
+        },
+        "onclick": "",
+        "resScale": 2,
+        "script": "if (!data || !data.series || data.series.length === 0 || !data.series[0].fields || data.series[0].fields.length < 2) {\n    return { data: [], layout: { title: 'Sem dados' } };\n}\nvar valores = Array.from(data.series[0].fields[0].values);\nvar provedores = Array.from(data.series[0].fields[1].values);\nvar trace = {\n    type: 'box',\n    y: valores,\n    x: provedores,\n    name: 'RTT (ms)',\n    box: { visible: true },\n    meanline: { visible: true },\n    points: 'outliers',\n    marker: { color: '#33a2e5', size: 3 },\n    line: { color: '#33a2e5', width: 1.5 },\n    fillcolor: 'rgba(51, 162, 229, 0.3)'\n};\nvar layout = {\n    title: 'Distribuicao de RTT por Provedor',\n    xaxis: { title: 'Provedor', type: 'category', automargin: true },\n    yaxis: { title: 'RTT (ms)', type: 'log', automargin: true },\n    margin: { t: 40, r: 20, b: 60, l: 60 }\n};\nreturn { data: [trace], layout: layout };",
+        "syncTimeRange": true,
+        "timeCol": ""
+      },
+      "pluginVersion": "1.8.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.min_rtt AS \"RTT (ms)\",\n    CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END AS \"Provedor\"\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.min_rtt >= 0\n    AND d.min_rtt <= 1500000\n    AND CASE WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN c.asn IN ('265303') THEN 'TV Alphaville' WHEN c.asn IN ('14868') THEN 'COPEL Telecom' WHEN c.asn IN ('53184') THEN 'INB Telecom' WHEN c.asn IN ('262907') THEN 'Avato Tecnologia' WHEN c.asn IN ('61844') THEN 'New Master' WHEN c.asn IN ('28258') THEN 'Powerline Internet' WHEN c.asn IN ('273683') THEN 'Desconhecido' WHEN c.asn IN ('22689') THEN 'Sercomtel' WHEN c.asn IN ('53062') THEN 'G G Net' WHEN c.asn IN ('264228') THEN 'Brasil Starlink' WHEN c.asn IN ('28669') THEN 'America Net' WHEN c.asn IN ('263645') THEN 'Fixtell Telecom' WHEN c.asn IN ('266949') THEN 'Divifibra' WHEN c.asn IN ('262700') THEN 'Efibra Telecom' WHEN c.asn IN ('28658') THEN 'Gigalink' WHEN c.asn IN ('262673') THEN 'Lafaiete' WHEN c.asn IN ('52900') THEN 'Quality Telecom' WHEN c.asn IN ('263629') THEN 'Celloni' WHEN c.asn IN ('52940') THEN 'Nemesis' WHEN c.asn IN ('262671') THEN 'S & M Informática' WHEN c.asn IN ('28241') THEN 'Viaceu Internet' WHEN c.asn IN ('53191') THEN 'Plug Telecom' WHEN c.asn IN ('28263') THEN 'Ensite Brasil' WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom' WHEN c.asn IN ('53171') THEN 'Omni Telecom' ELSE c.as_name END IN ($isp)\n    AND d.server_site IN ($server)",
+          "refId": "A"
+        }
+      ],
+      "title": "Box Plot - RTT por Provedor",
+      "type": "nline-plotlyjs-panel"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 23,
+      "options": {
+        "allData": {},
+        "config": {},
+        "data": [],
+        "imgFormat": "png",
+        "layout": {
+          "font": {
+            "family": "Inter, Helvetica, Arial, sans-serif"
+          },
+          "margin": {
+            "b": 0,
+            "l": 0,
+            "r": 0,
+            "t": 0
+          },
+          "title": {
+            "automargin": true
+          },
+          "xaxis": {
+            "automargin": true,
+            "autorange": true,
+            "type": "category"
+          },
+          "yaxis": {
+            "automargin": true,
+            "autorange": true
+          }
+        },
+        "onclick": "",
+        "resScale": 2,
+        "script": "if (!data || !data.series || data.series.length === 0 || !data.series[0].fields || data.series[0].fields.length < 2) {\n    return { data: [], layout: { title: 'Sem dados' } };\n}\nvar valores = Array.from(data.series[0].fields[0].values);\nvar provedores = Array.from(data.series[0].fields[1].values);\nvar trace = {\n    type: 'box',\n    y: valores,\n    x: provedores,\n    name: 'Loss Rate',\n    box: { visible: true },\n    meanline: { visible: true },\n    points: 'outliers',\n    marker: { color: '#e74c3c', size: 3 },\n    line: { color: '#e74c3c', width: 1.5 },\n    fillcolor: 'rgba(231, 76, 60, 0.3)'\n};\nvar layout = {\n    title: 'Distribuicao de Loss Rate por Provedor',\n    xaxis: { title: 'Provedor', type: 'category', automargin: true },\n    yaxis: { title: 'Loss Rate', type: 'log', automargin: true, tickformat: '.2%' },\n    margin: { t: 40, r: 20, b: 60, l: 60 }\n};\nreturn { data: [trace], layout: layout };",
+        "syncTimeRange": true,
+        "timeCol": ""
+      },
+      "pluginVersion": "1.8.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.loss_rate AS \"Loss Rate\",\n    CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END AS \"Provedor\"\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.loss_rate >= 0\n    AND CASE WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN c.asn IN ('265303') THEN 'TV Alphaville' WHEN c.asn IN ('14868') THEN 'COPEL Telecom' WHEN c.asn IN ('53184') THEN 'INB Telecom' WHEN c.asn IN ('262907') THEN 'Avato Tecnologia' WHEN c.asn IN ('61844') THEN 'New Master' WHEN c.asn IN ('28258') THEN 'Powerline Internet' WHEN c.asn IN ('273683') THEN 'Desconhecido' WHEN c.asn IN ('22689') THEN 'Sercomtel' WHEN c.asn IN ('53062') THEN 'G G Net' WHEN c.asn IN ('264228') THEN 'Brasil Starlink' WHEN c.asn IN ('28669') THEN 'America Net' WHEN c.asn IN ('263645') THEN 'Fixtell Telecom' WHEN c.asn IN ('266949') THEN 'Divifibra' WHEN c.asn IN ('262700') THEN 'Efibra Telecom' WHEN c.asn IN ('28658') THEN 'Gigalink' WHEN c.asn IN ('262673') THEN 'Lafaiete' WHEN c.asn IN ('52900') THEN 'Quality Telecom' WHEN c.asn IN ('263629') THEN 'Celloni' WHEN c.asn IN ('52940') THEN 'Nemesis' WHEN c.asn IN ('262671') THEN 'S & M Informática' WHEN c.asn IN ('28241') THEN 'Viaceu Internet' WHEN c.asn IN ('53191') THEN 'Plug Telecom' WHEN c.asn IN ('28263') THEN 'Ensite Brasil' WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom' WHEN c.asn IN ('53171') THEN 'Omni Telecom' ELSE c.as_name END IN ($isp)\n    AND d.server_site IN ($server)",
+          "refId": "A"
+        }
+      ],
+      "title": "Box Plot - Loss Rate por Provedor",
+      "type": "nline-plotlyjs-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "ndt",
+    "questdb"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT CASE WHEN asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN asn IN ('265303') THEN 'TV Alphaville' WHEN asn IN ('14868') THEN 'COPEL Telecom' WHEN asn IN ('53184') THEN 'INB Telecom' WHEN asn IN ('262907') THEN 'Avato Tecnologia' WHEN asn IN ('61844') THEN 'New Master' WHEN asn IN ('28258') THEN 'Powerline Internet' WHEN asn IN ('273683') THEN 'Desconhecido' WHEN asn IN ('22689') THEN 'Sercomtel' WHEN asn IN ('53062') THEN 'G G Net' WHEN asn IN ('264228') THEN 'Brasil Starlink' WHEN asn IN ('28669') THEN 'America Net' WHEN asn IN ('263645') THEN 'Fixtell Telecom' WHEN asn IN ('266949') THEN 'Divifibra' WHEN asn IN ('262700') THEN 'Efibra Telecom' WHEN asn IN ('28658') THEN 'Gigalink' WHEN asn IN ('262673') THEN 'Lafaiete' WHEN asn IN ('52900') THEN 'Quality Telecom' WHEN asn IN ('263629') THEN 'Celloni' WHEN asn IN ('52940') THEN 'Nemesis' WHEN asn IN ('262671') THEN 'S & M Informática' WHEN asn IN ('28241') THEN 'Viaceu Internet' WHEN asn IN ('53191') THEN 'Plug Telecom' WHEN asn IN ('28263') THEN 'Ensite Brasil' WHEN asn IN ('263072') THEN 'BD Fibra Telecom' WHEN asn IN ('53171') THEN 'Omni Telecom' ELSE as_name END AS __text, CASE WHEN asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN asn IN ('265303') THEN 'TV Alphaville' WHEN asn IN ('14868') THEN 'COPEL Telecom' WHEN asn IN ('53184') THEN 'INB Telecom' WHEN asn IN ('262907') THEN 'Avato Tecnologia' WHEN asn IN ('61844') THEN 'New Master' WHEN asn IN ('28258') THEN 'Powerline Internet' WHEN asn IN ('273683') THEN 'Desconhecido' WHEN asn IN ('22689') THEN 'Sercomtel' WHEN asn IN ('53062') THEN 'G G Net' WHEN asn IN ('264228') THEN 'Brasil Starlink' WHEN asn IN ('28669') THEN 'America Net' WHEN asn IN ('263645') THEN 'Fixtell Telecom' WHEN asn IN ('266949') THEN 'Divifibra' WHEN asn IN ('262700') THEN 'Efibra Telecom' WHEN asn IN ('28658') THEN 'Gigalink' WHEN asn IN ('262673') THEN 'Lafaiete' WHEN asn IN ('52900') THEN 'Quality Telecom' WHEN asn IN ('263629') THEN 'Celloni' WHEN asn IN ('52940') THEN 'Nemesis' WHEN asn IN ('262671') THEN 'S & M Informática' WHEN asn IN ('28241') THEN 'Viaceu Internet' WHEN asn IN ('53191') THEN 'Plug Telecom' WHEN asn IN ('28263') THEN 'Ensite Brasil' WHEN asn IN ('263072') THEN 'BD Fibra Telecom' WHEN asn IN ('53171') THEN 'Omni Telecom' ELSE as_name END AS __value FROM client ORDER BY 1",
+        "includeAll": true,
+        "label": "ISP",
+        "multi": true,
+        "name": "isp",
+        "options": [],
+        "query": "SELECT DISTINCT CASE WHEN asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN asn IN ('265303') THEN 'TV Alphaville' WHEN asn IN ('14868') THEN 'COPEL Telecom' WHEN asn IN ('53184') THEN 'INB Telecom' WHEN asn IN ('262907') THEN 'Avato Tecnologia' WHEN asn IN ('61844') THEN 'New Master' WHEN asn IN ('28258') THEN 'Powerline Internet' WHEN asn IN ('273683') THEN 'Desconhecido' WHEN asn IN ('22689') THEN 'Sercomtel' WHEN asn IN ('53062') THEN 'G G Net' WHEN asn IN ('264228') THEN 'Brasil Starlink' WHEN asn IN ('28669') THEN 'America Net' WHEN asn IN ('263645') THEN 'Fixtell Telecom' WHEN asn IN ('266949') THEN 'Divifibra' WHEN asn IN ('262700') THEN 'Efibra Telecom' WHEN asn IN ('28658') THEN 'Gigalink' WHEN asn IN ('262673') THEN 'Lafaiete' WHEN asn IN ('52900') THEN 'Quality Telecom' WHEN asn IN ('263629') THEN 'Celloni' WHEN asn IN ('52940') THEN 'Nemesis' WHEN asn IN ('262671') THEN 'S & M Informática' WHEN asn IN ('28241') THEN 'Viaceu Internet' WHEN asn IN ('53191') THEN 'Plug Telecom' WHEN asn IN ('28263') THEN 'Ensite Brasil' WHEN asn IN ('263072') THEN 'BD Fibra Telecom' WHEN asn IN ('53171') THEN 'Omni Telecom' ELSE as_name END AS __text, CASE WHEN asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica' WHEN asn IN ('28573', '4230', '22085') THEN 'Claro' WHEN asn IN ('265303') THEN 'TV Alphaville' WHEN asn IN ('14868') THEN 'COPEL Telecom' WHEN asn IN ('53184') THEN 'INB Telecom' WHEN asn IN ('262907') THEN 'Avato Tecnologia' WHEN asn IN ('61844') THEN 'New Master' WHEN asn IN ('28258') THEN 'Powerline Internet' WHEN asn IN ('273683') THEN 'Desconhecido' WHEN asn IN ('22689') THEN 'Sercomtel' WHEN asn IN ('53062') THEN 'G G Net' WHEN asn IN ('264228') THEN 'Brasil Starlink' WHEN asn IN ('28669') THEN 'America Net' WHEN asn IN ('263645') THEN 'Fixtell Telecom' WHEN asn IN ('266949') THEN 'Divifibra' WHEN asn IN ('262700') THEN 'Efibra Telecom' WHEN asn IN ('28658') THEN 'Gigalink' WHEN asn IN ('262673') THEN 'Lafaiete' WHEN asn IN ('52900') THEN 'Quality Telecom' WHEN asn IN ('263629') THEN 'Celloni' WHEN asn IN ('52940') THEN 'Nemesis' WHEN asn IN ('262671') THEN 'S & M Informática' WHEN asn IN ('28241') THEN 'Viaceu Internet' WHEN asn IN ('53191') THEN 'Plug Telecom' WHEN asn IN ('28263') THEN 'Ensite Brasil' WHEN asn IN ('263072') THEN 'BD Fibra Telecom' WHEN asn IN ('53171') THEN 'Omni Telecom' ELSE as_name END AS __value FROM client ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT server_site FROM download WHERE server_site IS NOT NULL ORDER BY server_site",
+        "includeAll": true,
+        "label": "Servidor",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "SELECT DISTINCT server_site FROM download WHERE server_site IS NOT NULL ORDER BY server_site",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "NDT Dashboard — Parte 4: Distribuicao",
+  "uid": "ndt-dashboard-parte4",
+  "version": 1
+}
