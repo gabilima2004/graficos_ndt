@@ -61,7 +61,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -130,7 +132,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -199,7 +203,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -341,7 +347,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
             "hideFrom": {
@@ -355,7 +361,135 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "#808080"
+              },
+              {
+                "color": "#7eb8da",
+                "value": 1
+              },
+              {
+                "color": "#e24d2d",
+                "value": 2
+              },
+              {
+                "color": "#efea43",
+                "value": 3
+              },
+              {
+                "color": "#33a02c",
+                "value": 4
+              },
+              {
+                "color": "#f6734e",
+                "value": 5
+              },
+              {
+                "color": "#1f78b4",
+                "value": 6
+              },
+              {
+                "color": "#b2df8a",
+                "value": 7
+              },
+              {
+                "color": "#fdbf6f",
+                "value": 8
+              },
+              {
+                "color": "#ff7f00",
+                "value": 9
+              },
+              {
+                "color": "#cab2d6",
+                "value": 10
+              },
+              {
+                "color": "#6a3d9a",
+                "value": 11
+              },
+              {
+                "color": "#a6cee3",
+                "value": 12
+              },
+              {
+                "color": "#fb9a99",
+                "value": 13
+              },
+              {
+                "color": "#e31a1c",
+                "value": 14
+              },
+              {
+                "color": "#ffff99",
+                "value": 15
+              },
+              {
+                "color": "#b15928",
+                "value": 16
+              },
+              {
+                "color": "#8dd3c7",
+                "value": 17
+              },
+              {
+                "color": "#ffffb3",
+                "value": 18
+              },
+              {
+                "color": "#bebada",
+                "value": 19
+              },
+              {
+                "color": "#fb8072",
+                "value": 20
+              },
+              {
+                "color": "#80b1d3",
+                "value": 21
+              },
+              {
+                "color": "#fdb462",
+                "value": 22
+              },
+              {
+                "color": "#b3de69",
+                "value": 23
+              },
+              {
+                "color": "#fccde5",
+                "value": 24
+              },
+              {
+                "color": "#d9d9d9",
+                "value": 25
+              },
+              {
+                "color": "#bc80bd",
+                "value": 26
+              },
+              {
+                "color": "#ccebc5",
+                "value": 27
+              },
+              {
+                "color": "#ffed6f",
+                "value": 28
+              },
+              {
+                "color": "#9e0142",
+                "value": 29
+              },
+              {
+                "color": "#5e4fa2",
+                "value": 30
+              },
+              {
+                "color": "#3288bd",
+                "value": 31
+              },
+              {
+                "color": "#e6f598",
+                "value": 32
               }
             ]
           }
@@ -364,13 +498,13 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "server_site"
+              "options": "server_idx"
             },
             "properties": [
               {
                 "id": "color",
                 "value": {
-                  "mode": "palette-classic"
+                  "mode": "thresholds"
                 }
               }
             ]
@@ -404,8 +538,8 @@
               "showLegend": true,
               "style": {
                 "color": {
-                  "field": "server_site",
-                  "mode": "palette-classic"
+                  "field": "server_idx",
+                  "mode": "thresholds"
                 },
                 "opacity": 0.7,
                 "rotation": {
@@ -453,6 +587,60 @@
             },
             "tooltip": true,
             "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "server_idx",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 12,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "fixed"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/square-rounded.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "coordinates",
+              "latitude": {
+                "field": "lat"
+              },
+              "longitude": {
+                "field": "lon"
+              }
+            },
+            "name": "Servidores",
+            "target": {
+              "refId": "Servidores"
+            },
+            "tooltip": true,
+            "type": "markers"
           }
         ],
         "tooltip": {
@@ -484,25 +672,50 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    avg(c.latitude) AS lat,\n    avg(c.longitude) AS lon,\n    c.city,\n    c.country_name,\n    t.server_site,\n    sum(t.total_testes) AS total_testes\nFROM (\n    SELECT client_ip, server_site, count() AS total_testes\n    FROM download\n    WHERE $__timeFilter(test_time)\n    GROUP BY client_ip, server_site\n) t\nJOIN client c ON t.client_ip = c.client_ip\nWHERE c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\n    AND c.latitude IS NOT NULL\n    AND c.longitude IS NOT NULL\nGROUP BY c.city, c.country_name, t.server_site\nLIMIT 500",
+          "rawSql": "SELECT\n    avg(c.latitude) AS lat,\n    avg(c.longitude) AS lon,\n    c.city,\n    c.country_name,\n    t.server_site,\n    CASE\n        WHEN t.server_site = 'aju1916' THEN 1\n        WHEN t.server_site = 'bel1916' THEN 2\n        WHEN t.server_site = 'bsb1916' THEN 3\n        WHEN t.server_site = 'bvb1916' THEN 4\n        WHEN t.server_site = 'cgb1916' THEN 5\n        WHEN t.server_site = 'cgr1916' THEN 6\n        WHEN t.server_site = 'cpv1916' THEN 7\n        WHEN t.server_site = 'cwb10881' THEN 8\n        WHEN t.server_site = 'fln01' THEN 9\n        WHEN t.server_site = 'fln11242' THEN 10\n        WHEN t.server_site = 'for1916' THEN 11\n        WHEN t.server_site = 'gig1916' THEN 12\n        WHEN t.server_site = 'gru02' THEN 13\n        WHEN t.server_site = 'gru03' THEN 14\n        WHEN t.server_site = 'gru07' THEN 15\n        WHEN t.server_site = 'gru15830' THEN 16\n        WHEN t.server_site = 'gru1916' THEN 17\n        WHEN t.server_site = 'gyn1916' THEN 18\n        WHEN t.server_site = 'mao1916' THEN 19\n        WHEN t.server_site = 'mcp1916' THEN 20\n        WHEN t.server_site = 'mcz1916' THEN 21\n        WHEN t.server_site = 'nat1916' THEN 22\n        WHEN t.server_site = 'pmw1916' THEN 23\n        WHEN t.server_site = 'poa2716' THEN 24\n        WHEN t.server_site = 'pvh1916' THEN 25\n        WHEN t.server_site = 'rbr1916' THEN 26\n        WHEN t.server_site = 'rec1916' THEN 27\n        WHEN t.server_site = 'slz1916' THEN 28\n        WHEN t.server_site = 'ssa53164' THEN 29\n        WHEN t.server_site = 'the1916' THEN 30\n        WHEN t.server_site = 'vix1916' THEN 31\n        WHEN t.server_site = 'vix53078' THEN 32\n        ELSE 0\n    END AS server_idx,\n    sum(t.total_testes) AS total_testes\nFROM (\n    SELECT client_ip, server_site, count() AS total_testes\n    FROM download\n    WHERE $__timeFilter(test_time)\n    GROUP BY client_ip, server_site\n) t\nJOIN client c ON t.client_ip = c.client_ip\nWHERE c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\n    AND c.latitude IS NOT NULL\n    AND c.longitude IS NOT NULL\nGROUP BY c.city, c.country_name, t.server_site\nLIMIT 500",
           "refId": "Clientes",
-          "selectedFormat": 2
+          "selectedFormat": 1
+        },
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    s.latitude AS lat,\n    s.longitude AS lon,\n    s.server_ip,\n    d.server_site,\n    CASE\n        WHEN d.server_site = 'aju1916' THEN 1\n        WHEN d.server_site = 'bel1916' THEN 2\n        WHEN d.server_site = 'bsb1916' THEN 3\n        WHEN d.server_site = 'bvb1916' THEN 4\n        WHEN d.server_site = 'cgb1916' THEN 5\n        WHEN d.server_site = 'cgr1916' THEN 6\n        WHEN d.server_site = 'cpv1916' THEN 7\n        WHEN d.server_site = 'cwb10881' THEN 8\n        WHEN d.server_site = 'fln01' THEN 9\n        WHEN d.server_site = 'fln11242' THEN 10\n        WHEN d.server_site = 'for1916' THEN 11\n        WHEN d.server_site = 'gig1916' THEN 12\n        WHEN d.server_site = 'gru02' THEN 13\n        WHEN d.server_site = 'gru03' THEN 14\n        WHEN d.server_site = 'gru07' THEN 15\n        WHEN d.server_site = 'gru15830' THEN 16\n        WHEN d.server_site = 'gru1916' THEN 17\n        WHEN d.server_site = 'gyn1916' THEN 18\n        WHEN d.server_site = 'mao1916' THEN 19\n        WHEN d.server_site = 'mcp1916' THEN 20\n        WHEN d.server_site = 'mcz1916' THEN 21\n        WHEN d.server_site = 'nat1916' THEN 22\n        WHEN d.server_site = 'pmw1916' THEN 23\n        WHEN d.server_site = 'poa2716' THEN 24\n        WHEN d.server_site = 'pvh1916' THEN 25\n        WHEN d.server_site = 'rbr1916' THEN 26\n        WHEN d.server_site = 'rec1916' THEN 27\n        WHEN d.server_site = 'slz1916' THEN 28\n        WHEN d.server_site = 'ssa53164' THEN 29\n        WHEN d.server_site = 'the1916' THEN 30\n        WHEN d.server_site = 'vix1916' THEN 31\n        WHEN d.server_site = 'vix53078' THEN 32\n        ELSE 0\n    END AS server_idx,\n    s.city,\n    s.country_name,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nJOIN server s ON d.server_ip = s.server_ip\nWHERE $__timeFilter(d.test_time)\n    AND s.country_code = 'BR'\n    AND s.latitude IS NOT NULL\n    AND s.longitude IS NOT NULL\nGROUP BY s.latitude, s.longitude, s.server_ip, d.server_site, s.city, s.country_name",
+          "refId": "Servidores",
+          "selectedFormat": 1
         }
       ],
-      "title": "Mapa Clientes por Cidade e Servidor",
+      "title": "Mapa Cliente→Servidor",
       "type": "geomap"
     }
   ],
   "preload": false,
   "schemaVersion": 41,
-  "tags": ["ndt", "questdb"],
+  "tags": [
+    "ndt",
+    "questdb"
+  ],
   "templating": {
     "list": [
       {
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "questdb-questdb-datasource",
@@ -523,7 +736,9 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "questdb-questdb-datasource",
