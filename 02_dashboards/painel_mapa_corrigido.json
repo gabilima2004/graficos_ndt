@@ -18,25 +18,24 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 193,
   "links": [],
   "panels": [
     {
-      "id": 5,
-      "type": "geomap",
-      "title": "Mapa Cliente→Servidor",
-      "gridPos": {
-        "x": 0,
-        "y": 16,
-        "h": 14,
-        "w": 24
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             }
           },
           "mappings": [],
@@ -44,91 +43,37 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               },
               {
                 "color": "red",
                 "value": 1
               }
             ]
-          },
-          "color": {
-            "mode": "thresholds"
           }
         },
         "overrides": []
       },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "questdb-questdb-datasource",
-            "uid": "dfudvhox4xudce"
-          },
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": "",
-              "mode": "list",
-              "timeField": ""
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\n    CAST(avg(c.latitude) AS DOUBLE) AS lat,\n    CAST(avg(c.longitude) AS DOUBLE) AS lon,\n    c.city,\n    c.country_name,\n    d.server_site,\n    count() AS total_testes\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND $__conditionalAll(d.server_site IN ($server), $server)\n    AND c.country_code = 'BR'\n    AND c.latitude IS NOT NULL\n    AND c.longitude IS NOT NULL\nGROUP BY c.city, c.country_name, d.server_site\nLIMIT 500",
-          "refId": "Clientes",
-          "selectedFormat": 1
-        },
-        {
-          "datasource": {
-            "type": "questdb-questdb-datasource",
-            "uid": "dfudvhox4xudce"
-          },
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": "",
-              "mode": "list",
-              "timeField": ""
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\n    CAST(s.latitude AS DOUBLE) AS lat,\n    CAST(s.longitude AS DOUBLE) AS lon,\n    s.server_ip,\n    d.server_site,\n    s.city,\n    s.country_name,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nJOIN server s ON d.server_ip = s.server_ip\nWHERE $__timeFilter(d.test_time)\n    AND $__conditionalAll(d.server_site IN ($server), $server)\n    AND s.latitude IS NOT NULL\n    AND s.longitude IS NOT NULL\nGROUP BY s.latitude, s.longitude, s.server_ip, d.server_site, s.city, s.country_name",
-          "refId": "Servidores",
-          "selectedFormat": 1
-        }
-      ],
-      "datasource": {
-        "type": "questdb-questdb-datasource",
-        "uid": "dfudvhox4xudce"
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 0
       },
+      "id": 5,
       "options": {
-        "view": {
-          "allLayers": true,
-          "id": "coords",
-          "lat": -14.235,
-          "lon": -51.925,
-          "zoom": 4
-        },
-        "controls": {
-          "showZoom": true,
-          "mouseWheelZoom": true,
-          "showAttribution": true,
-          "showScale": false,
-          "showMeasure": false,
-          "showDebug": false
-        },
-        "tooltip": {
-          "mode": "details"
-        },
         "basemap": {
           "config": {},
           "name": "Layer 0",
           "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
         },
         "layers": [
           {
@@ -139,7 +84,7 @@
                   "fixed": "blue",
                   "mode": "fixed"
                 },
-                "opacity": 0.7,
+                "opacity": 0.8,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -169,6 +114,10 @@
                 }
               }
             },
+            "filterData": {
+              "id": "byRefId",
+              "options": "Clientes"
+            },
             "location": {
               "latitude": "lat",
               "longitude": "lon",
@@ -189,7 +138,7 @@
                   "fixed": "red",
                   "mode": "fixed"
                 },
-                "opacity": 0.9,
+                "opacity": 1,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -197,13 +146,13 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 15,
+                  "fixed": 10,
                   "max": 20,
                   "min": 4,
                   "mode": "fixed"
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/square-rounded.svg",
+                  "fixed": "img/icons/marker/circle.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
@@ -219,6 +168,10 @@
                 }
               }
             },
+            "filterData": {
+              "id": "byRefId",
+              "options": "Servidores"
+            },
             "location": {
               "latitude": "lat",
               "longitude": "lon",
@@ -231,8 +184,366 @@
             "tooltip": true,
             "type": "markers"
           }
-        ]
-      }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": -14.235,
+          "lon": -51.925,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(avg(c.latitude) AS DOUBLE) AS lat,\n    CAST(avg(c.longitude) AS DOUBLE) AS lon,\n    c.city,\n    c.country_name,\n    d.server_site,\n    count() AS total_testes\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.server_site = '$server'\n    AND c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\n    AND c.latitude IS NOT NULL\n    AND c.longitude IS NOT NULL\nGROUP BY c.city, c.country_name, d.server_site\nlimit 2000",
+          "refId": "Clientes",
+          "selectedFormat": 1
+        },
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(latitude AS DOUBLE) AS lat,\n    CAST(longitude AS DOUBLE) AS lon,\n    site AS server_site,\n    city,\n    country_name\nFROM server\nWHERE site = '$server'\n    AND latitude IS NOT NULL\n    AND longitude IS NOT NULL",
+          "refId": "Servidores",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Mapa Cliente→Servidor",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    c.city AS cidade,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND d.server_site = '$server'\n    AND c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\nGROUP BY c.city\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Top 10 Cidades — Servidor",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.server_site AS servidor,\n    count() AS total_testes\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\n    AND c.city = '$cidade'\nGROUP BY d.server_site\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Dispersão de servidores por cidade",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.server_site AS servidor,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nJOIN client c ON d.client_ip = c.client_ip\nWHERE $__timeFilter(d.test_time)\n    AND c.country_code = 'BR'\n    AND CASE\n        WHEN c.asn IN ('18881', '26599', '27699', '19182', '10429') THEN 'Telefônica'\n        WHEN c.asn IN ('28573', '4230', '22085') THEN 'Claro'\n        WHEN c.asn IN ('265303') THEN 'TV Alphaville'\n        WHEN c.asn IN ('14868') THEN 'COPEL Telecom'\n        WHEN c.asn IN ('53184') THEN 'INB Telecom'\n        WHEN c.asn IN ('262907') THEN 'Avato Tecnologia'\n        WHEN c.asn IN ('61844') THEN 'New Master'\n        WHEN c.asn IN ('28258') THEN 'Powerline Internet'\n        WHEN c.asn IN ('273683') THEN 'Desconhecido'\n        WHEN c.asn IN ('22689') THEN 'Sercomtel'\n        WHEN c.asn IN ('53062') THEN 'G G Net'\n        WHEN c.asn IN ('264228') THEN 'Brasil Starlink'\n        WHEN c.asn IN ('28669') THEN 'America Net'\n        WHEN c.asn IN ('263645') THEN 'Fixtell Telecom'\n        WHEN c.asn IN ('266949') THEN 'Divifibra'\n        WHEN c.asn IN ('262700') THEN 'Efibra Telecom'\n        WHEN c.asn IN ('28658') THEN 'Gigalink'\n        WHEN c.asn IN ('262673') THEN 'Lafaiete'\n        WHEN c.asn IN ('52900') THEN 'Quality Telecom'\n        WHEN c.asn IN ('263629') THEN 'Celloni'\n        WHEN c.asn IN ('52940') THEN 'Nemesis'\n        WHEN c.asn IN ('262671') THEN 'S & M Informática'\n        WHEN c.asn IN ('28241') THEN 'Viaceu Internet'\n        WHEN c.asn IN ('53191') THEN 'Plug Telecom'\n        WHEN c.asn IN ('28263') THEN 'Ensite Brasil'\n        WHEN c.asn IN ('263072') THEN 'BD Fibra Telecom'\n        WHEN c.asn IN ('53171') THEN 'Omni Telecom'\n        ELSE c.as_name\n    END IN ($isp)\n    AND c.city = '$cidade'\nGROUP BY d.server_site\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Servidores usados em um cidade",
+      "type": "barchart"
     }
   ],
   "preload": false,
@@ -246,7 +557,14 @@
     "list": [
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": [
+            ""
+          ],
+          "value": [
+            ""
+          ]
+        },
         "datasource": {
           "type": "questdb-questdb-datasource",
           "uid": "dfudvhox4xudce"
@@ -264,7 +582,10 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "",
+          "value": ""
+        },
         "datasource": {
           "type": "questdb-questdb-datasource",
           "uid": "dfudvhox4xudce"
@@ -272,10 +593,28 @@
         "definition": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
         "includeAll": false,
         "label": "Servidor",
-        "multi": true,
         "name": "server",
         "options": [],
         "query": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "Cuiabá",
+          "value": "Cuiabá"
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "select distinct city from server where country_code = 'BR';",
+        "label": "cidade",
+        "name": "cidade",
+        "options": [],
+        "query": "select distinct city from server where country_code = 'BR';",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -283,12 +622,12 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "NDT - Mapa Cliente→Servidor",
+  "title": "NDT - Relação geográfica servidores",
   "uid": "ndt-mapa-cliente-servidor",
-  "version": 1
+  "version": 22
 }
