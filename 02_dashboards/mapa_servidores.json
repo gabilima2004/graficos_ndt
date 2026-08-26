@@ -1,0 +1,184 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "total_testes",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.8,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "total_testes",
+                  "fixed": 8,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "value"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/square.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Servidores",
+            "target": {
+              "refId": "A"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": -14.235,
+          "lon": -51.925,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(latitude AS DOUBLE) AS lat,\n    CAST(longitude AS DOUBLE) AS lon,\n    site AS server_site,\n    city,\n    country_name,\n    country_code,\n    machine_type,\n    machine_zone\nFROM server\nWHERE latitude IS NOT NULL\n    AND longitude IS NOT NULL\n    AND site IN (SELECT DISTINCT server_site FROM download WHERE server_site IS NOT NULL LIMIT 1000)",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Mapa de Servidores",
+      "type": "geomap"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "ndt",
+    "questdb",
+    "servidores"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "NDT - Mapa de Servidores",
+  "uid": "ndt-mapa-servidores",
+  "version": 1
+}
