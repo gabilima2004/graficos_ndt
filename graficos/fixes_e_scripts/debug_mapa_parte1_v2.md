@@ -29,7 +29,7 @@ Mas o `format: 1` hardcoded no target pode conflitar com o AUTO,
 fazendo o plugin retornar um data frame em formato errado.
 
 **Correção:** `selectedFormat` alterado de `2` para `1` (TABLE explícito)
-no arquivo `02_dashboards/ndt_dashboard_parte1.json`.
+no arquivo `graficos/dashboards/ndt_dashboard_parte1.json`.
 
 ---
 
@@ -38,7 +38,7 @@ no arquivo `02_dashboards/ndt_dashboard_parte1.json`.
 ### Passo 1 — Reimportar o dashboard
 
 1. Dashboards → New → Import
-2. Selecionar `02_dashboards/ndt_dashboard_parte1.json`
+2. Selecionar `graficos/dashboards/ndt_dashboard_parte1.json`
 3. Escolher o datasource do QuestDB
 4. Import
 

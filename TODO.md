@@ -1,7 +1,8 @@
 # To-Do List — Projeto NDT
 
-> Última atualização: 2026-08-25
-> Objetivo do chefe: entender NDT, replicar gráficos antigos, fazer mapa cliente→servidor, identificar padrões.
+> Última atualização: 2026-09-02 (pós-reorganização)
+> Estrutura nova: `graficos/` (dashboards) e `analise_selecao_servidores/` (pesquisa concluída).
+> Ver `ESTRUTURA_PASTAS.md` para o mapa completo e a lista do que é inútil/legado.
 
 ---
 
@@ -9,37 +10,33 @@
 
 - [x] Entender o NDT e documentar métricas (`01_documentacao/NDT_Documentacao.md`)
 - [x] Avaliar dashboards antigos (`01_documentacao/Avaliacao_OldNDT.md`)
-- [x] Mapear 33 ISPs por ASN (`04_isp_mapping/`)
+- [x] Mapear 33 ISPs por ASN (`graficos/isp_mapping/`)
 - [x] Dashboard Parte 1 — Visão Geral (stats + bar chart)
 - [x] Dashboard Parte 2 — Métricas no tempo (download, upload, RTT, loss rate)
 - [x] Dashboard Parte 3 — Estatísticas por provedor (tabelas + bar charts)
 - [x] Dashboard Parte 4 — Box plots e violin plots
-- [x] Análise inicial Claro vs Telefônica vs Gigalink (`08_analise/ANALISE_RESULTADOS.md`)
+- [x] Análise inicial Claro vs Telefônica vs Gigalink (`analise_selecao_servidores/ANALISE_RESULTADOS.md`)
+- [x] **Mapa cliente→servidor funcionando** (`graficos/dashboards/painel_mapa_corrigido.json`) — clientes azuis + servidores vermelhos, cor/tamanho por volume, filtros `$isp`/`$server`/`$cidade`
+- [x] Painéis cidade↔servidor (Top 10 Cidades, Dispersão, Servidores por cidade)
+- [x] Mapa standalone de servidores (`graficos/dashboards/mapa_servidores.json`)
+- [x] **PESQUISA DE SELEÇÃO DE SERVIDORES — CONCLUÍDA** (`analise_selecao_servidores/PESQUISA_SELECAO_SERVIDOR.md`, 12 seções): GeoIP + haversine + sorteio 95/5; ISP refutado; validada por código fonte + RTT + split de máquinas
 
 ---
 
 ## 🔴 Fase 1 — Ajustes Técnicos e Visualização
 
-### 1.1 Finalizar o Geomap (mapa cliente→servidor)
+### 1.1 Geomap (mapa cliente→servidor) — ✅ RESOLVIDO
 
-- [ ] **Debugar a query de clientes** — o quadrado vermelho (servidor) aparece, mas as bolinhas azuis (clientes) não
-  - Abrir Query Inspector no painel → query "Clientes"
-  - Verificar: dá erro? retorna 0 linhas? retorna linhas mas não renderiza?
-  - Arquivo: `02_dashboards/painel_mapa_corrigido.json`
-- [ ] **Validar com servidor específico** (ex: `gru02`) — selecionar no filtro `$server` e confirmar que clientes aparecem
-- [ ] **Documentar o que o mapa mostra** — atualizar `CONTEXTO_PROJETO.md` removendo "Problema conhecido"
+- [x] Query de clientes renderiza (corrigido: `selectedFormat: 1` TABLE + config de location mode/fields — ver `graficos/fixes_e_scripts/debug_mapa_parte1_v2.md`)
+- [x] Validado com servidor específico (`gru02`, `gig1916` etc.)
+- [ ] **Opcional:** atualizar `01_documentacao/CONTEXTO_PROJETO.md` removendo "Problema conhecido" do mapa
 
-**Bloqueador:** preciso do erro do Query Inspector para continuar.
+### 1.2 Visualização Cidade ↔ Servidor — ✅ RESOLVIDO
 
-### 1.2 Criar visualização Cidade ↔ Servidor
-
-- [ ] **Painel: Cidades que mais usam o servidor selecionado** (tabela, com filtro `$server`)
-  - Query: `GROUP BY c.city ORDER BY total_testes DESC LIMIT 20`
-- [ ] **Painel: Servidores mais usados por cidade** (tabela, com filtro de cidade)
-  - Query: `GROUP BY d.server_site ORDER BY total_testes DESC`
-- [ ] **Painel: Dispersão cidade→servidor** (bar chart — quantas cidades cada servidor atende)
-  - Query: `count(DISTINCT c.city) AS cidades_atendidas GROUP BY d.server_site`
-- [ ] **Criar dashboard JSON** com esses painéis + variáveis `$isp` e `$server`
+- [x] Painel: Cidades que mais usam o servidor selecionado
+- [x] Painel: Servidores mais usados por cidade
+- [x] Painel: Dispersão cidade→servidor
+- [x] Dashboard com variáveis `$isp`, `$server`, `$cidade`
 
 ---
 
@@ -94,7 +91,7 @@
 
 ## 🟢 Fase 4 — Consolidação e Apresentação
 
-- [ ] **Sintetizar achados** em conclusões práticas (atualizar `08_analise/ANALISE_RESULTADOS.md`)
+- [ ] **Sintetizar achados** em conclusões práticas (atualizar `analise_selecao_servidores/ANALISE_RESULTADOS.md`)
 - [ ] **Mapear cada gráfico a uma pergunta** — garantir que nenhum painel está "sem propósito"
 - [ ] **Remover redundâncias** — box plots e violin plots são redundantes; manter só box plots
 - [ ] **Preparar resumo para o chefe** — 1 página com: o que fiz, o que descobri, o que recomendo
@@ -122,6 +119,7 @@
 |---------|---------------|
 | `01_documentacao/CONTEXTO_PROJETO.md` | Contexto geral do projeto |
 | `01_documentacao/RESUMO_PROGRESSO.md` | Resumo do que foi feito |
-| `08_analise/ANALISE_RESULTADOS.md` | Análise atual (Claro vs Telefônica vs Gigalink) |
-| `08_analise/PLANO_ACAO.md` | Plano detalhado com queries sugeridas |
-| `02_dashboards/painel_mapa_corrigido.json` | Dashboard do mapa (em debug) |
+| `analise_selecao_servidores/PESQUISA_SELECAO_SERVIDOR.md` | ⭐ Pesquisa de seleção (concluída, 12 seções) |
+| `analise_selecao_servidores/ANALISE_RESULTADOS.md` | Análise Claro vs Telefônica vs Gigalink |
+| `graficos/dashboards/painel_mapa_corrigido.json` | ⭐ Dashboard do mapa (funcionando) |
+| `ESTRUTURA_PASTAS.md` | Mapa das pastas + lista do que é inútil/legado |

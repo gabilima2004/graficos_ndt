@@ -19,13 +19,13 @@
 | Item | Status | Arquivo |
 |------|--------|---------|
 | Documentação NDT | ✅ | `01_documentacao/` |
-| Mapeamento de 33 ISPs | ✅ | `04_isp_mapping/` |
-| Parte 1 — Visão Geral (stats + bar chart) | ✅ | `02_dashboards/ndt_dashboard_parte1.json` |
-| Parte 2 — Métricas no tempo | ✅ | `02_dashboards/ndt_dashboard_parte2.json` |
-| Parte 3 — Estatísticas por provedor | ✅ | `02_dashboards/ndt_dashboard_parte3.json` |
-| Parte 4 — Box plots e violin plots | ✅ | `02_dashboards/ndt_dashboard_parte4.json` |
-| Análise Claro vs Telefônica vs Gigalink | ✅ (superficial) | `08_analise/ANALISE_RESULTADOS.md` |
-| Mapa cliente→servidor | ⚠️ Bug na query de clientes | `02_dashboards/painel_mapa_corrigido.json` |
+| Mapeamento de 33 ISPs | ✅ | `graficos/isp_mapping/` |
+| Parte 1 — Visão Geral (stats + bar chart) | ✅ | `graficos/dashboards/ndt_dashboard_parte1.json` |
+| Parte 2 — Métricas no tempo | ✅ | `graficos/dashboards/ndt_dashboard_parte2.json` |
+| Parte 3 — Estatísticas por provedor | ✅ | `graficos/dashboards/ndt_dashboard_parte3.json` |
+| Parte 4 — Box plots e violin plots | ✅ | `graficos/dashboards/ndt_dashboard_parte4.json` |
+| Análise Claro vs Telefônica vs Gigalink | ✅ (superficial) | `analise_selecao_servidores/ANALISE_RESULTADOS.md` |
+| Mapa cliente→servidor | ⚠️ Bug na query de clientes | `graficos/dashboards/painel_mapa_corrigido.json` |
 
 ---
 

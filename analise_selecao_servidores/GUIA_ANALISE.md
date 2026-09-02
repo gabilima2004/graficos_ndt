@@ -141,7 +141,7 @@ WHERE d.test_time > dateadd('d', -7, now())
 ```
 
 **Para analisar Claro:** troque os ASNs por `('28573', '4230', '22085')`
-**Para analisar outro provedor:** troque os ASNs pelos dele (ver `04_isp_mapping/isp_mapping.csv`)
+**Para analisar outro provedor:** troque os ASNs pelos dele (ver `graficos/isp_mapping/isp_mapping.csv`)
 
 ### 2.2 — Distribuição de download por provedor (percentis)
 
@@ -421,7 +421,7 @@ Depois de rodar as queries e salvar os resultados, preencha o relatório:
 1. Abra o console do QuestDB (interface web, porta 9000)
 2. Rode as queries **uma por vez**
 3. Salve os resultados como CSV (botão Download no console)
-4. Guarde os CSVs na pasta `07_dados_csv/`
+4. Guarde os CSVs na pasta `graficos/dados_csv/`
 5. Anote os achados no relatório (template acima)
 6. Comece pela Fase 1, depois Fase 2, etc.
 
