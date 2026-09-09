@@ -1,7 +1,7 @@
 # To-Do List — Projeto NDT
 
-> Última atualização: 2026-09-02 (pós-reorganização)
-> Estrutura nova: `graficos/` (dashboards) e `analise_selecao_servidores/` (pesquisa concluída).
+> Última atualização: 2026-09-09 (v2)
+> Estrutura: `graficos/` (dashboards) e `analise_selecao_servidores/` (pesquisa + validação concluídas).
 > Ver `ESTRUTURA_PASTAS.md` para o mapa completo e a lista do que é inútil/legado.
 
 ---
@@ -20,6 +20,7 @@
 - [x] Painéis cidade↔servidor (Top 10 Cidades, Dispersão, Servidores por cidade)
 - [x] Mapa standalone de servidores (`graficos/dashboards/mapa_servidores.json`)
 - [x] **PESQUISA DE SELEÇÃO DE SERVIDORES — CONCLUÍDA** (`analise_selecao_servidores/PESQUISA_SELECAO_SERVIDOR.md`, 12 seções): GeoIP + haversine + sorteio 95/5; ISP refutado; validada por código fonte + RTT + split de máquinas
+- [x] **VALIDAÇÃO EMPÍRICA DO 95/5 — CONCLUÍDA** (`analise_selecao_servidores/validacao_95_5/`): 4M testes, histograma previsto 62,0% vs observado 61,9%. Mecanismo dos desvios descoberto: campo `Probability` do cadastro (sites RNP ≈ 0,08). Ver `RESULTADO_VALIDACAO.md`
 
 ---
 
@@ -120,6 +121,7 @@
 | `01_documentacao/CONTEXTO_PROJETO.md` | Contexto geral do projeto |
 | `01_documentacao/RESUMO_PROGRESSO.md` | Resumo do que foi feito |
 | `analise_selecao_servidores/PESQUISA_SELECAO_SERVIDOR.md` | ⭐ Pesquisa de seleção (concluída, 12 seções) |
+| `analise_selecao_servidores/validacao_95_5/RESULTADO_VALIDACAO.md` | ⭐ Validação empírica (concluída) |
 | `analise_selecao_servidores/ANALISE_RESULTADOS.md` | Análise Claro vs Telefônica vs Gigalink |
 | `graficos/dashboards/painel_mapa_corrigido.json` | ⭐ Dashboard do mapa (funcionando) |
 | `ESTRUTURA_PASTAS.md` | Mapa das pastas + lista do que é inútil/legado |

@@ -2,14 +2,14 @@
 
 > Data: 07-08/09/2026
 > Contexto: validação empírica do algoritmo de seleção de servidor do M-Lab Locate
-> (documentado em `08_analise/PESQUISA_SELECAO_SERVIDOR.md`, seção 9) contra a base de dados.
+> (documentado em `../PESQUISA_SELECAO_SERVIDOR.md`, seção 9) contra a base de dados.
 > **Status: validação concluída com sucesso — com uma condição importante descoberta.**
 
 ---
 
 ## 1. O que foi feito
 
-Pipeline em `09_validacao_selecao/`:
+Pipeline nesta pasta (`analise_selecao_servidores/validacao_95_5/`):
 
 1. **`extract.py`** — extrai do QuestDB (IP interno `10.246.47.159:9000`, endpoint `/exp`):
    - `sites.csv` — 163 sites distintos + coordenadas

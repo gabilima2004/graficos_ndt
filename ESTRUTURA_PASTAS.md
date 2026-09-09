@@ -1,7 +1,7 @@
 # Estrutura de Pastas — graficos_ndt
 
-> Última atualização: 2026-09-02 — **REORGANIZADO**
-> O projeto foi dividido em duas frentes: `graficos/` (dashboards e visualização) e `analise_selecao_servidores/` (pesquisa de como o cliente escolhe o servidor — CONCLUÍDA em 28/08).
+> Última atualização: 2026-09-09 — **REORGANIZADO (v2)**
+> O projeto tem duas frentes: `graficos/` (dashboards e visualização) e `analise_selecao_servidores/` (investigação de como o cliente escolhe o servidor — pesquisa concluída 28/08, validação empírica concluída 08/09).
 
 ---
 
@@ -39,28 +39,41 @@ graficos_ndt/
 │   │   └── debug_mapa_parte1.md / debug_mapa_parte1_v2.md      (resolvido)
 │   └── dados_csv/                    CSVs de dashboards (regeneráveis)
 │
-├── analise_selecao_servidores/       ← FRENTE 2: pesquisa de seleção (CONCLUÍDA)
-│   ├── PESQUISA_SELECAO_SERVIDOR.md  ⭐ Documento principal (12 seções)
+├── analise_selecao_servidores/       ← FRENTE 2: investigação da seleção
+│   ├── PESQUISA_SELECAO_SERVIDOR.md  ⭐ Documento principal (12 seções, 28/08)
 │   ├── ANALISE_RESULTADOS.md         Análise Claro vs Telefônica vs Gigalink
 │   ├── GUIA_ANALISE.md               Guia de queries por provedor
 │   ├── PLANO_ACAO.md                 (histórico) Plano de 21/08 — executado
+│   ├── validacao_95_5/               ⭐ Validação empírica do 95/5 (07-08/09)
+│   │   ├── PLANO.md                  Plano da validação (aprovado)
+│   │   ├── RESULTADO_VALIDACAO.md    ⭐ Resultado: algoritmo validado; o
+│   │   │                             mecanismo é o campo Probability do
+│   │   │                             cadastro (sites RNP ≈ 0,08)
+│   │   ├── extract.py                Fase 1: QuestDB → CSVs (particionado/mês)
+│   │   ├── analyze.py                Fase 2-3: rank haversine + histograma
+│   │   └── dados_csv/                Evidências de volume
+│   │       ├── servidores.csv            Volume total por site
+│   │       └── volumemensalservers.csv   Volume por site × mês (rollout)
 │   ├── validacoes/                   Validações de clientes e servidores
 │   └── dados_csv/                    Evidências da pesquisa
 │       ├── c.csv                     ⭐ RTT nordestinos no gig1916 (seção 11)
+│       ├── questdb-query-1787722096807.csv  RTT por cidade × provedor
 │       └── questdb-query-*.csv       Servidores por site/volume/lat-lon
 │
 ├── ESTRUTURA_PASTAS.md               Este arquivo
-└── TODO.md                           To-do list (atualizada 02/09)
+└── TODO.md                           To-do list (atualizada 09/09)
 ```
+
+> **Nota sobre `data/` e `out*/`:** os CSVs grandes extraídos pelo `extract.py` (2,2M clientes, 4M testes) e os outputs do `analyze.py` não estão no git — são regeneráveis rodando os scripts. O `RESULTADO_VALIDACAO.md` documenta os números-chave.
 
 ## As duas frentes
 
 | Frente | Pasta | Status | Documento-chave |
 |--------|-------|--------|-----------------|
 | 1. Gráficos | `graficos/` | ✅ Dashboards funcionando | `01_documentacao/RESUMO_PROGRESSO.md` |
-| 2. Seleção de servidores | `analise_selecao_servidores/` | ✅ Pesquisa CONCLUÍDA | `PESQUISA_SELECAO_SERVIDOR.md` |
+| 2. Seleção de servidores | `analise_selecao_servidores/` | ✅ Pesquisa + validação CONCLUÍDAS | `PESQUISA_SELECAO_SERVIDOR.md` + `validacao_95_5/RESULTADO_VALIDACAO.md` |
 
-**Conclusão da frente 2 em 1 frase:** o cliente NDT não escolhe o servidor — o Locate API do M-Lab localiza o cliente por GeoIP, ordena os sites por distância haversine (linha reta) e sorteia (~95% o mais próximo, ~5% o 2º). ISP não é fator direto (é volume). Validado por código fonte + RTT + split de máquinas (seções 9, 11 e 12).
+**Conclusão da frente 2 em 1 frase:** o cliente NDT não escolhe o servidor — o Locate API do M-Lab localiza o cliente por GeoIP, ordena os sites por distância haversine (linha reta) e sorteia (~95% o mais próximo, ~5% o 2º). A validação empírica (4M testes) confirmou o algoritmo e revelou o mecanismo dos desvios: o campo `Probability` do cadastro de sites (sites RNP brasileiros ≈ 0,08 — entram na lista só ~9% das vezes). ISP não é fator direto (é volume).
 
 ---
 

@@ -1,7 +1,7 @@
 # Plano — Validação do algoritmo de seleção de servidor (95/5) nos dados
 
 > Data: 07/09/2026
-> Premissa: o algoritmo já foi extraído do código fonte do M-Lab — ver `PESQUISA_SELECAO_SERVIDOR.md`, seção 9
+> Premissa: o algoritmo já foi extraído do código fonte do M-Lab — ver `../PESQUISA_SELECAO_SERVIDOR.md`, seção 9
 > Status: planejamento aprovado, execução iniciando
 
 ---
