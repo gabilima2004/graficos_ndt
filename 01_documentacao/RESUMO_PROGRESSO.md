@@ -50,9 +50,50 @@
 | #   | Item                                                                                   | Prioridade |
 | --- | -------------------------------------------------------------------------------------- | ---------- |
 | 1   | **Ajustar o mapa da Parte 1** (cores das camadas do Geomap) — ajuste manual no Grafana | Alta       |
-| 2   | **Rodar as queries de validação no QuestDB** e documentar os padrões encontrados       | Alta       |
+| 2   | **Análise temporal** — verificar se download cai em horário de pico                    | Média      |
 | 3   | **Importar e validar os 4 dashboards no Grafana**                                      | Alta       |
 | 4   | **Unificar tudo em um único JSON** (opcional)                                          | Baixa      |
+
+---
+
+## 📊 Achados da análise de dados
+
+> Documentação completa: `08_analise/ANALISE_RESULTADOS.md`
+
+### Visão geral
+
+- **2.205.685 clientes**, **404 servidores**, **12.649.720 testes** (30 dias)
+- **Claro** é o provedor com mais clientes (113.216) e mais testes (41% do total)
+- **Telefônica** é a 2ª maior (1.130.726 clientes)
+
+### Comparação justa: Claro vs Telefônica (mesmo porte)
+
+| Métrica          | Claro   | Telefônica | Conclusão                                       |
+| ---------------- | ------- | ---------- | ----------------------------------------------- |
+| RTT médio        | 81,5 ms | 26,4 ms    | **Telefônica 3x melhor** (não depende do plano) |
+| Loss rate        | 2,9%    | 2,88%      | Empate (ambos têm ~3% de perda)                 |
+| Mediana download | 52 Mbps | 88 Mbps    | Telefônica vende planos melhores                |
+| Mediana upload   | 24 Mbps | 54 Mbps    | Telefônica vende planos melhores                |
+
+### Padrão identificado: RTT é roteamento, não geografia
+
+**A descoberta principal:** comparando Claro e Telefônica na **mesma cidade**, a Claro tem 2-4x mais latência:
+
+| Cidade    | Claro RTT | Telefônica RTT | Diferença       |
+| --------- | --------- | -------------- | --------------- |
+| São Paulo | 13,4 ms   | 4,9 ms         | Claro 2,7x pior |
+| Guarulhos | 13,4 ms   | 5,2 ms         | Claro 2,6x pior |
+| Osasco    | 17,9 ms   | 4,7 ms         | Claro 3,8x pior |
+| Santos    | 17,9 ms   | 5,9 ms         | Claro 3x pior   |
+| Campinas  | 21,9 ms   | 6,9 ms         | Claro 3,2x pior |
+
+**Conclusão:** Na mesma cidade, usando provavelmente os mesmos servidores, a Claro tem 2-4x mais latência. **Não é geografia, é roteamento.** A infraestrutura de rede da Telefônica é mais eficiente.
+
+### Gigalink: caso à parte
+
+- RTT excelente (8-16 ms) e loss rate ~0% (muitos testes com perda zero)
+- Mas atende nicho específico (Região dos Lagos/RJ) — não é comparável com os grandes
+- Tem clusters de planos definidos (provavelmente 1 Gbps e 400 Mbps)
 
 ---
 
@@ -68,14 +109,23 @@
 > 4. **Refiz os dashboards em 4 partes:**
 >    - **Parte 1 — Visão Geral:** totais de clientes, servidores e testes, gráfico de clientes por provedor e mapa cliente→servidor.
 >    - **Parte 2 — Métricas no tempo:** evolução de download, upload, RTT e loss rate por provedor, com escala log e legendas com percentis.
->    - **Parte 3 — Estatísticas por provedor:** tabelas com média/mediana/min/max + bar charts ranqueando provedores.
+>    - **Parte 3 — Estatísticas por provedor:** tabelas com média/mediana/min/max + bar charts ranqueando provedores + RTT por cidade e provedor.
 >    - **Parte 4 — Distribuição:** box plots e violin plots mostrando a distribuição completa por provedor.
-> 5. **Criei queries de validação** para confirmar os números de clientes e entender quais servidores os clientes brasileiros usam.
+> 5. **Analisei os dados e identifiquei padrões:**
+>    - A Telefônica tem RTT 3x melhor que a Claro (26 ms vs 81 ms)
+>    - **Descobri que a diferença é roteamento, não geografia** — na mesma cidade, a Claro tem 2-4x mais latência que a Telefônica
+>    - A Claro tem loss rate igual à Telefônica (~3%), mas vende planos com velocidades menores
+>    - A Gigalink tem RTT excelente (8-16 ms) e loss rate ~0%, mas atende um nicho específico
+>
+> **O que descobri (padrões):**
+>
+> - **Roteamento da Claro é pior que a Telefônica** — comprovado comparando na mesma cidade (São Paulo: Claro 13ms vs Telefônica 5ms)
+> - **Provedores grandes têm loss rate alto** (~3%) — Claro e Telefônica empatam em perda de pacotes
+> - **Upload é limitado nos planos** — Claro tem upload mediano de 24 Mbps vs 54 Mbps da Telefônica
+> - **Gigalink tem rede de alta qualidade** mas atende região pequena (Região dos Lagos/RJ)
 >
 > **O que falta:**
 >
-> - Ajustar as cores do mapa (ajuste manual no Grafana).
-> - Rodar as queries de validação no QuestDB e documentar os padrões encontrados.
-> - Importar e validar os 4 dashboards no Grafana.
->
-> **Próximos passos:** rodar as análises de padrão geográfico e consolidar os achados em um relatório de insights.
+> - Ajustar as cores do mapa (ajuste manual no Grafana)
+> - Análise temporal: verificar se o download cai em horário de pico
+> - Importar e validar os dashboards no Grafana

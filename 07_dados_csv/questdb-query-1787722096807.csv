@@ -1,0 +1,909 @@
+"cidade","provedor","rtt_mediana","testes"
+"Nova Olímpia","Telefônica",1.0,8
+"Terra Santa","Telefônica",2.25,10
+"Mairinque","Telefônica",2.375,8
+"Arco Verde","Telefônica",2.75,2
+"Franco da Rocha","Telefônica",2.875,223
+"Monte Mor","Telefônica",3.0,83
+"Ouro Fino","Telefônica",3.0,10
+"Belem","Telefônica",3.125,4
+"Biguaçu","Claro",3.21875,33
+"Porto Feliz","Telefônica",3.3125,129
+"Santo Antônio do Pinhal","Telefônica",3.375,129
+"Boa Vista","Claro",3.5625,136
+"Pitangueiras","Telefônica",3.8125,3
+"Corumbataí","Telefônica",4.125,14
+"Embu-Guaçu","Telefônica",4.1875,398
+"Saltinho","Claro",4.25,6
+"Barretos","Telefônica",4.375,115
+"Francisco Morato","Claro",4.375,299
+"Ipeúna","Telefônica",4.375,4
+"Taboão da Serra","Telefônica",4.4375,1451
+"Diadema","Telefônica",4.4375,753
+"Embu das Artes","Telefônica",4.625,454
+"Seropédica","Telefônica",4.625,6
+"Mairiporã","Telefônica",4.625,365
+"Santo André","Telefônica",4.6875,4944
+"Osasco","Telefônica",4.6875,4101
+"Jandira","Telefônica",4.6875,504
+"São Caetano do Sul","Telefônica",4.6875,1625
+"Itaquaquecetuba","Telefônica",4.875,463
+"Itapevi","Telefônica",4.875,3936
+"Arujá","Telefônica",4.875,83
+"São Paulo","Telefônica",4.9375,127745
+"Jaú","Telefônica",4.9375,453
+"Balneário Piçarras","Claro",5.125,23
+"Nova Europa","Telefônica",5.125,3
+"Ribeirão Pires","Telefônica",5.125,701
+"Caieiras","Telefônica",5.125,29
+"Guarulhos","Telefônica",5.1875,9718
+"São Bernardo do Campo","Telefônica",5.1875,6200
+"Barueri","Telefônica",5.1875,2323
+"Itapecerica da Serra","Telefônica",5.1875,579
+"Serra Negra","Telefônica",5.25,4
+"São Luís do Paraitinga","Claro",5.375,37
+"São Roque","Telefônica",5.375,253
+"Santana de Parnaíba","Telefônica",5.375,1741
+"Cotia","Telefônica",5.4375,757
+"Santa Lúcia","Telefônica",5.4375,16
+"São Vicente","Telefônica",5.625,1732
+"Suzano","Telefônica",5.625,2358
+"Boituva","Telefônica",5.625,46
+"Carapicuíba","Telefônica",5.6875,1300
+"Mauá","Telefônica",5.6875,1213
+"Mogi das Cruzes","Telefônica",5.875,1920
+"Votorantim","Telefônica",5.875,209
+"São Gonçalo","Telefônica",5.875,110
+"Brotas","Telefônica",5.875,6
+"Santos","Telefônica",5.9375,5315
+"Florianópolis","Claro",5.96875,11372
+"Tatuí","Telefônica",6.0,148
+"Aparecida","Telefônica",6.0,4
+"Cordeirópolis","Telefônica",6.0,8
+"Sorocaba","Telefônica",6.125,4049
+"Cosmópolis","Telefônica",6.25,193
+"Tanabi","Telefônica",6.25,7
+"Itu","Telefônica",6.375,535
+"Paulínia","Telefônica",6.375,485
+"Hortolândia","Telefônica",6.375,931
+"Jacareí","Telefônica",6.4375,873
+"Santa Isabel","Claro",6.5,1
+"Sena Madureira","Claro",6.5,11
+"Mairinque","Claro",6.5,1
+"Itapetininga","Telefônica",6.625,509
+"Caçapava","Telefônica",6.625,264
+"Monte Alegre do Sul","Telefônica",6.625,67
+"São José dos Campos","Telefônica",6.6875,7380
+"Itaquaquecetuba","Claro",6.75,5
+"Cachoeira Paulista","Claro",6.75,1
+"Campinas","Telefônica",6.875,8282
+"Taubaté","Telefônica",6.875,958
+"Salto","Telefônica",6.875,737
+"Indaiatuba","Telefônica",6.875,1662
+"Santa Bárbara d'Oeste","Telefônica",6.875,465
+"Engenheiro Coelho","Telefônica",6.875,22
+"Jundiaí","Telefônica",6.9375,3374
+"Sumaré","Telefônica",6.9375,2395
+"Tietê","Telefônica",7.0,9
+"Cabreúva","Telefônica",7.0,1
+"Guarujá","Telefônica",7.125,885
+"Valinhos","Telefônica",7.1875,828
+"Vinhedo","Telefônica",7.1875,872
+"Limeira","Telefônica",7.25,583
+"Nova Odessa","Telefônica",7.25,31
+"Várzea Paulista","Claro",7.25,4
+"Praia Grande","Telefônica",7.375,2854
+"Americana","Telefônica",7.375,1650
+"Cajamar","Telefônica",7.5,96
+"Itanhaém","Telefônica",7.5,11
+"Pindamonhangaba","Telefônica",7.625,499
+"Cubatão","Telefônica",7.6875,181
+"Várzea Paulista","Telefônica",7.75,77
+"Mogi Mirim","Telefônica",7.75,406
+"José Bonifácio","Telefônica",7.75,74
+"Jarinu","Claro",7.75,2
+"Piracicaba","Telefônica",7.9375,1549
+"Cruzeiro","Claro",8.0,4
+"Descalvado","Claro",8.0,1
+"Ilha Solteira","Telefônica",8.0,2
+"Itapeva","Telefônica",8.25,91
+"Amparo","Telefônica",8.25,56
+"Barra Mansa","Claro",8.25,10
+"Guaratinguetá","Telefônica",8.25,350
+"Peruíbe","Claro",8.25,214
+"Itupeva","Claro",8.25,14
+"Cruzeiro","Telefônica",8.25,20
+"Artur Nogueira","Telefônica",8.25,15
+"Pedreira","Telefônica",8.25,57
+"Parnamirim","Claro",8.25,3
+"Bertioga","Telefônica",8.375,528
+"Mogi Guaçu","Telefônica",8.375,351
+"Foz do Iguaçu","Telefônica",8.375,863
+"Charqueada","Telefônica",8.375,52
+"Ubatuba","Telefônica",8.375,40
+"Cabreúva","Claro",8.75,73
+"Campos do Jordão","Telefônica",8.75,192
+"Lorena","Telefônica",8.75,26
+"Capivari","Telefônica",8.75,58
+"Jaguariúna","Claro",8.75,28
+"Espírito Santo do Pinhal","Telefônica",8.75,124
+"Rio Claro","Telefônica",8.875,631
+"Lages","Claro",8.9375,2370
+"Atibaia","Telefônica",9.25,575
+"Mongaguá","Claro",9.25,130
+"Tremembé","Claro",9.25,131
+"Santana de Parnaíba","Claro",9.25,65
+"Lorena","Claro",9.25,3
+"Bragança Paulista","Telefônica",9.375,469
+"Itatiba","Telefônica",9.375,677
+"Palhoça","Claro",9.4375,68
+"São Gonçalo","Claro",9.46875,169
+"Caraguatatuba","Claro",9.75,601
+"São João da Boa Vista","Telefônica",9.75,428
+"Caraguatatuba","Telefônica",9.75,185
+"Registro","Telefônica",9.75,16
+"Itapira","Claro",9.75,142
+"São Sebastião","Telefônica",9.9375,105
+"Cosmópolis","Claro",10.0,24
+"Salto de Pirapora","Telefônica",10.0,2
+"Araras","Telefônica",10.25,89
+"Ilhabela","Telefônica",10.25,143
+"Bebedouro","Telefônica",10.25,44
+"Campos do Jordão","Claro",10.25,44
+"Nova Friburgo","Gigalink",10.375,59246
+"Araraquara","Telefônica",10.375,581
+"Cabo Frio","Gigalink",10.375,2416
+"Leme","Telefônica",10.375,218
+"Américo Brasiliense","Telefônica",10.5,5
+"Igarapé","Telefônica",10.5,1
+"Itapira","Telefônica",10.75,411
+"São Leopoldo","Telefônica",10.75,165
+"Embu das Artes","Claro",10.75,14
+"Lençóis Paulista","Telefônica",10.875,137
+"Arujá","Claro",10.875,167
+"São José","Claro",10.96875,1542
+"Mococa","Telefônica",11.0,7
+"Teresópolis","Gigalink",11.0,4
+"Peruíbe","Telefônica",11.25,23
+"Bertioga","Claro",11.25,432
+"Mauá","Claro",11.375,452
+"Palmital","Telefônica",11.375,36
+"Ribeirão Preto","Telefônica",11.4375,1796
+"São José do Rio Pardo","Telefônica",11.5,107
+"Descalvado","Telefônica",11.5,31
+"Nova Iguaçu","Telefônica",11.75,53
+"Ferraz de Vasconcelos","Telefônica",11.875,597
+"Botucatu","Telefônica",11.875,419
+"Araçatuba","Telefônica",11.875,1858
+"Itirapina","Telefônica",11.9375,219
+"Itápolis","Telefônica",12.0,7
+"Riachão do Dantas","Claro",12.0,3
+"Guararapes","Telefônica",12.0,24
+"Alumínio","Claro",12.0,2
+"Juquiá","Telefônica",12.0,2
+"Serrana","Claro",12.0,1
+"Elias Fausto","Claro",12.0,9
+"Serra Negra","Claro",12.25,263
+"Campos dos Goytacazes","Gigalink",12.25,543
+"Franca","Telefônica",12.375,349
+"Jaguariúna","Telefônica",12.375,182
+"Matão","Telefônica",12.375,756
+"Piraí","Claro",12.375,6
+"Rio das Ostras","Gigalink",12.5,4
+"Casimiro de Abreu","Gigalink",12.5,2
+"Santa Cruz do Rio Pardo","Telefônica",12.5,15
+"Promissão","Claro",12.5,1
+"Jardinópolis","Claro",12.5,1
+"Sertãozinho","Telefônica",12.75,123
+"Pedreira","Claro",12.75,220
+"Itanhaém","Claro",12.875,751
+"Bauru","Telefônica",12.875,1446
+"Suzano","Claro",12.875,187
+"Jaboticabal","Telefônica",13.0,119
+"Garça","Telefônica",13.0,9
+"Rafard","Claro",13.0,7
+"Barra Bonita","Telefônica",13.0,89
+"Poá","Claro",13.0,14
+"Ribeirão das Neves","Telefônica",13.0,2
+"Jacareí","Claro",13.25,431
+"Guarulhos","Claro",13.375,6316
+"Santo André","Claro",13.375,9376
+"Poá","Telefônica",13.375,457
+"São Paulo","Claro",13.4375,87286
+"São Carlos","Telefônica",13.4375,1198
+"Lins","Telefônica",13.5,32
+"Macaé","Gigalink",13.5,3
+"Fernandópolis","Claro",13.5,1
+"Armação dos Búzios","Gigalink",13.5,7
+"Ribeirão das Neves","Claro",13.5,14
+"São João da Boa Vista","Claro",13.75,453
+"Tupã","Telefônica",13.75,77
+"Ribeirão Pires","Claro",13.75,237
+"São José do Rio Preto","Telefônica",13.875,1673
+"Pirassununga","Telefônica",13.875,332
+"Barra do Piraí","Telefônica",14.0,24
+"Barra Mansa","Telefônica",14.0,117
+"Nova Odessa","Claro",14.0,4
+"Valparaíso","Claro",14.0,12
+"Penápolis","Telefônica",14.25,13
+"Jundiaí","Claro",14.375,2721
+"Ourinhos","Telefônica",14.375,70
+"Olímpia","Telefônica",14.5,43
+"Boituva","Claro",14.5,98
+"Mirassol","Telefônica",14.5,12
+"Arcos","Telefônica",14.5,48
+"Limeira","Claro",14.75,351
+"Bragança Paulista","Claro",14.75,399
+"Votorantim","Claro",14.75,357
+"Arraial do Cabo","Gigalink",14.75,13
+"Nilópolis","Claro",14.875,437
+"Avaré","Telefônica",15.0,238
+"Vinhedo","Claro",15.0,87
+"Jaboticabal","Claro",15.0,30
+"Mesquita","Claro",15.0,25
+"Barbacena","Telefônica",15.0,35
+"Pará de Minas","Telefônica",15.0,9
+"São José do Rio Pardo","Claro",15.0,12
+"Olímpia","Claro",15.0,4
+"Araruama","Gigalink",15.0,1
+"São Sebastião","Claro",15.25,67
+"Marília","Telefônica",15.25,587
+"Atibaia","Claro",15.25,332
+"Rio Claro","Claro",15.25,1384
+"Mogi Mirim","Claro",15.25,131
+"Maresias","Telefônica",15.25,318
+"Tatuí","Claro",15.25,104
+"Mogi das Cruzes","Claro",15.375,2661
+"Rio de Janeiro","Telefônica",15.4375,10607
+"Vespasiano","Claro",15.5,42
+"Lagoa Santa","Telefônica",15.5,53
+"Porto Feliz","Claro",15.5,18
+"Ituverava","Claro",15.5,56
+"Caratinga","Telefônica",15.5,2
+"Petrópolis","Telefônica",15.5,41
+"Taubaté","Claro",15.875,1100
+"Diadema","Claro",15.875,565
+"Volta Redonda","Telefônica",15.875,136
+"Niterói","Claro",15.96875,1895
+"Itumbiara","Telefônica",16.0,2
+"Jandira","Claro",16.0,2
+"Belford Roxo","Claro",16.5,13
+"Catanduva","Telefônica",16.5,138
+"Guaxupé","Telefônica",16.5,537
+"Jales","Telefônica",16.5,104
+"Cravinhos","Claro",16.5,31
+"Adamantina","Telefônica",16.5,13
+"Santa Luzia","Claro",16.5,62
+"Dracena","Telefônica",16.5,52
+"Paraíba do Sul","Claro",16.5,42
+"Americana","Claro",16.75,1859
+"Cotia","Claro",16.75,1815
+"Ubatuba","Claro",16.75,326
+"Aparecida","Claro",16.75,652
+"Niterói","Telefônica",16.75,370
+"Praia Grande","Claro",16.875,640
+"São Bernardo do Campo","Claro",16.875,2051
+"Presidente Prudente","Telefônica",16.875,1867
+"Viamão","Claro",17.0,2
+"Angra dos Reis","Telefônica",17.0,1
+"Votuporanga","Telefônica",17.5,193
+"Passos","Telefônica",17.5,47
+"Penápolis","Claro",17.5,14
+"Fernandópolis","Telefônica",17.5,5
+"Formiga","Telefônica",17.5,38
+"Sorocaba","Claro",17.75,4273
+"São Carlos","Claro",17.75,953
+"Santos","Claro",17.875,2925
+"Santa Bárbara d'Oeste","Claro",17.875,402
+"Nova Iguaçu","Claro",17.875,428
+"Marialva","Telefônica",17.875,32
+"Osasco","Claro",17.9375,17330
+"São Francisco do Sul","Telefônica",18.0,3
+"Belem","Claro",18.0,2
+"Osvaldo Cruz","Telefônica",18.0,2
+"Birigui","Telefônica",18.5,496
+"Uberlândia","Telefônica",18.5,486
+"Apucarana","Claro",18.5,66
+"Mangaratiba","Telefônica",18.5,3
+"Mogi Guaçu","Claro",18.5,352
+"Divinópolis","Telefônica",18.5,154
+"Américo Brasiliense","Claro",18.5,103
+"São Sebastião do Paraíso","Telefônica",18.5,11
+"Lins","Claro",18.5,36
+"João Monlevade","Telefônica",18.5,6
+"Matozinhos","Telefônica",18.5,11
+"Arapongas","Telefônica",18.5,4
+"Armação dos Búzios","Claro",18.5,13
+"Itaúna","Telefônica",18.5,68
+"Itu","Claro",18.75,890
+"Araras","Claro",18.75,165
+"São Pedro da Aldeia","Claro",18.75,57
+"Indaiatuba","Claro",18.75,1323
+"São Vicente","Claro",18.75,1134
+"Caçapava","Claro",18.75,156
+"Londrina","Telefônica",18.875,1290
+"Barueri","Claro",18.875,777
+"Andradina","Claro",19.0,20
+"Ituiutaba","Telefônica",19.0,5
+"Mariana","Telefônica",19.0,6
+"Florianopólis","Claro",19.0,17
+"Navegantes","Telefônica",19.0,2
+"Paulicéia","Telefônica",19.0,1
+"Três Pontas","Telefônica",19.0,1
+"Birigui","Claro",19.0,6
+"Bauru","Claro",19.5,1863
+"Catalão","Telefônica",19.5,72
+"Assis","Telefônica",19.5,182
+"Mirassol","Claro",19.5,53
+"Poços de Caldas","Telefônica",19.5,282
+"Pouso Alegre","Telefônica",19.5,190
+"Betim","Claro",19.5,58
+"Lençóis Paulista","Claro",19.5,456
+"Itajubá","Telefônica",19.5,25
+"Caldas Novas","Telefônica",19.5,4
+"Itabira","Claro",19.5,100
+"Rio de Janeiro","Gigalink",19.5,3
+"Pederneiras","Telefônica",19.5,10
+"Araruama","Telefônica",19.5,43
+"Armação dos Búzios","Telefônica",19.5,6
+"São João del Rei","Telefônica",19.5,45
+"Parati","Telefônica",19.5,5
+"Valinhos","Claro",19.75,419
+"Cabo Frio","Claro",19.75,109
+"Pinhais","Telefônica",19.75,256
+"Guarujá","Claro",19.75,1238
+"São José dos Campos","Claro",19.875,3382
+"Ribeirão Preto","Claro",19.875,3500
+"Volta Redonda","Claro",19.875,212
+"Joinville","Telefônica",19.875,1245
+"São Caetano do Sul","Claro",19.875,1435
+"Campo Limpo Paulista","Telefônica",19.875,112
+"Rio de Janeiro","Claro",19.96875,19335
+"Gravataí","Telefônica",20.0,21
+"Augusto Pestana","Telefônica",20.0,3
+"Luziânia","Telefônica",20.0,5
+"Mafra","Telefônica",20.0,8
+"Paraguaçu Paulista","Telefônica",20.0,61
+"Leopoldina","Telefônica",20.0,4
+"Paranavaí","Telefônica",20.0,39
+"Campo Largo","Claro",20.0,4
+"Ibaté","Claro",20.0,2
+"São Francisco do Sul","Claro",20.0,16
+"Brusque","Telefônica",20.0,3
+"Ouro Preto","Claro",20.0,1
+"São José do Rio Preto","Claro",20.5,1167
+"Nova Lima","Claro",20.5,260
+"Paranaguá","Claro",20.5,286
+"Salto","Claro",20.5,3461
+"Capivari","Claro",20.5,192
+"Sertãozinho","Claro",20.5,179
+"Divinópolis","Claro",20.5,236
+"Cerquilho","Claro",20.5,245
+"Lagoa da Prata","Telefônica",20.5,9
+"Conselheiro Lafaiete","Claro",20.5,59
+"Alfenas","Telefônica",20.5,174
+"Lavras","Telefônica",20.5,8
+"Arcos","Claro",20.5,7
+"Mandaguaçu","Claro",20.75,130
+"Nova Friburgo","Claro",20.75,48
+"Resende","Claro",20.75,94
+"Itatiba","Claro",20.75,25
+"Flores da Cunha","Telefônica",21.0,2
+"Rio do Sul","Telefônica",21.0,2
+"São Marcos","Claro",21.0,2
+"Tambaú","Claro",21.0,1
+"Ibirubá","Claro",21.0,1
+"Valença","Telefônica",21.0,1
+"Goiânia","Telefônica",21.5,1182
+"Cambé","Claro",21.5,287
+"Nova Lima","Telefônica",21.5,80
+"Alvorada","Telefônica",21.5,13
+"Jaú","Claro",21.5,97
+"Rio das Ostras","Claro",21.5,24
+"Três Rios","Telefônica",21.5,13
+"Ilicínea","Telefônica",21.5,14
+"Biguaçu","Telefônica",21.5,17
+"Campinas","Claro",21.875,10678
+"Pindamonhangaba","Claro",21.875,278
+"Campo Largo","Telefônica",21.875,94
+"Patos de Minas","Telefônica",22.0,67
+"Patrocínio","Telefônica",22.0,9
+"Alexânia","Telefônica",22.0,30
+"Santa Cruz do Sul","Telefônica",22.0,6
+"Paraty","Telefônica",22.0,9
+"Veranópolis","Telefônica",22.0,1
+"Tubarão","Telefônica",22.0,3
+"Coronel Fabriciano","Telefônica",22.0,1
+"Gramado","Telefônica",22.0,1
+"São José dos Pinhais","Telefônica",22.5,105
+"Santa Luzia","Telefônica",22.5,72
+"Catanduva","Claro",22.5,34
+"Botucatu","Claro",22.5,288
+"Uberaba","Telefônica",22.5,150
+"Resende","Telefônica",22.5,20
+"Curvelo","Telefônica",22.5,46
+"Muriaé","Telefônica",22.5,7
+"Ibirité","Telefônica",22.5,13
+"Alagoa","Claro",22.5,26
+"Piracicaba","Claro",22.75,7252
+"Sete Lagoas","Telefônica",22.75,350
+"Urucurituba","Claro",22.875,66
+"Cabo Frio","Telefônica",22.875,316
+"Bombinhas","Claro",22.875,27
+"Aparecida de Goiânia","Telefônica",22.875,55
+"Passo Fundo","Telefônica",22.875,259
+"Cachoeirinha","Claro",23.0,32
+"Timóteo","Claro",23.0,7
+"Imbituba","Telefônica",23.0,4
+"Carazinho","Telefônica",23.0,2
+"Venâncio Aires","Telefônica",23.0,3
+"Camboriú","Claro",23.0,2
+"Camboriú","Telefônica",23.0,30
+"Fazenda Rio Grande","Claro",23.0,27
+"Tramandaí","Claro",23.0,1
+"Extrema","Telefônica",23.5,55
+"Conselheiro Lafaiete","Telefônica",23.5,55
+"Marília","Claro",23.5,565
+"Barbacena","Claro",23.5,20
+"Pinhais","Claro",23.5,72
+"Araguari","Telefônica",23.5,11
+"Timóteo","Telefônica",23.5,43
+"Lagoa Santa","Claro",23.5,65
+"Três Corações","Telefônica",23.5,200
+"Santa Rita do Sapucaí","Telefônica",23.5,68
+"Andradina","Telefônica",23.5,33
+"Franca","Claro",23.75,647
+"Joinville","Claro",23.75,2853
+"Belo Horizonte","Claro",23.75,7144
+"São José","Telefônica",23.75,1131
+"Piedade","Claro",23.75,176
+"Cachoeira do Sul","Claro",23.75,25
+"Plácido de Castro","Claro",23.75,3
+"Palhoça","Telefônica",23.875,219
+"Contagem","Claro",23.875,448
+"Formosa","Telefônica",24.0,50
+"Bento Gonçalves","Telefônica",24.0,8
+"Lavras","Claro",24.0,10
+"Japeri","Claro",24.0,1
+"Manhuaçu","Claro",24.0,2
+"Farroupilha","Telefônica",24.0,10
+"Dois Irmãos","Telefônica",24.0,6
+"Taquara","Telefônica",24.0,1
+"Jaraguá do Sul","Claro",24.5,545
+"Araçatuba","Claro",24.5,495
+"Cataguases","Telefônica",24.5,250
+"Colombo","Claro",24.5,29
+"Duque de Caxias","Claro",24.75,190
+"Florianópolis","Telefônica",24.875,1539
+"Caieiras","Claro",24.875,237
+"Cascavel","Telefônica",24.875,156
+"Campos dos Goytacazes","Telefônica",24.875,123
+"Brasília","Telefônica",24.9375,6432
+"Concórdia","Telefônica",25.0,44
+"Estância Velha","Claro",25.0,6
+"Valparaíso de Goiás","Telefônica",25.0,9
+"Morrinhos","Telefônica",25.0,1
+"Três de Maio","Telefônica",25.0,2
+"Blumenau","Claro",25.5,4095
+"Rio das Ostras","Telefônica",25.5,112
+"Sacramento","Telefônica",25.5,121
+"Sete Lagoas","Claro",25.5,37
+"São Bento do Sul","Claro",25.5,154
+"Apucarana","Telefônica",25.75,133
+"Petrópolis","Claro",25.75,205
+"Teresópolis","Claro",25.75,75
+"Coronel Fabriciano","Claro",26.0,16
+"Almirante Tamandaré","Claro",26.0,9
+"Fraiburgo","Telefônica",26.0,1
+"Teutônia","Claro",26.0,2
+"Muriaé","Claro",26.0,2
+"Umuarama","Telefônica",26.0,7
+"Itaúna","Claro",26.0,3
+"Eldorado do Sul","Claro",26.0,1
+"São José dos Pinhais","Claro",26.5,317
+"Campos dos Goytacazes","Claro",26.5,117
+"Ipatinga","Telefônica",26.5,210
+"Londrina","Claro",26.5,947
+"Balneário Camboriú","Claro",26.5,1206
+"Ponta Grossa","Claro",26.5,1415
+"Viçosa","Telefônica",26.5,70
+"Anápolis","Telefônica",26.5,35
+"Ubá","Telefônica",26.5,7
+"Teófilo Otoni","Telefônica",26.5,101
+"Rio Bonito","Telefônica",26.5,15
+"Maringá","Claro",26.75,817
+"Campo Mourão","Telefônica",26.75,20
+"Curitiba","Claro",26.875,10953
+"Maringá","Telefônica",26.9375,2769
+"Pato Branco","Telefônica",27.0,4
+"Goianésia","Telefônica",27.0,89
+"Luziânia","Claro",27.0,13
+"Cianorte","Telefônica",27.0,7
+"Serranópolis","Telefônica",27.0,6
+"Itajaí","Claro",27.0,317
+"Ponte Nova","Telefônica",27.0,2
+"São Marcos","Telefônica",27.0,1
+"Canela","Telefônica",27.0,1
+"Nova Petrópolis","Telefônica",27.0,1
+"Garibaldi","Telefônica",27.0,1
+"Itabira","Telefônica",27.5,27
+"Varginha","Claro",27.5,56
+"Ouro Preto","Telefônica",27.5,37
+"São Pedro da Aldeia","Telefônica",27.5,11
+"Araxá","Telefônica",27.5,11
+"Juiz de Fora","Claro",27.875,2593
+"Senador Canedo","Claro",28.0,45
+"Santa Maria","Telefônica",28.0,17
+"Pinheirinho","Claro",28.0,15
+"Araucária","Claro",28.0,3
+"Santa Rosa","Telefônica",28.0,2
+"Iconha","Claro",28.0,1
+"Itaperuna","Telefônica",28.5,36
+"Sabará","Claro",28.5,17
+"Colatina","Claro",28.875,173
+"Belo Horizonte","Telefônica",28.9375,6020
+"Pelotas","Telefônica",29.0,286
+"Dourados","Telefônica",29.0,172
+"Jales","Claro",29.0,77
+"Alvorada","Claro",29.0,1
+"Presidente Prudente","Claro",29.5,771
+"Governador Valadares","Telefônica",29.5,404
+"Brusque","Claro",29.5,54
+"Iguaba Grande","Telefônica",29.5,37
+"Montes Claros","Claro",29.5,729
+"Três Coroas","Claro",29.5,7
+"Macaé","Claro",29.75,484
+"Colatina","Telefônica",29.875,146
+"Campo Grande","Telefônica",29.9375,1760
+"Chapecó","Telefônica",30.0,42
+"Palmeira","Claro",30.0,10
+"Palmeira das Missões","Claro",30.0,2
+"Charqueadas","Claro",30.0,7
+"Ipatinga","Claro",30.5,95
+"Lajeado","Claro",30.5,35
+"Brodowski","Claro",30.5,5
+"Pouso Alegre","Claro",30.875,205
+"Porto Alegre","Claro",30.96875,12448
+"Paracatu","Telefônica",31.0,47
+"Montenegro","Claro",31.0,1
+"Santana do Livramento","Telefônica",31.0,2
+"Osório","Claro",31.0,1
+"Capão da Canoa","Claro",31.5,24
+"Novo Hamburgo","Claro",31.75,644
+"Serra","Claro",31.75,458
+"Canoas","Claro",31.875,912
+"Serra","Telefônica",31.875,856
+"Santo Ângelo","Telefônica",32.0,1
+"Santo Anastácio","Telefônica",32.0,2
+"Sarandi","Claro",32.0,1
+"Joaçaba","Claro",32.0,2
+"Esteio","Claro",33.0,161
+"Cariacica","Telefônica",33.0,291
+"Aracruz","Telefônica",33.0,38
+"Guarapari","Telefônica",33.0,340
+"Cianorte","Claro",33.0,12
+"Arapongas","Claro",33.0,41
+"Alfenas","Claro",33.0,4
+"Itapetininga","Claro",33.5,165
+"Vila Velha","Claro",33.5,1344
+"Vitória","Claro",33.5,1800
+"Sabará","Telefônica",33.5,36
+"Teresópolis","Telefônica",33.5,26
+"Cariacica","Claro",33.5,131
+"Cachoeiro de Itapemirim","Claro",33.5,38
+"Aracruz","Claro",33.5,17
+"Caxias do Sul","Claro",33.75,1844
+"Guaratinguetá","Claro",33.75,143
+"Cubatão","Claro",33.75,470
+"Juiz de Fora","Telefônica",33.75,782
+"Vila Velha","Telefônica",33.875,1109
+"Sumaré","Claro",33.875,780
+"Vitória","Telefônica",33.875,1386
+"Guaíba","Claro",33.875,206
+"Aparecida de Goiânia","Claro",34.0,5
+"Itamarandiba","Telefônica",34.0,1
+"Arroio do Meio","Claro",34.0,2
+"Monte Carmelo","Telefônica",34.0,2
+"Jaraguá","Telefônica",34.0,1
+"Linhares","Telefônica",35.0,179
+"Poços de Caldas","Claro",35.0,475
+"Gravatal","Claro",35.0,262
+"Criciúma","Claro",35.0,520
+"Novo Hamburgo","Telefônica",35.0,141
+"Cruz Alta","Claro",35.0,82
+"Cachoeiro de Itapemirim","Telefônica",35.0,475
+"Cachoeirinha","Telefônica",35.0,37
+"Governador Valadares","Claro",35.0,149
+"Guarapuava","Claro",35.0,97
+"Araxá","Claro",35.0,29
+"Capelinha","Telefônica",35.0,3
+"Araguari","Claro",35.0,35
+"Almenara","Telefônica",35.0,7
+"Montes Claros","Telefônica",35.5,323
+"Uberlândia","Claro",35.5,3318
+"Farroupilha","Claro",35.5,104
+"São Mateus","Telefônica",35.5,76
+"Sapucaia do Sul","Claro",35.5,141
+"Gravataí","Claro",35.875,44
+"Santa Albertina","Telefônica",36.0,10
+"Concórdia","Claro",36.0,15
+"Bagé","Telefônica",36.0,2
+"Bento Gonçalves","Claro",37.0,270
+"Uberaba","Claro",37.0,425
+"Campo Bom","Claro",37.0,121
+"Vacaria","Claro",37.0,117
+"Teófilo Otoni","Claro",37.0,8
+"Tubarão","Claro",37.0,22
+"Patos de Minas","Claro",37.0,154
+"Três Lagoas","Telefônica",37.0,25
+"Jerônimo Monteiro","Telefônica",37.0,5
+"Cascavel","Claro",37.5,368
+"Bujari","Claro",37.75,4
+"Três Rios","Claro",37.875,30
+"Fátima","Claro",38.0,20
+"Estrela","Claro",38.0,64
+"Campo Limpo Paulista","Claro",38.0,1
+"Gramado","Claro",38.0,1
+"Carlos Barbosa","Telefônica",38.0,1
+"Campo Limpo de Goiás","Claro",38.0,1
+"Encantado","Claro",38.0,1
+"Xaxim","Claro",38.0,1
+"Passo Fundo","Claro",39.0,308
+"São Leopoldo","Claro",39.0,254
+"Chapecó","Claro",39.0,671
+"Cachoeira do Sul","Telefônica",39.0,453
+"Araquari","Telefônica",39.0,8
+"Capinzal","Telefônica",39.0,10
+"Itapema","Claro",39.0,63
+"Ituiutaba","Claro",39.0,76
+"Contagem","Telefônica",39.5,450
+"São João de Meriti","Claro",39.75,220
+"Varginha","Telefônica",39.75,254
+"Brasília de Minas","Telefônica",40.0,3
+"Carlos Barbosa","Claro",40.0,2
+"Palmeira das Missões","Telefônica",40.0,2
+"Ponta Porã","Claro",40.0,5
+"Ijuí","Telefônica",41.0,58
+"Aguaí","Telefônica",41.0,12
+"São Lourenço do Sul","Claro",41.0,19
+"Pelotas","Claro",41.5,611
+"Santa Cruz do Sul","Claro",41.5,935
+"Campo Verde","Telefônica",42.0,5
+"Porto Seguro","Claro",43.0,36
+"Lucas do Rio Verde","Telefônica",43.0,21
+"Guará","Claro",43.0,12
+"Santa Maria","Claro",43.75,2132
+"Rio Grande","Claro",43.75,152
+"Pontal","Telefônica",44.0,2
+"Teixeira de Freitas","Claro",44.0,34
+"Cachoeira Paulista","Telefônica",44.0,3
+"São Gabriel da Palha","Claro",44.0,1
+"Naviraí","Claro",44.0,1
+"Erechim","Claro",45.0,229
+"Mineiros","Telefônica",45.0,100
+"Leme","Claro",45.0,76
+"Paraíso do Tocantins","Claro",45.0,9
+"Araguaína","Telefônica",45.0,8
+"Tapera","Telefônica",46.0,1
+"Araguaína","Claro",47.0,43
+"São José da Lapa","Telefônica",47.0,36
+"Itajubá","Claro",47.0,5
+"Palmas","Telefônica",47.5,156
+"Jatai","Telefônica",47.5,326
+"Gurupi","Claro",47.5,31
+"Açailândia","Telefônica",48.0,1
+"Ponta Porã","Telefônica",48.0,1
+"Santo Ângelo","Claro",49.0,466
+"Camaçari","Claro",49.0,361
+"Uruguaiana","Claro",49.5,291
+"Valparaíso de Goiás","Claro",49.5,185
+"Itabuna","Claro",51.0,73
+"Ilhéus","Claro",51.0,759
+"Alagoinhas","Claro",51.0,94
+"Sorriso","Telefônica",51.0,348
+"Brasília","Claro",51.9375,12799
+"Vitória da Conquista","Claro",52.0,233
+"Teixeira de Freitas","Telefônica",52.0,4
+"Itaboraí","Claro",52.0,6
+"Bagé","Claro",53.0,35
+"Itumbiara","Claro",53.5,44
+"Cuiabá","Telefônica",53.75,5348
+"Garanhuns","Claro",54.0,7
+"Quatá","Telefônica",54.0,3
+"Caldas Novas","Claro",55.5,56
+"Campina Grande","Claro",55.75,169
+"Rio Verde","Claro",55.75,376
+"Aquiraz","Claro",56.0,3
+"Redenção","Telefônica",56.0,8
+"Várzea Grande","Telefônica",57.0,499
+"Rondonópolis","Telefônica",57.0,273
+"Bugre","Telefônica",57.0,285
+"Salvador","Claro",57.5,3014
+"Esteio","Telefônica",57.5,112
+"Capão Bonito","Telefônica",57.5,14
+"Anápolis","Claro",57.75,255
+"Goiânia","Claro",57.875,5344
+"Paulistana","Telefônica",58.0,5
+"São Sebastião da Grama","Telefônica",58.0,43
+"Panambi","Claro",58.0,42
+"Itabela","Telefônica",58.0,7
+"Eunápolis","Telefônica",58.0,87
+"Tucuruí","Telefônica",58.0,2
+"São Borja","Claro",58.0,48
+"Feira de Santana","Claro",59.0,328
+"Primavera do Leste","Telefônica",59.0,113
+"Tangará da Serra","Telefônica",59.0,58
+"Rondonópolis","Claro",59.75,95
+"Mossoró","Claro",59.9375,149
+"São João Evangelista","Telefônica",60.0,101
+"Jequié","Claro",60.0,88
+"Porto Seguro","Telefônica",60.0,163
+"Nova Mutum","Telefônica",60.0,97
+"Ilhéus","Telefônica",60.0,47
+"Juazeiro","Claro",60.0,43
+"Barreiras","Telefônica",60.0,10
+"Barreiras","Claro",62.0,39
+"Pedro Leopoldo","Telefônica",63.0,73
+"Rio Verde","Telefônica",63.0,637
+"Lauro de Freitas","Telefônica",63.0,14
+"Palmas","Claro",63.5,322
+"Betim","Telefônica",63.5,409
+"Aracaju","Claro",63.75,470
+"Sinop","Telefônica",63.75,166
+"Telêmaco Borba","Telefônica",64.0,12
+"Guanambi","Telefônica",64.0,1
+"Santa Inês","Telefônica",64.0,1
+"Barbalha","Claro",64.0,1
+"Uruguaiana","Telefônica",64.0,1
+"Maceió","Claro",66.0,1258
+"Vitória da Conquista","Telefônica",66.0,345
+"Sobral","Claro",66.0,88
+"Jequié","Telefônica",66.0,78
+"Santana do Livramento","Claro",66.0,93
+"Três Lagoas","Claro",66.0,34
+"Feira de Santana","Telefônica",67.0,148
+"Dourados","Claro",67.0,170
+"Sinop","Claro",67.0,288
+"Jatai","Claro",67.0,133
+"Cuiabá","Claro",67.5,1330
+"Campo Grande","Claro",67.75,2108
+"Natal","Claro",67.75,808
+"Salvador","Telefônica",67.875,2917
+"Hortolândia","Claro",67.875,178
+"Floriano","Claro",68.0,2
+"Rolândia","Claro",68.0,1
+"Marabá","Claro",70.0,181
+"Juazeiro do Norte","Claro",70.0,193
+"Ananindeua","Claro",71.0,169
+"Castanhal","Claro",71.0,53
+"Santo Antônio de Jesus","Telefônica",71.0,194
+"Paulista","Claro",71.0,9
+"Natal","Telefônica",71.875,556
+"Campina Grande","Telefônica",74.0,150
+"Jaboatão dos Guararapes","Telefônica",74.0,69
+"Sorriso","Claro",75.0,96
+"Lucas do Rio Verde","Claro",75.75,193
+"Abreu e Lima","Telefônica",76.0,1
+"Capanema","Telefônica",76.0,2
+"Altamira","Telefônica",78.0,12
+"Olinda","Telefônica",78.0,20
+"Luis Eduardo Magalhães","Telefônica",78.0,38
+"Aracaju","Telefônica",79.0,569
+"Fortaleza","Claro",79.5,1826
+"Ji Paraná","Telefônica",80.0,7
+"Parnaíba","Telefônica",80.0,24
+"Maceió","Telefônica",82.0,360
+"Paço do Lumiar","Telefônica",82.0,15
+"Valparaíso","Telefônica",82.0,34
+"Dias d'Ávila","Telefônica",82.0,17
+"Itabuna","Telefônica",83.0,134
+"Leopoldina","Claro",83.75,66
+"Castanhal","Telefônica",83.75,7
+"Belém","Claro",83.875,2914
+"São Gonçalo do Amarante","Claro",84.0,2
+"Parnamirim","Telefônica",86.0,142
+"Crato","Telefônica",86.0,23
+"São José de Ribamar","Telefônica",86.0,45
+"Paragominas","Telefônica",86.0,5
+"Parauapebas","Claro",86.0,30
+"Alegrete","Telefônica",88.0,1
+"Sobral","Telefônica",88.0,14
+"Barra do Corda","Claro",88.0,1
+"Teresina","Telefônica",91.75,297
+"Curitiba","Telefônica",91.875,6840
+"Garanhuns","Telefônica",92.0,37
+"Petrolina","Claro",92.0,24
+"Santarém","Telefônica",92.0,12
+"Juazeiro do Norte","Telefônica",94.0,30
+"João Pessoa","Telefônica",95.875,482
+"Timon","Claro",96.0,5
+"Mossoró","Telefônica",98.0,26
+"Petrolina","Telefônica",98.0,60
+"Barcarena","Telefônica",98.0,13
+"João Pessoa","Claro",99.0,780
+"Recife","Claro",99.5,2410
+"Teresina","Claro",99.75,772
+"Fortaleza","Telefônica",99.875,1385
+"Recife","Telefônica",103.5,2211
+"São Luís","Telefônica",103.875,575
+"Santana","Claro",104.0,8
+"Lagarto","Telefônica",104.0,1
+"Caruaru","Telefônica",106.0,34
+"São Luís","Claro",107.875,1199
+"Cachoeiras de Macacu","Claro",108.0,1
+"Caruaru","Claro",112.0,97
+"Imperatriz","Claro",112.0,40
+"Patos","Telefônica",112.0,2
+"Macapá","Claro",115.5,333
+"Embu-Guaçu","Claro",115.75,96
+"Carapicuíba","Claro",115.875,48
+"Parnaíba","Claro",116.0,34
+"Itapeva","Claro",123.5,6
+"Jaboatão dos Guararapes","Claro",124.0,5
+"Cacoal","Claro",124.0,3
+"Vilhena","Claro",124.0,1
+"Oiapoque","Telefônica",128.0,1
+"Viamão","Telefônica",132.0,18
+"Caxias do Sul","Telefônica",135.0,334
+"Tramandaí","Telefônica",135.0,42
+"Erechim","Telefônica",135.0,20
+"Capão da Canoa","Telefônica",135.0,31
+"Toledo","Telefônica",135.0,11
+"Criciúma","Telefônica",135.0,50
+"Guarapuava","Telefônica",135.0,27
+"Osório","Telefônica",135.0,33
+"Ivoti","Telefônica",135.0,19
+"Itajaí","Telefônica",135.5,333
+"Ponta Grossa","Telefônica",135.5,150
+"Canoas","Telefônica",135.5,140
+"Araucária","Telefônica",135.5,68
+"São Bento do Sul","Telefônica",135.5,153
+"Lages","Telefônica",135.5,58
+"Balneário Camboriú","Telefônica",135.75,363
+"Colombo","Telefônica",135.75,65
+"Porto Alegre","Telefônica",135.875,6698
+"Blumenau","Telefônica",135.9375,1510
+"Campina da Lagoa","Telefônica",140.0,147
+"Araraquara","Claro",151.75,293
+"Tietê","Claro",159.5,7
+"Rio Branco","Telefônica",160.0,8
+"Belém","Telefônica",167.875,862
+"Irecê","Claro",168.0,1
+"Porto Velho","Telefônica",172.0,62
+"Ji Paraná","Claro",183.0,161
+"Nova Mutum","Claro",190.0,304
+"Porto Velho","Claro",198.0,603
+"Imperatriz","Telefônica",198.0,28
+"Alagoinhas","Telefônica",198.0,20
+"Ariquemes","Claro",204.0,77
+"Conceição do Araguaia","Telefônica",206.0,64
+"Manaus","Telefônica",206.0,1097
+"Boa Vista","Telefônica",208.0,80
+"Piracaia","Claro",216.0,2
+"Manacapuru","Telefônica",216.0,1
+"Pirassununga","Claro",216.0,4
+"Macapá","Telefônica",222.0,95
+"Batatais","Claro",223.5,42
+"Mococa","Claro",223.5,25
+"Monte Mor","Claro",223.5,5
+"Amparo","Claro",223.75,130
+"Morungaba","Claro",223.75,93
+"Paulínia","Claro",223.75,38
+"Rio Branco","Claro",223.75,300
+"Vitória Brasil","Claro",223.75,60
+"Cajamar","Claro",223.75,5
+"Viçosa","Claro",224.0,1
+"Guaíra","Claro",224.0,1
+"Avaré","Claro",231.0,3
+"Bebedouro","Claro",231.5,128
+"Barretos","Claro",231.5,23
+"Barrinha","Claro",231.5,597
+"São Roque","Claro",231.75,30
+"Registro","Claro",231.75,19
+"Santa Helena de Goiás","Claro",238.0,3
+"Três Corações","Claro",239.0,72
+"Trindade","Claro",239.5,47
+"Manaus","Claro",247.875,2661
+"Cruzeiro do Sul","Claro",254.0,21
+"Espírito Santo do Pinhal","Claro",287.5,4
+"Jaraguá do Sul","Telefônica",303.0,8
