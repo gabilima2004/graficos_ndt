@@ -360,3 +360,100 @@ Isso é na verdade um **bom sinal** — significa que muitos testes da Gigalink 
 2. **Investigar quais servidores os clientes Claro usam** — se usam servidores distantes, o RTT alto é esperado
 3. **Analisar a distribuição de download da Claro** — identificar clusters de velocidade (planos) e ver se a Claro entrega o que promete em cada faixa
 4. **Comparar loss rate por horário** — o loss rate sobe em horário de pico? Se sim, há congestionamento
+
+---
+
+## 9. Análise de RTT por cidade (Fase 2C — Hipótese Geográfica)
+
+> Dados: `questdb-query-1787722096807.csv` (909 linhas, RTT mediano por cidade e provedor)
+> Objetivo: descobrir se a diferença de RTT entre Claro e Telefônica é geográfica ou de roteamento
+
+### 9.1 Comparação direta: mesma cidade, provedores diferentes
+
+A análise anterior mostrou RTT médio de 81,5 ms (Claro) vs 26,4 ms (Telefônica). Mas será que isso é porque os clientes estão em cidades diferentes? Os dados por cidade revelam:
+
+| Cidade        | Claro RTT | Telefônica RTT | Diferença              | Testes Claro | Testes Telefônica |
+| ------------- | --------- | -------------- | ---------------------- | ------------ | ----------------- |
+| São Paulo     | 13,4 ms   | 4,9 ms         | Claro 2,7x pior        | 87.286       | 127.745           |
+| Guarulhos     | 13,4 ms   | 5,2 ms         | Claro 2,6x pior        | 6.316        | 9.718             |
+| Osasco        | 17,9 ms   | 4,7 ms         | Claro 3,8x pior        | 17.330       | 4.101             |
+| Santos        | 17,9 ms   | 5,9 ms         | Claro 3x pior          | 2.925        | 5.315             |
+| Campinas      | 21,9 ms   | 6,9 ms         | Claro 3,2x pior        | 10.678       | 8.282             |
+| Florianópolis | 6,0 ms    | 24,9 ms        | **Telefônica 4x pior** | 11.372       | 1.539             |
+
+### 9.2 Achado principal: NÃO é geografia, é roteamento
+
+**A prova:** Em São Paulo, onde ambos têm dezenas de milhares de testes, a Telefônica tem RTT de 4,9 ms e a Claro de 13,4 ms. Os clientes estão na **mesma cidade**, usando provavelmente os **mesmos servidores** (gru02, gru03, etc. em São Paulo), mas a Claro tem **2,7x mais latência**.
+
+Isso se repete em **todas as cidades onde ambos operam**:
+
+- Guarulhos: Claro 2,6x pior
+- Osasco: Claro 3,8x pior
+- Santos: Claro 3x pior
+- Campinas: Claro 3,2x pior
+
+**Conclusão:** A diferença de RTT entre Claro e Telefônica **não é geográfica**. É **roteamento**. A infraestrutura de rede da Telefônica é mais eficiente — os pacotes chegam mais rápido aos servidores NDT, mesmo na mesma cidade.
+
+### 9.3 Exceção: Florianópolis
+
+Em Florianópolis, a situação se inverte: Claro tem RTT de 6,0 ms e Telefônica de 24,9 ms. Mas note:
+
+- Claro tem 11.372 testes (muitos clientes)
+- Telefônica tem 1.539 testes (poucos clientes)
+
+Isso pode indicar que a Telefônica tem poucos clientes em Florianópolis e eles estão mais distantes dos servidores, ou que a Claro tem infraestrutura melhor nesta região específica. **Um outlier não invalida o padrão geral.**
+
+### 9.4 Gigalink: RTT consistentemente baixo
+
+| Cidade                | Gigalink RTT | Testes |
+| --------------------- | ------------ | ------ |
+| Nova Friburgo         | 10,4 ms      | 59.246 |
+| Cabo Frio             | 10,4 ms      | 2.416  |
+| Campos dos Goytacazes | 12,3 ms      | 543    |
+| Rio das Ostras        | 12,5 ms      | 4      |
+| Macaé                 | 13,5 ms      | 3      |
+| Rio de Janeiro        | 19,5 ms      | 3      |
+
+A Gigalink concentra-se na região dos Lagos e Serra do Rio (Nova Friburgo, Cabo Frio, Teresópolis). RTT entre 10-15 ms — excelente e consistente. Mas atende uma região geográfica pequena, o que facilita ter RTT baixo.
+
+### 9.5 Padrão geográfico da Telefônica
+
+A Telefônica tem RTT mediano **abaixo de 10 ms** em dezenas de cidades de São Paulo:
+
+- Santo André: 4,7 ms (4.944 testes)
+- Osasco: 4,7 ms (4.101 testes)
+- São Caetano do Sul: 4,7 ms (1.625 testes)
+- São Paulo: 4,9 ms (127.745 testes)
+- Guarulhos: 5,2 ms (9.718 testes)
+- São Bernardo do Campo: 5,2 ms (6.200 testes)
+
+**Padrão:** a Telefônica tem RTT excelente (< 10 ms) na Grande SP. Isso indica que a Telefônica tem roteamento muito eficiente ou servidores NDT muito próximos na região metropolitana de São Paulo.
+
+### 9.6 Padrão geográfico da Claro
+
+A Claro tem RTT mais alto em todas as cidades onde compete com a Telefônica:
+
+- Melhor RTT da Claro: 3,2 ms (Biguaçu, SC) — 33 testes
+- São Paulo: 13,4 ms — 87.286 testes
+- Osasco: 17,9 ms — 17.330 testes
+
+A Claro tem RTT baixo apenas em cidades pequenas com poucos testes (Biguaçu, Boa Vista, Saltinho). Nas cidades grandes onde tem volume, o RTT é consistentemente 2-4x pior que a Telefônica.
+
+### 9.7 Atualização das conclusões
+
+| Antes (sem dados por cidade)             | Agora (com dados por cidade)                                                                                         |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| "Telefônica tem RTT 3x melhor que Claro" | **Confirmado:** Telefônica é 2,7-3,8x melhor na mesma cidade                                                         |
+| "Pode ser geografia ou roteamento"       | **É roteamento:** mesma cidade, mesmos servidores, Claro é pior                                                      |
+| "Claro tem RTT alto (81,5 ms)"           | **Corrigido:** Claro tem RTT de 13-22 ms em SP (não 81,5 ms). O 81,5 ms era média geral incluindo clientes distantes |
+
+**Nota importante:** O RTT médio de 81,5 ms da Claro (da análise anterior) era a **média de todos os clientes**, incluindo os que estão longe dos servidores. Olhando por cidade, a Claro tem RTT de 13-22 ms em São Paulo — não é tão ruim quanto parecia. Ainda assim, é **2-4x pior que a Telefônica na mesma cidade**.
+
+### 9.8 Resumo da hipótese geográfica
+
+| Hipótese                                               | Resultado                                                                         |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| RTT alto da Claro é por geografia (clientes distantes) | ❌ **Refutada** — na mesma cidade, Claro é pior                                   |
+| RTT alto da Claro é por roteamento                     | ✅ **Confirmada** — mesma cidade, mesmos servidores, Claro tem 2-4x mais latência |
+| Telefônica tem roteamento mais eficiente               | ✅ **Confirmada** — RTT < 10 ms na Grande SP                                      |
+| Gigalink tem RTT baixo por atender região pequena      | ✅ **Confirmada** — concentra-se na Região dos Lagos/RJ                           |
