@@ -201,7 +201,7 @@ def main() -> None:
                 ha="center",
                 fontsize=10,
             )
-    ax2.set_xticks(meses)
+    ax2.set_xticks(list(range(len(meses))))
     ax2.set_xticklabels([m.replace("2026-", "") for m in meses])
     ax2.set_ylabel("% das medições")
     ax2.set_title("Por mês", fontsize=12)
