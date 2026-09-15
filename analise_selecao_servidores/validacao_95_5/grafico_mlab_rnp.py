@@ -88,8 +88,6 @@ def carregar() -> pd.DataFrame:
     partes = []
     for f in sorted(DATA_DIR.glob("tests_*.csv")):
         mes = f.stem.replace("tests_", "")
-        if mes < "2026-06":  # mês fantasma
-            continue
         df = pd.read_csv(f)
         df["mes"] = mes
         partes.append(df)

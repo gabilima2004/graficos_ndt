@@ -21,10 +21,6 @@ import pandas as pd
 DATA_DIR = Path(__file__).parent / "data"
 OUT_DIR = Path(__file__).parent / "out"
 
-# Maio/2026 tem apenas 10 testes na base inteira (mês fantasma do início da
-# coleta). Tudo antes deste mês é descartado.
-MES_INICIO_VALIDO = "2026-06"
-
 EARTH_RADIUS_KM = 6371.0  # mesmo valor do m-lab/go/mathx/haversine.go
 
 # ---------------------------------------------------------------------------
@@ -86,11 +82,6 @@ def load_data():
     print(f"  Lendo {len(arquivos_tests)} arquivo(s) de testes:")
     partes = []
     for f in arquivos_tests:
-        # Descarta meses fantasma (ex: maio/2026 tem 10 testes na base inteira)
-        mes = f.stem.replace("tests_", "")
-        if mes < MES_INICIO_VALIDO:
-            print(f"    {f.name} — descartado (antes de {MES_INICIO_VALIDO})")
-            continue
         print(f"    {f.name}...")
         df_mes = pd.read_csv(f)
         df_mes["mes"] = mes  # preserva o mês (usado na captura por mês)
