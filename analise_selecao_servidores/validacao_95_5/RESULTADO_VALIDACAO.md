@@ -1,9 +1,55 @@
 # Validação do algoritmo 95/5 — Resultados e conclusão
 
-> Data: 07-08/09/2026
+> Data: 07-08/09/2026 (base original) — **revalidada em 15/09/2026 na base migrada** (`out_5/`)
 > Contexto: validação empírica do algoritmo de seleção de servidor do M-Lab Locate
 > (documentado em `../PESQUISA_SELECAO_SERVIDOR.md`, seção 9) contra a base de dados.
 > **Status: validação concluída com sucesso — com uma condição importante descoberta.**
+> **15/09: base migrada pelo chefe (nova tabela `asns`) — resultados idênticos (deltas ≤ 0,04 p.p.). Ver seção 10.**
+
+---
+
+## 10. Revalidação na base migrada (15/09/2026)
+
+O chefe alterou a base: nova tabela `asns` (asn, asn_name, asn_owner, update_at). O pipeline foi reexecutado no novo endereço (`out_5/`).
+
+### 10.1 Comparação: base antiga vs base nova
+
+| Métrica | Antiga (07-08/09) | Nova (15/09) | Delta |
+|---|---|---|---|
+| rank 0 | 61,90% | 61,86% | -0,04 p.p. |
+| rank 1 | 20,10% | 20,11% | +0,01 p.p. |
+| rank 2+ | 18,00% | 18,03% | +0,03 p.p. |
+| Captura SP (6 sites) | 99,50% | 99,51% | +0,01 p.p. |
+| Captura Florianópolis | 91,40% | 91,37% | -0,03 p.p. |
+| Captura Vitória | 56,70% | 56,71% | +0,01 p.p. |
+| Captura Rio (gig1916) | 25,80% | 25,83% | +0,03 p.p. |
+| Captura Curitiba (cwb10881) | 9,10% | 9,09% | -0,01 p.p. |
+| Total de testes | 4.024.184 | 4.024.175 | -9 |
+| Clientes únicos | 2.280.443 | 2.280.443 | 0 |
+
+**Conclusão: a migração não alterou o conteúdo das tabelas de teste** — apenas 9 testes de diferença (o mês fantasma de maio) e zero clientes. Todos os resultados da validação permanecem válidos. A tabela `asns` é adição de metadado (dimensão de ASNs), não mudança nos dados de teste.
+
+### 10.2 Detalhe novo no out_5: captura por mês com mais granularidade
+
+A execução de 15/09 revelou variações mensais que a execução anterior não mostrava (amostra menor por célula):
+
+| Site | Junho | Julho | Leitura |
+|---|---|---|---|
+| cwb10881 | 9,2% | 9,0% | estável ✅ |
+| poa2716 | 8,7% | 8,7% | estável ✅ |
+| gig1916 | 23,4% | 28,5% | **subindo** — rollout avançando? |
+| vix1916/vix53078 | 57,7% | 55,9% | estável |
+| bel1916 | 8,2% | 5,6% | caindo |
+| cgb1916 | 8,3% | 3,5% | caindo |
+| pmw1916 | 0,3% | 3,6% | subindo de zero |
+| pvh1916 | 0,0% | 3,5% | **entrou em operação em julho** |
+
+A maioria dos sites RNP mantém a taxa estável (assinatura do campo estático), mas alguns oscilam — consistente com **ajustes de Probability ao longo do tempo** (rollout ativo), não com falha de saúde. O gig1916 subindo (23% → 28%) reforça a leitura de rollout gradual.
+
+### 10.3 Pendência atualizada
+
+- [ ] Confirmar valores exatos de `Probability` via API do autojoin (`https://autojoin.measurementlab.net/autojoin/v0/node/list?org=rnp`) — agora com dois pontos temporais (junho/julho) para detectar mudanças de cadastro
+- [ ] Migrar os dashboards Grafana para a tabela `asns` (47 ocorrências de CASE WHEN → JOIN) — **frente de gráficos, não bloqueia esta validação**
 
 ---
 
@@ -260,6 +306,7 @@ A taxa estável mês a mês que você observou (cwb10881: 9,2%→9,0%) é exatam
 | `out_4/por_hora.csv`                | desvios por hora (verificar se há componente de carga)                                     |
 | `out_4/outliers_extra_km.csv`       | distância extra dos desvios                                                                |
 | `out/`, `out_2/`, `out_3/`          | execuções anteriores (rank por site individual, com/sem filtro) — mantidas para comparação |
+| `out_5/`                            | **revalidação na base migrada (15/09)** — resultados idênticos à out_4 |
 
 ## 8. Lições metodológicas (para o relatório final)
 
@@ -267,7 +314,8 @@ A taxa estável mês a mês que você observou (cwb10881: 9,2%→9,0%) é exatam
 2. **Sites co-localizados empatam** — o rank individual dentro do grupo não é reproduzível; o que vale é o rank do grupo
 3. **A lista de sites do Locate não é estática** — health e Probability filtram sites por requisição; o rank calculado offline com a lista completa é sistematicamente inflado
 4. **O erro do GeoIP se cancela** — desde que a coordenada usada na análise seja a mesma que o Locate usou (mesma fonte, mesmo momento). A divergência de fonte (Google vs MaxMind) é o caso que não cancela
-5. **Taxa de captura por site** é a métrica que separa "algoritmo funcionando com lista diferente" de "algoritmo falhando"
+5. **Taxa de captura por site** é a métrica que separa "algoritmo funcionando com lista diferente" de "algoritmo falhando"gerar_graficos.py — as 3 figuras do relatório
+
 
 ## 9. Pendências
 
