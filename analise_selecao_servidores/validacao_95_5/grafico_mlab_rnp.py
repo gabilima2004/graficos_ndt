@@ -187,15 +187,15 @@ def main() -> None:
             for m in meses
         ]
         ax2.bar(
-            [m + (i - 0.5) * largura for i, m in enumerate(meses)],
+            [idx + (i - 0.5) * largura for idx in range(len(meses))],
             vals,
             largura,
             label=rede,
             color=COR_MLAB if rede == "MLAB" else COR_RNP,
         )
-        for x, v in zip(meses, vals):
+        for idx, v in enumerate(vals):
             ax2.text(
-                x + (largura / 2 if rede == "RNP" else -largura / 2),
+                idx + (largura / 2 if rede == "RNP" else -largura / 2),
                 v + 1,
                 f"{v:.1f}%",
                 ha="center",
