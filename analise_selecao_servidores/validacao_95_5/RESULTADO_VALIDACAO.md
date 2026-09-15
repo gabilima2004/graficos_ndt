@@ -254,7 +254,7 @@ if err == nil && orgEntity != nil && orgEntity.ProbabilityMultiplier != nil {
     orgMultiplier = *orgEntity.ProbabilityMultiplier
 }
 // Assign the probability by multiplying the org multiplier with the
-// probability requested by the client.
+// probability requested by the c/users/sign_inlient.
 param.Probability = getProbability(req) * orgMultiplier
 ```
 
