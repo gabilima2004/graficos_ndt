@@ -84,7 +84,7 @@ def load_data():
     for f in arquivos_tests:
         print(f"    {f.name}...")
         df_mes = pd.read_csv(f)
-        df_mes["mes"] = mes  # preserva o mês (usado na captura por mês)
+        df_mes["mes"] = f.stem.replace("tests_", "")  # preserva o mês (usado na captura por mês)
         partes.append(df_mes)
     tests = pd.concat(partes, ignore_index=True)
     del partes
