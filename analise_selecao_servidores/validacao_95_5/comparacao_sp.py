@@ -5,10 +5,19 @@ Os dois sites são CO-LOCALIZADOS na mesma coordenada registrada
 (-23.4322, -46.4692): competem pelo mesmo cliente, mas têm donos e
 prioridades diferentes (mlab-oti P=1 vs rnp P≈0,08).
 
-PASSO 1 (este arquivo): visão geral de cada servidor
+PASSO 1: visão geral de cada servidor
   - volume de testes, clientes únicos, cidades atendidas
   - distância mediana, % de clientes locais (<=100 km)
   - qualidade mediana (RTT, throughput, loss)
+
+PASSO 2: distribuição de origem dos clientes (cidade × site)
+  - para cada cidade: % dos testes que foi para gru02 vs gru1916
+  - esperado: distribuição praticamente idêntica (co-localizados)
+
+PASSO 3: proximidade comparada
+  - distância mediana até CADA site, por cidade
+  - diferença ~0 = os 2 são igualmente próximos (co-localizados)
+  - diferença grande = coordenada GeoIP da cidade deslocada
 
 Uso:
     python comparacao_sp.py            # usa o out_N/ mais recente (referência)
@@ -179,9 +188,89 @@ def main() -> None:
     resumo.to_csv(saida_dir / "comparacao_sp_passo1.csv", index=False)
     print(f"\n  -> {saida_dir / 'comparacao_sp_passo1.csv'}")
 
+    # ------------------------------------------------------------------
+    # PASSO 2 — distribuição de origem dos clientes (cidade × site)
+    # Os 2 sites são co-localizados: a distribuição de origem deve ser
+    # praticamente idêntica (o mesmo cliente "deveria" ir para qualquer
+    # um dos dois; quem vai para o RNP é a fatia de escape da loteria).
+    # ------------------------------------------------------------------
+    print("\n=== PASSO 2 — Distribuição de origem (cidade) ===")
+
+    if "city" not in par.columns:
+        print("  (sem coluna city — passo 2 pulado)")
+    else:
+        dist = (
+            par.groupby(["city", "server_site"])
+            .size()
+            .rename("testes")
+            .reset_index()
+        )
+        # % dentro de cada site (linha = cidade, coluna = site)
+        piv = dist.pivot_table(index="city", columns="server_site", values="testes", fill_value=0)
+        for s in [SITE_MLAB, SITE_RNP]:
+            if s not in piv.columns:
+                piv[s] = 0
+        piv["total"] = piv[SITE_MLAB] + piv[SITE_RNP]
+        piv["pct_mlab"] = piv[SITE_MLAB] / piv["total"] * 100
+        piv["pct_rnp"] = piv[SITE_RNP] / piv["total"] * 100
+        piv = piv.sort_values("total", ascending=False)
+
+        piv.to_csv(saida_dir / "comparacao_sp_passo2_origem.csv", index_label="city")
+        print(f"  -> comparacao_sp_passo2_origem.csv ({len(piv)} cidades)")
+
+        # Top 15 cidades para inspeção
+        top = piv.head(15)
+        print("\nTop 15 cidades por volume (distribuição entre os 2 sites):")
+        print(
+            top[["total", "pct_mlab", "pct_rnp"]].round(1).to_string()
+        )
+
+        # ------------------------------------------------------------------
+        # PASSO 3 — os 2 sites seriam os mais próximos para os mesmos clientes?
+        # Para cada cidade: distância mediana até CADA site. Como são
+        # co-localizados, as distâncias devem ser praticamente iguais —
+        # qualquer diferença grande indica coordenada GeoIP divergente.
+        # ------------------------------------------------------------------
+        print("\n=== PASSO 3 — Proximidade: os 2 são os mais próximos? ===")
+        if "dist_site_km" in par.columns:
+            prox = (
+                par.groupby(["city", "server_site"])["dist_site_km"]
+                .median()
+                .rename("dist_mediana_km")
+                .reset_index()
+            )
+            prox_piv = prox.pivot_table(
+                index="city", columns="server_site", values="dist_mediana_km"
+            )
+            for s in [SITE_MLAB, SITE_RNP]:
+                if s not in prox_piv.columns:
+                    prox_piv[s] = None
+            prox_piv["diferenca_km"] = (
+                prox_piv[SITE_RNP] - prox_piv[SITE_MLAB]
+            ).round(1)
+            prox_piv["total_testes"] = piv["total"]
+            prox_piv = prox_piv.sort_values("total_testes", ascending=False)
+
+            prox_piv.to_csv(
+                saida_dir / "comparacao_sp_passo3_proximidade.csv", index_label="city"
+            )
+            print(f"  -> comparacao_sp_passo3_proximidade.csv")
+
+            top_prox = prox_piv.head(15)
+            print(
+                top_prox[
+                    [SITE_MLAB, SITE_RNP, "diferenca_km", "total_testes"]
+                ].round(1).to_string()
+            )
+            print(
+                "\nLeitura: diferenca_km ~0 = os 2 sites são igualmente próximos "
+                "para os mesmos clientes (co-localizados). Diferença grande em "
+                "uma cidade = a coordenada GeoIP daquela cidade está deslocada."
+            )
+
     print(
-        "\nPróximos passos (passo 2): distribuição de origem dos clientes "
-        "de cada site — as cidades devem ser as mesmas (co-localizados)."
+        "\nFim. Passo 1 = visão geral; passo 2 = origem por cidade; "
+        "passo 3 = proximidade comparada."
     )
 
 
