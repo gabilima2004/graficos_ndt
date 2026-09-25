@@ -15,7 +15,7 @@ Uso:
     python comparacao_sp.py out_6      # usa um diretório específico
 
 Requisitos:
-    - data/clients.csv e data/tests_*.csv (rode extract.py primeiro)
+    - data/sites.csv e data/tests_*.csv (rode extract.py primeiro)
     - pandas
 
 Saídas (em pizza_<out_N>/):
@@ -49,48 +49,30 @@ def mais_recente_out() -> Path:
 
 
 def carregar() -> pd.DataFrame:
-    """Carrega clients.csv + tests_*.csv e junta pelo client_ip.
+    """Carrega os tests_*.csv (schema novo: tudo embutido por teste).
 
-    Reaproveita a mesma lógica do analyze.py (dedup por update_time,
-    schema novo com coordenadas embutidas por teste).
+    SCHEMA NOVO (pós-reimportação): as tabelas download/upload já têm as
+    colunas do cliente embutidas (client_city, client_latitude, ...) —
+    não existe mais tabela `client`, então não há merge.
     """
-    clients = pd.read_csv(DATA_DIR / "clients.csv", low_memory=False)
-    clients["update_time"] = pd.to_datetime(clients["update_time"], errors="coerce")
-    clients = (
-        clients.sort_values("update_time")
-        .drop_duplicates(subset="client_ip", keep="last")
-    )
-    clients = clients.dropna(subset=["latitude", "longitude"])
-
     partes = []
     for f in sorted(DATA_DIR.glob("tests_*.csv")):
         df = pd.read_csv(f)
         partes.append(df)
     tests = pd.concat(partes, ignore_index=True)
 
-    # Schema novo: coordenadas embutidas por teste
-    if "client_latitude" in tests.columns:
-        tests = tests.rename(
-            columns={
-                "client_latitude": "latitude",
-                "client_longitude": "longitude",
-                "client_asn": "asn",
-                "client_asname": "as_name",
-                "client_city": "city",
-            }
-        )
+    # Normaliza nomes para o padrão usado na análise
+    renomear = {
+        "client_latitude": "latitude",
+        "client_longitude": "longitude",
+        "client_city": "city",
+        "client_asn": "asn",
+        "client_asname": "as_name",
+        "client_country_code": "country_code",
+    }
+    tests = tests.rename(columns={k: v for k, v in renomear.items() if k in tests.columns})
     if "client_longitute" in tests.columns and "longitude" not in tests.columns:
         tests = tests.rename(columns={"client_longitute": "longitude"})
-
-    tests = tests.merge(
-        clients[["client_ip", "city"]],
-        on="client_ip",
-        how="left",
-    )
-    # city embutida tem prioridade; fallback para a do clients.csv
-    if "city_x" in tests.columns:
-        tests["city"] = tests["city_x"].fillna(tests.get("city_y"))
-        tests = tests.drop(columns=["city_x", "city_y"], errors="ignore")
 
     return tests.dropna(subset=["latitude", "longitude"])
 
@@ -112,9 +94,9 @@ def main() -> None:
     if out_dir and not out_dir.is_absolute():
         out_dir = BASE_OUT / out_dir
 
-    if not (DATA_DIR / "clients.csv").exists():
+    if not (DATA_DIR / "sites.csv").exists():
         raise FileNotFoundError(
-            "data/clients.csv não existe. Rode extract.py primeiro "
+            "data/sites.csv não existe. Rode extract.py primeiro "
             "(os dados ficam na máquina do QuestDB)."
         )
 
@@ -174,14 +156,17 @@ def main() -> None:
                 else None
             ),
         }
-        # Qualidade, se as colunas existirem
+        # Qualidade — schema novo: métricas embutidas em cada teste
         for col, nome in [
             ("min_rtt", "rtt_mediano_ms"),
             ("mean_throughput_mbps", "throughput_mediana"),
             ("loss_rate", "loss_mediana_pct"),
         ]:
             if col in g.columns:
-                linha[nome] = round(g[col].median(), 2)
+                valor = g[col].median()
+                if col == "loss_rate":
+                    valor = valor * 100  # fração → %
+                linha[nome] = round(valor, 2)
         linhas.append(linha)
 
     resumo = pd.DataFrame(linhas)
