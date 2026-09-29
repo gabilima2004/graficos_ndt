@@ -1,0 +1,62 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 180,
+  "links": [],
+  "panels": [
+    {
+      "title": "Clientes por provedor",
+      "targets": [
+        {
+          "rawSql": "SELECT\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor,\n    count(DISTINCT d.client_ip) AS total_clientes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY provedor\nORDER BY total_clientes DESC\nLIMIT 20"
+        }
+      ]
+    },
+    {
+      "title": "Localização clientes",
+      "targets": [
+        {
+          "rawSql": "SELECT\n    d.client_latitude AS lat,\n    d.client_longitude AS lon,\n    d.client_ip,\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS isp_name,\n    d.client_country_code AS country_name,\n    d.client_city,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_latitude IS NOT NULL\n    AND d.client_longitude IS NOT NULL\nGROUP BY d.client_latitude, d.client_longitude, d.client_ip, isp_name, d.client_country_code, d.client_city"
+        }
+      ]
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "name": "isp",
+        "query": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Clientes",
+  "uid": "90ee2678-7ed7-42fb-a57b-f247a91ab487",
+  "version": 8
+}
