@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 235,
+  "id": 241,
   "links": [],
   "panels": [
     {
@@ -404,7 +404,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "NDT Dashboard - Parte 1: Visão Geral1",
-  "uid": "ndt-dashboard-unificado1",
-  "version": 3
+  "title": "Visão Geral",
+  "uid": "visao-geral",
+  "version": 1
 }
