@@ -18,32 +18,687 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 192,
+  "id": 181,
   "links": [],
   "panels": [
     {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "blue",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT count(DISTINCT d.client_ip) AS total_clientes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
       "title": "Total de Clientes",
-      "targets": [
-        {
-          "rawSql": "SELECT count(DISTINCT d.client_ip) AS total_clientes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)"
-        }
-      ]
+      "type": "stat"
     },
     {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT count(DISTINCT server_ip) AS total_servidores\nFROM server",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Total de Servidores",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
       "title": "Total de Testes",
-      "targets": [
-        {
-          "rawSql": "SELECT count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)"
-        }
-      ]
+      "type": "stat"
     },
     {
-      "title": "Clientes por Provedor",
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
       "targets": [
         {
-          "rawSql": "SELECT\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor,\n    count(DISTINCT d.client_ip) AS total_clientes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY provedor\nORDER BY total_clientes DESC\nLIMIT 6"
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor,\n    count(DISTINCT d.client_ip) AS total_clientes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY provedor\nORDER BY total_clientes DESC\nLIMIT 6",
+          "refId": "A",
+          "selectedFormat": 2
         }
-      ]
+      ],
+      "title": "Clientes por Provedor",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#808080"
+              },
+              {
+                "color": "#7eb8da",
+                "value": 1
+              },
+              {
+                "color": "#e24d2d",
+                "value": 2
+              },
+              {
+                "color": "#efea43",
+                "value": 3
+              },
+              {
+                "color": "#33a02c",
+                "value": 4
+              },
+              {
+                "color": "#f6734e",
+                "value": 5
+              },
+              {
+                "color": "#1f78b4",
+                "value": 6
+              },
+              {
+                "color": "#b2df8a",
+                "value": 7
+              },
+              {
+                "color": "#fdbf6f",
+                "value": 8
+              },
+              {
+                "color": "#ff7f00",
+                "value": 9
+              },
+              {
+                "color": "#cab2d6",
+                "value": 10
+              },
+              {
+                "color": "#6a3d9a",
+                "value": 11
+              },
+              {
+                "color": "#a6cee3",
+                "value": 12
+              },
+              {
+                "color": "#fb9a99",
+                "value": 13
+              },
+              {
+                "color": "#e31a1c",
+                "value": 14
+              },
+              {
+                "color": "#ffff99",
+                "value": 15
+              },
+              {
+                "color": "#b15928",
+                "value": 16
+              },
+              {
+                "color": "#8dd3c7",
+                "value": 17
+              },
+              {
+                "color": "#ffffb3",
+                "value": 18
+              },
+              {
+                "color": "#bebada",
+                "value": 19
+              },
+              {
+                "color": "#fb8072",
+                "value": 20
+              },
+              {
+                "color": "#80b1d3",
+                "value": 21
+              },
+              {
+                "color": "#fdb462",
+                "value": 22
+              },
+              {
+                "color": "#b3de69",
+                "value": 23
+              },
+              {
+                "color": "#fccde5",
+                "value": 24
+              },
+              {
+                "color": "#d9d9d9",
+                "value": 25
+              },
+              {
+                "color": "#bc80bd",
+                "value": 26
+              },
+              {
+                "color": "#ccebc5",
+                "value": 27
+              },
+              {
+                "color": "#ffed6f",
+                "value": 28
+              },
+              {
+                "color": "#9e0142",
+                "value": 29
+              },
+              {
+                "color": "#5e4fa2",
+                "value": 30
+              },
+              {
+                "color": "#3288bd",
+                "value": 31
+              },
+              {
+                "color": "#e6f598",
+                "value": 32
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "server_idx"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "server_idx",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.7,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "total_testes",
+                  "fixed": 5,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "value"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "coordinates",
+              "latitude": {
+                "field": "lat"
+              },
+              "longitude": {
+                "field": "lon"
+              }
+            },
+            "name": "Clientes por Cidade e Servidor",
+            "target": {
+              "refId": "Clientes"
+            },
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "server_idx",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 12,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "fixed"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/square-rounded.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "coordinates",
+              "latitude": {
+                "field": "lat"
+              },
+              "longitude": {
+                "field": "lon"
+              }
+            },
+            "name": "Servidores",
+            "target": {
+              "refId": "Servidores"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": -14.235,
+          "lon": -51.925,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    avg(cl.lat) AS lat,\n    avg(cl.lon) AS lon,\n    cl.city,\n    cl.country_code,\n    t.server_site,\n    CASE\n        WHEN t.server_site = 'aju1916' THEN 1\n        WHEN t.server_site = 'bel1916' THEN 2\n        WHEN t.server_site = 'bsb1916' THEN 3\n        WHEN t.server_site = 'bvb1916' THEN 4\n        WHEN t.server_site = 'cgb1916' THEN 5\n        WHEN t.server_site = 'cgr1916' THEN 6\n        WHEN t.server_site = 'cpv1916' THEN 7\n        WHEN t.server_site = 'cwb10881' THEN 8\n        WHEN t.server_site = 'fln01' THEN 9\n        WHEN t.server_site = 'fln11242' THEN 10\n        WHEN t.server_site = 'for1916' THEN 11\n        WHEN t.server_site = 'gig1916' THEN 12\n        WHEN t.server_site = 'gru02' THEN 13\n        WHEN t.server_site = 'gru03' THEN 14\n        WHEN t.server_site = 'gru07' THEN 15\n        WHEN t.server_site = 'gru15830' THEN 16\n        WHEN t.server_site = 'gru1916' THEN 17\n        WHEN t.server_site = 'gyn1916' THEN 18\n        WHEN t.server_site = 'mao1916' THEN 19\n        WHEN t.server_site = 'mcp1916' THEN 20\n        WHEN t.server_site = 'mcz1916' THEN 21\n        WHEN t.server_site = 'nat1916' THEN 22\n        WHEN t.server_site = 'pmw1916' THEN 23\n        WHEN t.server_site = 'poa2716' THEN 24\n        WHEN t.server_site = 'pvh1916' THEN 25\n        WHEN t.server_site = 'rbr1916' THEN 26\n        WHEN t.server_site = 'rec1916' THEN 27\n        WHEN t.server_site = 'slz1916' THEN 28\n        WHEN t.server_site = 'ssa53164' THEN 29\n        WHEN t.server_site = 'the1916' THEN 30\n        WHEN t.server_site = 'vix1916' THEN 31\n        WHEN t.server_site = 'vix53078' THEN 32\n        ELSE 0\n    END AS server_idx,\n    sum(t.total_testes) AS total_testes\nFROM (\n    SELECT client_ip, server_site, count() AS total_testes\n    FROM download\n    WHERE $__timeFilter(test_time)\n    GROUP BY client_ip, server_site\n) t\nJOIN (\n    SELECT\n        client_ip,\n        avg(client_latitude) AS lat,\n        avg(client_longitude) AS lon,\n        max(client_city) AS city,\n        max(client_country_code) AS country_code\n    FROM download\n    WHERE client_latitude IS NOT NULL\n    GROUP BY client_ip\n) cl ON t.client_ip = cl.client_ip\nWHERE cl.country_code = 'BR'\nGROUP BY cl.city, cl.country_code, t.server_site\nLIMIT 500",
+          "refId": "Clientes",
+          "selectedFormat": 1
+        },
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    s.latitude AS lat,\n    s.longitude AS lon,\n    s.server_ip,\n    d.server_site,\n    CASE\n        WHEN d.server_site = 'aju1916' THEN 1\n        WHEN d.server_site = 'bel1916' THEN 2\n        WHEN d.server_site = 'bsb1916' THEN 3\n        WHEN d.server_site = 'bvb1916' THEN 4\n        WHEN d.server_site = 'cgb1916' THEN 5\n        WHEN d.server_site = 'cgr1916' THEN 6\n        WHEN d.server_site = 'cpv1916' THEN 7\n        WHEN d.server_site = 'cwb10881' THEN 8\n        WHEN d.server_site = 'fln01' THEN 9\n        WHEN d.server_site = 'fln11242' THEN 10\n        WHEN d.server_site = 'for1916' THEN 11\n        WHEN d.server_site = 'gig1916' THEN 12\n        WHEN d.server_site = 'gru02' THEN 13\n        WHEN d.server_site = 'gru03' THEN 14\n        WHEN d.server_site = 'gru07' THEN 15\n        WHEN d.server_site = 'gru15830' THEN 16\n        WHEN d.server_site = 'gru1916' THEN 17\n        WHEN d.server_site = 'gyn1916' THEN 18\n        WHEN d.server_site = 'mao1916' THEN 19\n        WHEN d.server_site = 'mcp1916' THEN 20\n        WHEN d.server_site = 'mcz1916' THEN 21\n        WHEN d.server_site = 'nat1916' THEN 22\n        WHEN d.server_site = 'pmw1916' THEN 23\n        WHEN d.server_site = 'poa2716' THEN 24\n        WHEN d.server_site = 'pvh1916' THEN 25\n        WHEN d.server_site = 'rbr1916' THEN 26\n        WHEN d.server_site = 'rec1916' THEN 27\n        WHEN d.server_site = 'slz1916' THEN 28\n        WHEN d.server_site = 'ssa53164' THEN 29\n        WHEN d.server_site = 'the1916' THEN 30\n        WHEN d.server_site = 'vix1916' THEN 31\n        WHEN d.server_site = 'vix53078' THEN 32\n        ELSE 0\n    END AS server_idx,\n    s.city,\n    s.country_name,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nJOIN server s ON d.server_ip = s.server_ip\nWHERE $__timeFilter(d.test_time)\n    AND s.country_code = 'BR'\n    AND s.latitude IS NOT NULL\n    AND s.longitude IS NOT NULL\nGROUP BY s.latitude, s.longitude, s.server_ip, d.server_site, s.city, s.country_name",
+          "refId": "Servidores",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Mapa Cliente→Servidor",
+      "type": "geomap"
     }
   ],
   "preload": false,
@@ -55,9 +710,50 @@
   "templating": {
     "list": [
       {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "includeAll": true,
+        "label": "ISP",
+        "multi": true,
         "name": "isp",
+        "options": [],
         "query": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
-        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner"
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
+        "includeAll": true,
+        "label": "Servidor",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -69,5 +765,5 @@
   "timezone": "browser",
   "title": "NDT Dashboard - Parte 1: Visão Geral",
   "uid": "ndt-dashboard-unificado",
-  "version": 3
+  "version": 11
 }
