@@ -1,0 +1,787 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 193,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 500
+              },
+              {
+                "color": "#c416be",
+                "value": 1000
+              },
+              {
+                "color": "purple",
+                "value": 5000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 13,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "total_testes",
+                  "fixed": "blue",
+                  "mode": "fixed"
+                },
+                "opacity": 0.8,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 6,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "fixed"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "Clientes"
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Clientes",
+            "target": {
+              "refId": "Clientes"
+            },
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 10,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "fixed"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "Servidores"
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Servidores",
+            "target": {
+              "refId": "Servidores"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": -14.235,
+          "lon": -51.925,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(avg(d.client_latitude) AS DOUBLE) AS lat,\n    CAST(avg(d.client_longitude) AS DOUBLE) AS lon,\n    d.client_city,\n    d.client_country_code,\n    d.server_site,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.server_site = '$server'\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_latitude IS NOT NULL\n    AND d.client_longitude IS NOT NULL\nGROUP BY d.client_city, d.client_country_code, d.server_site\nlimit 2000",
+          "refId": "Clientes",
+          "selectedFormat": 1
+        },
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(latitude AS DOUBLE) AS lat,\n    CAST(longitude AS DOUBLE) AS lon,\n    site AS server_site,\n    city,\n    country_name\nFROM server\nWHERE site = '$server'\n    AND latitude IS NOT NULL\n    AND longitude IS NOT NULL",
+          "refId": "Servidores",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Mapa Cliente→Servidor",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "tooltip": true,
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 8,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Servidores",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": -14.235,
+          "lon": -51.925,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(latitude AS DOUBLE) AS lat,\n    CAST(longitude AS DOUBLE) AS lon,\n    site AS server_site,\n    city,\n    country_name,\n    country_code,\n    machine_type,\n    machine_zone\nFROM server\nWHERE latitude IS NOT NULL\n    AND longitude IS NOT NULL\n    AND site IN (SELECT DISTINCT server_site FROM download WHERE server_site IS NOT NULL LIMIT 1000)",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Localização dos servidores",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.client_city AS cidade,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.server_site = '$server'\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY d.client_city\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Top 10 Cidades — Servidor",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.server_site AS servidor,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_city = '$cidade'\nGROUP BY d.server_site\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Dispersão de servidores por cidade",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    d.server_site AS servidor,\n    count() AS total_testes,\n    count(DISTINCT d.client_ip) AS clientes_unicos\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_city = '$cidade'\nGROUP BY d.server_site\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 2
+        }
+      ],
+      "title": "Servidores usados em um cidade",
+      "type": "barchart"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "ndt",
+    "questdb",
+    "mapa"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            ""
+          ],
+          "value": [
+            ""
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "includeAll": true,
+        "label": "ISP",
+        "multi": true,
+        "name": "isp",
+        "options": [],
+        "query": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
+        "includeAll": false,
+        "label": "Servidor",
+        "name": "server",
+        "options": [],
+        "query": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "Cuiabá",
+          "value": "Cuiabá"
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT client_city AS __text, client_city AS __value\nFROM download\nWHERE client_country_code = 'BR'\nAND client_city IS NOT NULL\nORDER BY 1",
+        "label": "cidade",
+        "name": "cidade",
+        "options": [],
+        "query": "SELECT DISTINCT client_city AS __text, client_city AS __value\nFROM download\nWHERE client_country_code = 'BR'\nAND client_city IS NOT NULL\nORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "NDT - Relação geográfica servidores",
+  "uid": "ndt-mapa-cliente-servidor",
+  "version": 31
+}
