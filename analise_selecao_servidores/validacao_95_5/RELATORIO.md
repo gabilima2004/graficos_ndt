@@ -181,15 +181,45 @@ O campo `Probability` foi confirmado no cadastro público (`m-lab/siteinfo`):
 
 ## Apêndice A — Evidências (CSVs)
 
-| Arquivo | Conteúdo |
-|---|---|
-| `out_N/rank_histogram.csv` | histograma final (rank por grupo) |
-| `out_N/captura_por_site.csv` | **evidência central** — taxa de captura por site |
-| `out_N/captura_por_site_mes.csv` | taxa por mês (estável = campo estático) |
-| `out_N/diagnostico_coordenadas.csv` | rank mediano por cidade |
-| `out_N/por_provedor.csv` | desvios por ISP |
-| `out_N/por_hora.csv` | desvios por hora do dia |
-| `out_N/outliers_extra_km.csv` | distância extra dos desvios |
+### A.1 As pastas `out_N/` — uma por execução
+
+O `analyze.py` nunca sobrescreve: cada execução cria a próxima pasta livre, preservando o histórico para comparação.
+
+| Pasta | Quando | O que tem de diferente |
+|-------|--------|------------------------|
+| `out/` | 1ª execução | Rank por **site individual** (sem correções) — histograma ruim (25,5%) |
+| `out_2/` | 2ª execução | Com filtro de sites < 1000 testes — ainda ruim (26,6%) |
+| `out_3/` | 3ª execução | Com rank por **grupo de distância** — grande salto (61,9%) |
+| `out_4/` | 4ª execução (07-08/09) | **A validação final** — com taxa de captura (evidência central) |
+| `out_5/` | 5ª execução (15/09) | **Revalidação na base migrada** — resultados idênticos à out_4 |
+
+**Para este relatório, os números são da `out_5/`** (base migrada, mais recente).
+
+### A.2 O que significa cada planilha
+
+| CSV | O que é | Como ler |
+|-----|---------|----------|
+| `rank_histogram.csv` | O histograma principal: para cada rank (0, 1, 2...), quantos testes e qual % | `rank 0 = 61,86%` = "61,86% dos testes foram para o grupo de sites mais próximo". Compare com o esperado (95/5/0,01%) |
+| `captura_por_site.csv` | ⭐ **A evidência central.** Para cada grupo de sites: quantos testes "deveriam" ir para ele (elegíveis), quantos foram (capturados) e a taxa | `taxa_captura = capturados / elegiveis`. SP 99,5% = sempre oferecido; cwb10881 9,1% = filtrado 90% das vezes (Probability ≈ 0,096) |
+| `captura_por_site_mes.csv` | A mesma taxa, separada por mês | A assinatura: taxa estável mês a mês = campo estático de cadastro. Variação (gig1916: 23%→28%) = rollout ativo |
+| `diagnostico_coordenadas.csv` | Rank mediano por cidade (com nome) | Diagnóstico: se uma cidade tem rank mediano alto para TODOS os seus testes, o problema é a coordenada/local, não o algoritmo. Ex: Salvador rank mediano 5 |
+| `por_provedor.csv` | Proporção de desvios (rank ≠ 0) por ISP | Claro/Telefônica ~73% de desvio (por volume); ISPs pequenos ~100% (cidades servidas por sites RNP) |
+| `por_hora.csv` | Proporção de desvios por hora do dia | Testa a rejeição por carga: se o desvio cresce no pico (19h-22h), há componente de carga |
+| `outliers_extra_km.csv` | Estatísticas da distância extra dos desvios | Quanto mais longe o cliente foi mandado. Extra pequena = caiu no 2º (sorteio); gigante = site local filtrado |
+
+### A.2 Como cada planilha se conecta à argumentação
+
+```
+rank_histogram.csv          → "o desvio existe" (61,9% vs 95%)
+captura_por_site.csv        → "o desvio tem mecanismo" (Probability por site)
+captura_por_site_mes.csv    → "o mecanismo é configuração" (taxa estável)
+diagnostico_coordenadas.csv → "não é erro de coordenada" (Salvador/Curitiba explicados)
+por_provedor.csv            → "não é ISP" (padrão por volume)
+por_hora.csv                → "quanto é rejeição por carga" (excedente no pico)
+outliers_extra_km.csv       → "quão longe os desvios vão"
+```
+
+As três primeiras são as essenciais (figuras 1, 2 e 3 do relatório). As outras quatro são a autópsia — mostram que as hipóteses alternativas foram testadas e descartadas.
 
 ## Apêndice B — Fontes (código fonte)
 

@@ -8,6 +8,17 @@
 
 ---
 
+## 0. Resumo em 6 linhas (a conclusão inteira, para quem tem 1 minuto)
+
+1. **O código faz o que propõe**: o Locate ordena os sites por distância haversine e sorteia ~95% para o mais próximo, ~5% para o 2º — validado com precisão de 0,1 p.p. (62,0% previsto vs 61,9% observado)
+2. **Os dados "divergem do esperado" porque a lista de sites não é completa**: cada site tem um campo `Probability` próprio no cadastro, que decide se ele entra na lista daquela requisição
+3. **Sites físicos do M-Lab**: P = 1,0 — sempre na lista (captura ~95-99%)
+4. **Sites virtuais GCP novos**: P mais baixo (0,05-0,25 no jsonnet) — rollout gradual
+5. **Sites de parceiros (RNP, via autojoin)**: P definido na parceria — probability pedida pelo nó × multiplicador da organização (Datastore). Sites RNP ≈ 0,08
+6. **Clientes são city-level** (GeoIP: 2,2M clientes → 1.197 coordenadas) e **servidores são filtrados por saúde** (`isHealthy`) antes do sorteio — o erro de GeoIP se cancela porque a análise usa a mesma coordenada que o Locate usou
+
+---
+
 ## 10. Revalidação na base migrada (15/09/2026)
 
 O chefe alterou a base: nova tabela `asns` (asn, asn_name, asn_owner, update_at). O pipeline foi reexecutado no novo endereço (`out_5/`).
@@ -314,7 +325,7 @@ A taxa estável mês a mês que você observou (cwb10881: 9,2%→9,0%) é exatam
 2. **Sites co-localizados empatam** — o rank individual dentro do grupo não é reproduzível; o que vale é o rank do grupo
 3. **A lista de sites do Locate não é estática** — health e Probability filtram sites por requisição; o rank calculado offline com a lista completa é sistematicamente inflado
 4. **O erro do GeoIP se cancela** — desde que a coordenada usada na análise seja a mesma que o Locate usou (mesma fonte, mesmo momento). A divergência de fonte (Google vs MaxMind) é o caso que não cancela
-5. **Taxa de captura por site** é a métrica que separa "algoritmo funcionando com lista diferente" de "algoritmo falhando"gerar_graficos.py — as 3 figuras do relatório
+5. **Taxa de captura por site** é a métrica que separa "algoritmo funcionando com lista diferente" de "algoritmo falhando"
 
 
 ## 9. Pendências

@@ -1,0 +1,316 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "Mbps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total de Testes"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Clientes Únicos"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total de Testes"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT * FROM (\n    SELECT\n        COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS \"Provedor\",\n        count() AS \"Total de Testes\",\n        count(DISTINCT d.client_ip) AS \"Clientes Únicos\",\n        round(avg(d.mean_throughput_mbps), 2) AS \"Média (Mbps)\",\n        approx_median(d.mean_throughput_mbps) AS \"Mediana (Mbps)\",\n        round(min(d.mean_throughput_mbps), 2) AS \"Mínimo (Mbps)\",\n        round(max(d.mean_throughput_mbps), 2) AS \"Máximo (Mbps)\"\n    FROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\n    WHERE $__timeFilter(d.test_time)\n        AND d.mean_throughput_mbps >= 0\n        AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n        AND ('$server' = '$__all' OR d.server_site IN ($server))\n    GROUP BY \"Provedor\"\n\n    UNION ALL\n\n    SELECT\n        '📊 TOTAL GERAL' AS \"Provedor\",\n        count() AS \"Total de Testes\",\n        count(DISTINCT d.client_ip) AS \"Clientes Únicos\",\n        round(avg(d.mean_throughput_mbps), 2) AS \"Média (Mbps)\",\n        approx_median(d.mean_throughput_mbps) AS \"Mediana (Mbps)\",\n        round(min(d.mean_throughput_mbps), 2) AS \"Mínimo (Mbps)\",\n        round(max(d.mean_throughput_mbps), 2) AS \"Máximo (Mbps)\"\n    FROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\n    WHERE $__timeFilter(d.test_time)\n        AND d.mean_throughput_mbps >= 0\n        AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n        AND ('$server' = '$__all' OR d.server_site IN ($server))\n) AS resultado\nORDER BY \"Total de Testes\" DESC",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Estatísticas de Download por Provedor",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "Mbps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total de Testes"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Clientes Únicos"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total de Testes"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT * FROM (\n    SELECT\n        COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS \"Provedor\",\n        count() AS \"Total de Testes\",\n        count(DISTINCT d.client_ip) AS \"Clientes Únicos\",\n        round(avg(d.mean_throughput_mbps), 2) AS \"Média (Mbps)\",\n        approx_median(d.mean_throughput_mbps) AS \"Mediana (Mbps)\",\n        round(min(d.mean_throughput_mbps), 2) AS \"Mínimo (Mbps)\",\n        round(max(d.mean_throughput_mbps), 2) AS \"Máximo (Mbps)\"\n    FROM upload d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\n    WHERE $__timeFilter(d.test_time)\n        AND d.mean_throughput_mbps >= 0\n        AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n        AND ('$server' = '$__all' OR d.server_site IN ($server))\n    GROUP BY \"Provedor\"\n\n    UNION ALL\n\n    SELECT\n        '📊 TOTAL GERAL' AS \"Provedor\",\n        count() AS \"Total de Testes\",\n        count(DISTINCT d.client_ip) AS \"Clientes Únicos\",\n        round(avg(d.mean_throughput_mbps), 2) AS \"Média (Mbps)\",\n        approx_median(d.mean_throughput_mbps) AS \"Mediana (Mbps)\",\n        round(min(d.mean_throughput_mbps), 2) AS \"Mínimo (Mbps)\",\n        round(max(d.mean_throughput_mbps), 2) AS \"Máximo (Mbps)\"\n    FROM upload d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\n    WHERE $__timeFilter(d.test_time)\n        AND d.mean_throughput_mbps >= 0\n        AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n        AND ('$server' = '$__all' OR d.server_site IN ($server))\n) AS resultado\nORDER BY \"Total de Testes\" DESC",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Estatísticas de Upload por Provedor",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "ndt",
+    "questdb"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "includeAll": true,
+        "label": "ISP",
+        "multi": true,
+        "name": "isp",
+        "options": [],
+        "query": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY server_site",
+        "includeAll": true,
+        "label": "Servidor",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "SELECT DISTINCT server_site AS __text, server_site AS __value\nFROM download\nWHERE server_site IS NOT NULL\nORDER BY server_site",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "NDT Dashboard — Parte 3: Estatísticas (Tabelas)",
+  "uid": "ndt-dashboard-parte3a",
+  "version": 1
+}
