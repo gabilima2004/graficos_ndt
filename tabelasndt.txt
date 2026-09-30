@@ -1,0 +1,8 @@
+é vdd, só tem as seguintes tabelas: ASNS, download, server, upload
+ASN: ASN, ASN_name, ASN_owner, update_at
+
+download: uuid, test_time, mean_throughput_mbps, min_rtt, loss_rate, version, git_short_commit, server_ip, server_port, client_ip, client_port, client_name, server_site, server_machine, server_asn, client_asn, client_country_code, client_city, client_postalcode, client_latitude, client_longitude, client_cidr, client_asname
+
+server: site, machine, server_ip, continent_code, country_code, country_name, region, city, postal_code, latitude, longitude, cidr, asn, as_name, server_type, machine_zone, machine_type, update_time
+
+upload: uuid, test_time, mean_throughput_mbps, min_rtt, loss_rate, version, git_short_commit, server_ip, server_port, client_ip, client_port, client_name, server_site, server_machine, server_asn, client_asn, client_country_code, client_city, client_postalcode, client_latitude, client_longitute, client_cidr, client_asname, client_longitude
