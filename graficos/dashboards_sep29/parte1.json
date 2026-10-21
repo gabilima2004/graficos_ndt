@@ -159,12 +159,12 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT count(DISTINCT server_ip) AS total_servidores\nFROM server",
+          "rawSql": "SELECT count(DISTINCT site) AS total_servidores\nFROM server",
           "refId": "A",
           "selectedFormat": 2
         }
       ],
-      "title": "Total de Servidores",
+      "title": "Total de Sites",
       "type": "stat"
     },
     {

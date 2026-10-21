@@ -1,8 +1,8 @@
 # Pesquisa: Como o cliente escolhe o servidor NDT?
 
-> Data: 26/08/2026 (início) — **CONCLUÍDA em 28/08/2026**
+> Data: 26/08/2026 (início) — **CONCLUÍDA em 28/08/2026** — **ATUALIZADA em 15/10/2026** (seção 13: prioridade por organização confirmada via campo `Probability` do cadastro)
 > Objetivo: Descobrir os fatores que determinam qual servidor NDT um cliente usa para fazer o teste.
-> **Resposta final:** GeoIP + distância em linha reta (haversine) + sorteio exponencial 95/5. Ver seção 9.
+> **Resposta final:** GeoIP + distância em linha reta (haversine) + sorteio exponencial 95/5 + **filtro de probabilidade por servidor (cadastro)**. Ver seções 9 e 13.
 
 ---
 
@@ -18,15 +18,15 @@ O NDT (Network Diagnostic Tool) do M-Lab mede a qualidade da conexão (download,
 
 ## 2. Hipóteses levantadas
 
-| # | Hipótese | Status inicial | **Veredito final** |
-|---|----------|----------------|---------------------|
-| 1 | **Localização geográfica** — o NDT escolhe o servidor mais próximo fisicamente | ⚠️ Parcialmente confirmada | ✅ **CONFIRMADA** — é o fator principal: distância haversine + sorteio 95/5 (seção 9) |
-| 2 | **ISP/Provedor** — o roteamento do ISP determina qual servidor é "visto" como perto | ⚠️ Parcialmente confirmada | ❌ **REFUTADA** — ISP não é fator direto; Claro/Telefônica aparecem só por volume (5% de milhões = muito) |
-| 3 | **Tipo de servidor** (RNP vs MLAB) — prioridade por operadora | ⏳ Não investigada | ❌ **REFUTADA** — não há prioridade por organização no código (`filterSites` só filtra saúde) |
-| 4 | **Código fonte** — a lógica de seleção define o comportamento | ⏳ A investigar | ✅ **INVESTIGADO** — algoritmo completo documentado (seção 9) |
-| 5 | **Servidor fora do ar** — desvios causados por servidores NE indisponíveis | — | ❌ **REFUTADA** — todos os servidores NE tiveram testes todos os dias (seção 10.3) |
-| 6 | **RTT/rede como critério** — cliente mede latência antes de escolher | — | ❌ **REFUTADA** — não há probe de RTT; nordestinos no RJ com ~100ms (seção 11) |
-| 7 | **Versão do ndt-server influencia** — v0.23–v0.25 mudam a seleção | — | ❌ **REFUTADA** — split 50/50 entre máquinas de versões diferentes (seção 12) |
+| #   | Hipótese                                                                            | Status inicial             | **Veredito final**                                                                                                                                                                                                                                                                |
+| --- | ----------------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Localização geográfica** — o NDT escolhe o servidor mais próximo fisicamente      | ⚠️ Parcialmente confirmada | ✅ **CONFIRMADA** — é o fator principal: distância haversine + sorteio 95/5 (seção 9)                                                                                                                                                                                             |
+| 2   | **ISP/Provedor** — o roteamento do ISP determina qual servidor é "visto" como perto | ⚠️ Parcialmente confirmada | ❌ **REFUTADA** — ISP não é fator direto; Claro/Telefônica aparecem só por volume (5% de milhões = muito)                                                                                                                                                                         |
+| 3   | **Tipo de servidor** (RNP vs MLAB) — prioridade por operadora                       | ⏳ Não investigada         | ⚠️ **REFUTADA na época, CONFIRMADA depois (seção 13)** — o algoritmo não tem prioridade por organização, MAS o campo `Probability` do cadastro cria prioridade de fato: RNP (autojoin) tem P≈0,05–0,10 vs M-Lab físico P=1. Ver `09_validacao_selecao/COMPROVACAO_PRIORIDADES.md` |
+| 4   | **Código fonte** — a lógica de seleção define o comportamento                       | ⏳ A investigar            | ✅ **INVESTIGADO** — algoritmo completo documentado (seção 9)                                                                                                                                                                                                                     |
+| 5   | **Servidor fora do ar** — desvios causados por servidores NE indisponíveis          | —                          | ❌ **REFUTADA** — todos os servidores NE tiveram testes todos os dias (seção 10.3)                                                                                                                                                                                                |
+| 6   | **RTT/rede como critério** — cliente mede latência antes de escolher                | —                          | ❌ **REFUTADA** — não há probe de RTT; nordestinos no RJ com ~100ms (seção 11)                                                                                                                                                                                                    |
+| 7   | **Versão do ndt-server influencia** — v0.23–v0.25 mudam a seleção                   | —                          | ❌ **REFUTADA** — split 50/50 entre máquinas de versões diferentes (seção 12)                                                                                                                                                                                                     |
 
 > **Nota:** as hipóteses 5, 6 e 7 surgiram durante a investigação, como explicações alternativas para os desvios observados. Todas foram testadas e refutadas.
 
@@ -69,13 +69,14 @@ Ao selecionar um servidor do Peru (ex: `lim01`), foram encontrados clientes bras
 
 **ISPs que mandaram tráfego para o Peru:**
 
-| ISP | ASN | Testes | RTT médio (ms) |
-|-----|-----|--------|-----------------|
-| Claro | 28573, 4230, 22085 | 370 | 190 |
-| Telefônica | 18881, 26599, etc | 63 | 138 |
-| ALLREDE Telecom | 273683 | 1 | 174 |
+| ISP             | ASN                | Testes | RTT médio (ms) |
+| --------------- | ------------------ | ------ | -------------- |
+| Claro           | 28573, 4230, 22085 | 370    | 190            |
+| Telefônica      | 18881, 26599, etc  | 63     | 138            |
+| ALLREDE Telecom | 273683             | 1      | 174            |
 
 **ISPs que NÃO mandaram tráfego para o Peru:**
+
 - Gigalink e outros provedores regionais
 
 ### 4.3 RTT alto para o Peru
@@ -100,13 +101,13 @@ O RTT dos clientes brasileiros que usam o servidor do Peru é **alto** (138-190 
 
 ### 5.3 Possíveis explicações para o RTT alto
 
-| # | Explicação | Como confirmar | **Veredito final** |
-|---|-----------|----------------|---------------------|
-| A | **Load balancing** — servidores brasileiros estavam saturados | Verificar volume nos servidores BR | ❌ Não é o mecanismo — não há load balancing por carga na seleção |
-| B | **Algoritmo com bug** — locator retornou servidor errado | Olhar código fonte | ❌ Não é bug — é o sorteio de ~5% funcionando como projetado |
-| C | **Cliente escolheu manualmente** — alguns clientes permitem especificar servidor | Verificar código do cliente | ⚠️ **Parcial** — existe (`config.server` no ndt7.js), mas é caso raro de integrador |
-| D | **GeoIP errado** — serviço achou que o cliente era do Peru | Verificar IPs dos clientes | ✅ **CONFIRMADA** — GeoIP (MaxMind) pode errar, especialmente com IPs de ISPs menores |
-| E | **Capacidade do servidor** — Peru tinha menos carga | Verificar métricas de carga | ⚠️ **Parcial** — rejeição por capacidade existe (cliente tenta o próximo da lista), mas não explica o padrão Peru |
+| #   | Explicação                                                                       | Como confirmar                     | **Veredito final**                                                                                                |
+| --- | -------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| A   | **Load balancing** — servidores brasileiros estavam saturados                    | Verificar volume nos servidores BR | ❌ Não é o mecanismo — não há load balancing por carga na seleção                                                 |
+| B   | **Algoritmo com bug** — locator retornou servidor errado                         | Olhar código fonte                 | ❌ Não é bug — é o sorteio de ~5% funcionando como projetado                                                      |
+| C   | **Cliente escolheu manualmente** — alguns clientes permitem especificar servidor | Verificar código do cliente        | ⚠️ **Parcial** — existe (`config.server` no ndt7.js), mas é caso raro de integrador                               |
+| D   | **GeoIP errado** — serviço achou que o cliente era do Peru                       | Verificar IPs dos clientes         | ✅ **CONFIRMADA** — GeoIP (MaxMind) pode errar, especialmente com IPs de ISPs menores                             |
+| E   | **Capacidade do servidor** — Peru tinha menos carga                              | Verificar métricas de carga        | ⚠️ **Parcial** — rejeição por capacidade existe (cliente tenta o próximo da lista), mas não explica o padrão Peru |
 
 ### 5.4 Por que só Claro, Telefônica e ALLREDE?
 
@@ -126,6 +127,7 @@ O RTT dos clientes brasileiros que usam o servidor do Peru é **alto** (138-190 
 - ✅ O cliente pode escolher manualmente? → **SIM** — `config.server` no ndt7.js (usado por integradores)
 
 Repositórios relevantes:
+
 - https://github.com/m-lab/ndt-server (servidor)
 - https://github.com/m-lab/ndt7-client (cliente)
 - https://github.com/m-lab/locate (serviço de localização) ← **o principal**
@@ -162,11 +164,11 @@ O item 3 foi resolvido pela análise do código fonte (seção 9): o "fator não
 
 ### RTT por ISP para servidor do Peru (lim01)
 
-| ISP | Testes | RTT médio (ms) | RTT esperado se perto |
-|-----|--------|-----------------|----------------------|
-| Telefônica | 63 | 138 | 30-50 |
-| ALLREDE Telecom | 1 | 174 | 30-50 |
-| Claro | 370 | 190 | 30-50 |
+| ISP             | Testes | RTT médio (ms) | RTT esperado se perto |
+| --------------- | ------ | -------------- | --------------------- |
+| Telefônica      | 63     | 138            | 30-50                 |
+| ALLREDE Telecom | 1      | 174            | 30-50                 |
+| Claro           | 370    | 190            | 30-50                 |
 
 **Conclusão:** RTT é alto para todos → o Peru não é "perto" em termos de rede → o NDT está escolhendo o Peru por outro motivo além de proximidade.
 
@@ -187,9 +189,10 @@ O código do cliente (ndt7.js) confirma:
 ```js
 // If no server was specified then use a loadbalancer. If no loadbalancer
 // is specified, use the locate service from Measurement Lab.
-const lbURL = (config && ('loadbalancer' in config)) ?
-    new URL(config.loadbalancer) :
-    new URL('https://locate.measurementlab.net/v2/nearest/ndt/ndt7');
+const lbURL =
+  config && "loadbalancer" in config
+    ? new URL(config.loadbalancer)
+    : new URL("https://locate.measurementlab.net/v2/nearest/ndt/ndt7");
 ```
 
 **O que é esse "loadbalancer"?** O termo é genérico no código — significa "o serviço que decide o servidor", seja ele qual for. O trecho é um ternário:
@@ -207,7 +210,7 @@ O serviço identifica a localização do cliente por (nesta ordem de prioridade)
 2. **Headers do AppEngine/GCP** — latitude/longitude que o Google adiciona automaticamente
 3. **MaxMind GeoIP** — banco de dados que mapeia IP → latitude/longitude
 
-**De onde vêm esses parâmetros?** Do **código do integrador, não da máquina da pessoa física**. O item 1 significa que o *código que embute o teste* (widget do Google, app, etc.) pode montar a URL como `locate.measurementlab.net/v2/nearest/ndt/ndt7?country=BR` — quem monta essa URL é o código do integrador, não o usuário físico. O usuário final não passa nada: o navegador/celular dela só executa o JS do integrador. Na prática, a maioria não passa (por isso a base tem `region` vazia) e a localização vem do GeoIP (itens 2 e 3).
+**De onde vêm esses parâmetros?** Do **código do integrador, não da máquina da pessoa física**. O item 1 significa que o _código que embute o teste_ (widget do Google, app, etc.) pode montar a URL como `locate.measurementlab.net/v2/nearest/ndt/ndt7?country=BR` — quem monta essa URL é o código do integrador, não o usuário físico. O usuário final não passa nada: o navegador/celular dela só executa o JS do integrador. Na prática, a maioria não passa (por isso a base tem `region` vazia) e a localização vem do GeoIP (itens 2 e 3).
 
 **Não há probe de RTT.** A seleção é 100% baseada em **distância geográfica em linha reta** (lat/lon), não em latência de rede.
 
@@ -350,8 +353,8 @@ O 3º mais próximo recebe ~0,01% (praticamente nunca) e o 4º menos ainda. Deta
 
 **Os 95% são estatística ou peso do código?** São um **peso determinado no código** — não uma estatística observada. A direção da causalidade é sempre código → dados:
 
-| Estatística de resultados | Peso no código (o caso real) |
-|---------------------------|------------------------------|
+| Estatística de resultados                                                 | Peso no código (o caso real)                                                        |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | Roda o sistema → coleta → observa "95% foram pro mais próximo" → descreve | Desenvolvedor digita `rate=6` → a fórmula **causa** 95% → os dados apenas confirmam |
 
 A matemática por trás, passo a passo:
@@ -360,27 +363,27 @@ A matemática por trás, passo a passo:
 2. `/ 6` **espreme** a curva: a chance de o resultado ficar abaixo de 0,5 é $1 - e^{-3} \approx 95{,}02\%$
 3. `math.Round` arredonda para inteiro: tudo abaixo de 0,5 vira **índice 0** (= 1º da fila = mais próximo), entre 0,5 e 1,5 vira **índice 1** (= 2º), etc.
 
-**Analogia:** uma roleta de cassino com 100 casas, 95 pretas e 5 vermelhas. O cassino não *mede* que a bola cai 95% em preto e ajusta a roleta — ele **constrói** a roleta com 95 casas pretas, e o 95% é consequência da construção. Cada teste NDT gira essa roleta uma vez.
+**Analogia:** uma roleta de cassino com 100 casas, 95 pretas e 5 vermelhas. O cassino não _mede_ que a bola cai 95% em preto e ajusta a roleta — ele **constrói** a roleta com 95 casas pretas, e o 95% é consequência da construção. Cada teste NDT gira essa roleta uma vez.
 
 **Prova de que é um parâmetro ajustável:** se o desenvolvedor tivesse escolhido outro `rate`, as porcentagens seriam outras — mesma fórmula, outro efeito:
 
-| `rate` escolhido | P(índice 0) = $1 - e^{-\text{rate}/2}$ | Efeito |
-|------------------|------------------------------------------|--------|
-| 3 | $1 - e^{-1{,}5}$ ≈ **77,7%** | Muito espalhado — 22% iriam pro 2º |
-| **6** | $1 - e^{-3}$ ≈ **95,0%** | ✅ O escolhido — concentração + 5% de controle |
-| 12 | $1 - e^{-6}$ ≈ **99,75%** | Quase determinístico — o 5% de controle desaparece |
+| `rate` escolhido | P(índice 0) = $1 - e^{-\text{rate}/2}$ | Efeito                                             |
+| ---------------- | -------------------------------------- | -------------------------------------------------- |
+| 3                | $1 - e^{-1{,}5}$ ≈ **77,7%**           | Muito espalhado — 22% iriam pro 2º                 |
+| **6**            | $1 - e^{-3}$ ≈ **95,0%**               | ✅ O escolhido — concentração + 5% de controle     |
+| 12               | $1 - e^{-6}$ ≈ **99,75%**              | Quase determinístico — o 5% de controle desaparece |
 
 O 6 foi uma **decisão de engenharia**: perto de determinístico, mas com escape estatístico. Se o M-Lab mudar o 6 para 12, a base de dados passaria a mostrar ~99,75% no mais próximo — sem mudar nada nos dados, só no código.
 
 **Por que sorteiar em vez de retornar só o mais próximo?** A ordenação não é desperdiçada — ela **define as odds da loteria** (converte distância em rank; o sorteio converte rank em probabilidade). E o 5% que escapa para o 2º existe de propósito, como **grupo de controle**:
 
-| Estratégia | Problema |
-|------------|----------|
+| Estratégia                             | Problema                                                                                                                                                                                                         |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Determinística (sempre o mais próximo) | 100% do tráfego de uma região num site só. Se esse site recebe uma versão com bug (canary), uma NIC degradada ou o datacenter congestiona → **todas** as medições da região ficam corrompidas, sem como perceber |
-| Uniforme (sorteio igual) | Clientes mandados para longe → RTT alto → **medição ruim** |
-| **Exponencial 95/5** (a escolhida) | Mantém a qualidade (95% perto) e vaza 5% controlado para o 2º — mesma população de clientes, dois servidores, **comparação direta** para detectar anomalias |
+| Uniforme (sorteio igual)               | Clientes mandados para longe → RTT alto → **medição ruim**                                                                                                                                                       |
+| **Exponencial 95/5** (a escolhida)     | Mantém a qualidade (95% perto) e vaza 5% controlado para o 2º — mesma população de clientes, dois servidores, **comparação direta** para detectar anomalias                                                      |
 
-A spec documenta isso: *"Rollouts on the M-Lab platform happen gradually, and canary tests of new server versions happen regularly"*. E o TODO no código confirma a direção futura:
+A spec documenta isso: _"Rollouts on the M-Lab platform happen gradually, and canary tests of new server versions happen regularly"_. E o TODO no código confirma a direção futura:
 
 ```go
 // TODO(cristinaleon): Once health values range between 0 and 1,
@@ -391,12 +394,12 @@ A intenção declarada é um dia **ponderar por saúde** — o sorteio é o esta
 
 **Quando o 2º é escolhido? Dois caminhos diferentes:**
 
-| | Caminho A (sorteio) | Caminho B (rejeição) |
-|---|---|---|
-| Gatilho | **Nenhum** — aleatório, em toda requisição | Servidor mais próximo **recusou** a conexão (cheio / lame duck) |
-| Frequência | ~5% de todos os testes | Variável — depende da carga |
-| Como aparece na base | Cliente "normal" no 2º servidor | Cliente no 2º servidor **em horários de pico** |
-| Dá pra distinguir? | ❌ Não — ambos viram "testou no 2º" | ⚠️ Indiretamente: se o desvio cresce no pico, há componente B |
+|                      | Caminho A (sorteio)                        | Caminho B (rejeição)                                            |
+| -------------------- | ------------------------------------------ | --------------------------------------------------------------- |
+| Gatilho              | **Nenhum** — aleatório, em toda requisição | Servidor mais próximo **recusou** a conexão (cheio / lame duck) |
+| Frequência           | ~5% de todos os testes                     | Variável — depende da carga                                     |
+| Como aparece na base | Cliente "normal" no 2º servidor            | Cliente no 2º servidor **em horários de pico**                  |
+| Dá pra distinguir?   | ❌ Não — ambos viram "testou no 2º"        | ⚠️ Indiretamente: se o desvio cresce no pico, há componente B   |
 
 Os dois caminhos se **somam**: volume no 2º servidor = ~5% (caminho A) + excedente das rejeições (caminho B). Uma análise "testes no 2º servidor por hora do dia" revelaria o componente B: a curva acima dos 5% basais em horário de pico é a rejeição por carga agindo.
 
@@ -407,10 +410,10 @@ Os dois caminhos se **somam**: volume no 2º servidor = ~5% (caminho A) + excede
 **Tabela de probabilidades finais:**
 
 | Posição do site (por distância) | Probabilidade de ser escolhido |
-|-------------------------------------|-------------------------------|
-| 1º mais próximo (rank 0) | ~95% |
-| 2º mais próximo (rank 1) | ~5% |
-| 3º ou mais | Raramente |
+| ------------------------------- | ------------------------------ |
+| 1º mais próximo (rank 0)        | ~95%                           |
+| 2º mais próximo (rank 1)        | ~5%                            |
+| 3º ou mais                      | Raramente                      |
 
 E dentro do site escolhido: máquinas dividem igualmente (uniforme).
 
@@ -421,9 +424,10 @@ E dentro do site escolhido: máquinas dividem igualmente (uniforme).
 ```js
 // If no server was specified then use a loadbalancer. If no loadbalancer
 // is specified, use the locate service from Measurement Lab.
-const lbURL = (config && ('loadbalancer' in config)) ?
-    new URL(config.loadbalancer) :
-    new URL('https://locate.measurementlab.net/v2/nearest/ndt/ndt7');
+const lbURL =
+  config && "loadbalancer" in config
+    ? new URL(config.loadbalancer)
+    : new URL("https://locate.measurementlab.net/v2/nearest/ndt/ndt7");
 
 // Choose the first result sent by the load balancer.
 const choice = js.results[0];
@@ -433,11 +437,11 @@ O cliente recebe a lista de até 4 targets e usa **apenas o primeiro** (`results
 
 **Quem pode escolher o servidor? Três níveis:**
 
-| Nível | Quem | Como |
-|-------|------|------|
-| **Usuário final** (pessoa física) | ❌ Nunca escolhe | Só clica em "testar velocidade" |
-| **Integrador** (quem embute o teste) | ⚠️ Pode | `config.server` (fixa um servidor, pula o Locate) ou `config.loadbalancer` (usa outro localizador) |
-| **Cliente padrão** (ndt7.js sem config) | ❌ Delega | Usa o Locate e pega `results[0]` |
+| Nível                                   | Quem             | Como                                                                                               |
+| --------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
+| **Usuário final** (pessoa física)       | ❌ Nunca escolhe | Só clica em "testar velocidade"                                                                    |
+| **Integrador** (quem embute o teste)    | ⚠️ Pode          | `config.server` (fixa um servidor, pula o Locate) ou `config.loadbalancer` (usa outro localizador) |
+| **Cliente padrão** (ndt7.js sem config) | ❌ Delega        | Usa o Locate e pega `results[0]`                                                                   |
 
 Ou seja: o **código cliente tem a capacidade** de escolher/fixar servidor, mas o comportamento padrão — e o que domina a base de dados — é delegar 100% ao Locate. A fixação manual existe como escape para integradores e é uma das causas raras de desvio (seção 10.5).
 
@@ -445,12 +449,12 @@ Ou seja: o **código cliente tem a capacidade** de escolher/fixar servidor, mas 
 
 Consulta a `https://locate.measurementlab.net/v2/nearest/ndt/ndt7` (feita em 28/08/2026) retornou 4 targets, com os parâmetros de auditoria embutidos nos URLs de acesso:
 
-| Posição | Máquina | Cidade | `index` | `metro_rank` |
-|---------|---------|--------|---------|--------------|
-| 1º | ndt-gig1916-c89ffeef.rnp.autojoin... | Rio de Janeiro | 0 | 0 |
-| 2º | ndt-mlab1-gru03.mlab-oti... | São Paulo | 1 | 1 |
-| 3º | ndt-mlab1-gru07.mlab-oti... | São Paulo | 2 | 1 |
-| 4º | ndt-mlab2-gru02.mlab-oti... | São Paulo | 3 | 1 |
+| Posição | Máquina                              | Cidade         | `index` | `metro_rank` |
+| ------- | ------------------------------------ | -------------- | ------- | ------------ |
+| 1º      | ndt-gig1916-c89ffeef.rnp.autojoin... | Rio de Janeiro | 0       | 0            |
+| 2º      | ndt-mlab1-gru03.mlab-oti...          | São Paulo      | 1       | 1            |
+| 3º      | ndt-mlab1-gru07.mlab-oti...          | São Paulo      | 2       | 1            |
+| 4º      | ndt-mlab2-gru02.mlab-oti...          | São Paulo      | 3       | 1            |
 
 - O RJ em 1º confirma a ordenação por distância (para o IP de origem da consulta)
 - Os 3 sites de SP empatam no `metro_rank=1` — exatamente como o `rank()` faz
@@ -462,19 +466,19 @@ A spec do protocolo ([`m-lab/ndt-server/spec/ndt7-protocol.md`](https://github.c
 
 1. Cliente **SHOULD** usar `locate.measurementlab.net`
 2. **MUST** tratar `200` como sucesso, `204` como "sem capacidade" e `3xx` como redirect
-3. **MUST NOT** assumir que será sempre mandado ao servidor estritamente mais próximo — *"Rollouts on the M-Lab platform happen gradually, and canary tests of new server versions happen regularly"*
+3. **MUST NOT** assumir que será sempre mandado ao servidor estritamente mais próximo — _"Rollouts on the M-Lab platform happen gradually, and canary tests of new server versions happen regularly"_
 
 Ou seja: a aleatoriedade é **documentada e intencional**, não é bug.
 
 ### 9.4 O que isso explica nos nossos dados
 
-| Observação | Explicação pelo código |
-|------------|------------------------|
-| Concentração perto do servidor | ~95% dos testes vão para o site geograficamente mais próximo ✅ |
-| Clientes de SP/RJ testando na Colômbia | São os ~5% que caem no sorteio do 2º/3º servidor mais próximo |
-| Só Claro e Telefônica mandam para Peru/Colômbia | **Volume!** Elas têm milhões de testes. 5% de 5 milhões = 250 mil testes internacionais. Gigalink com poucos clientes raramente cai no sorteio |
-| RTT alto para o Peru (138-190ms) | A seleção é por **distância geográfica em linha reta**, não por RTT de rede. O Peru pode ser geograficamente próximo do norte do Brasil, mas a rede entre eles é ruim |
-| INB Telecom mandou para Estocolmo (arn03) | Caiu na probabilidade baixa do sorteio |
+| Observação                                      | Explicação pelo código                                                                                                                                                |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Concentração perto do servidor                  | ~95% dos testes vão para o site geograficamente mais próximo ✅                                                                                                       |
+| Clientes de SP/RJ testando na Colômbia          | São os ~5% que caem no sorteio do 2º/3º servidor mais próximo                                                                                                         |
+| Só Claro e Telefônica mandam para Peru/Colômbia | **Volume!** Elas têm milhões de testes. 5% de 5 milhões = 250 mil testes internacionais. Gigalink com poucos clientes raramente cai no sorteio                        |
+| RTT alto para o Peru (138-190ms)                | A seleção é por **distância geográfica em linha reta**, não por RTT de rede. O Peru pode ser geograficamente próximo do norte do Brasil, mas a rede entre eles é ruim |
+| INB Telecom mandou para Estocolmo (arn03)       | Caiu na probabilidade baixa do sorteio                                                                                                                                |
 
 ### 9.5 A resposta para a pergunta central
 
@@ -486,21 +490,25 @@ Ou seja: a aleatoriedade é **documentada e intencional**, não é bug.
 4. Se o GeoIP errar a localização do cliente (comum com IPs de ISPs menores), o cliente pode ser mandado para um servidor errado
 
 **O ISP não é um fator direto** — ele aparece na análise porque:
+
 - Claro/Telefônica têm muito mais clientes → mais testes → mais casos do ~5% aleatório
 - A precisão do GeoIP varia por ISP (IPs de ISPs grandes são melhor mapeados)
 
 ### 9.6 Validação das hipóteses originais
 
-| # | Hipótese | Veredito final |
-|---|----------|----------------|
-| 1 | Localização geográfica | ✅ **CONFIRMADA** — é o fator principal (distância em linha reta, ~95%) |
-| 2 | ISP/Provedor | ❌ **REFUTADA** — o ISP não é fator direto; aparece na análise por volume de testes |
-| 3 | Tipo de servidor (RNP vs MLAB) | ❌ Não há prioridade por organização no algoritmo |
-| 4 | Código fonte | ✅ **INVESTIGADO** — algoritmo documentado acima |
+> **Correção (15/10/2026):** o veredito da hipótese 3 abaixo estava errado — a refutação da época olhou apenas o código do algoritmo (`filterSites` não filtra por organização), mas a prioridade por organização existe **no cadastro** que o algoritmo consome (campo `Probability`, seção 13).
+
+| #   | Hipótese                       | Veredito final                                                                                       |
+| --- | ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| 1   | Localização geográfica         | ✅ **CONFIRMADA** — é o fator principal (distância em linha reta, ~95%)                              |
+| 2   | ISP/Provedor                   | ❌ **REFUTADA** — o ISP não é fator direto; aparece na análise por volume de testes                  |
+| 3   | Tipo de servidor (RNP vs MLAB) | ⚠️ **CONFIRMADA via cadastro (seção 13)** — não está no algoritmo, está no `Probability` do registro |
+| 4   | Código fonte                   | ✅ **INVESTIGADO** — algoritmo documentado acima                                                     |
 
 ### 9.7 Fontes
 
 **Repositório principal (o algoritmo):**
+
 - Repositório: https://github.com/m-lab/locate
 - Arquivo principal: [`heartbeat/location.go`](https://github.com/m-lab/locate/blob/main/heartbeat/location.go)
   - `Nearest()` (orquestração): [linhas 92-111](https://github.com/m-lab/locate/blob/main/heartbeat/location.go#L92-L111)
@@ -512,21 +520,26 @@ Ou seja: a aleatoriedade é **documentada e intencional**, não é bug.
   - `pickWithProbability()` / `alwaysPick()`: [linhas 310-315](https://github.com/m-lab/locate/blob/main/heartbeat/location.go#L310-L315)
 
 **Funções matemáticas (repositório m-lab/go):**
+
 - [`mathx/rand.go`](https://github.com/m-lab/go/blob/main/mathx/rand.go) — `GetExpDistributedInt(6)` (o 95/5) e `GetRandomInt` (sorteio uniforme da máquina)
 - [`mathx/haversine.go`](https://github.com/m-lab/go/blob/main/mathx/haversine.go) — `GetHaversineDistance` (distância em linha reta)
 
 **Lado do cliente:**
+
 - [`m-lab/locate/api/locate/client.go`](https://github.com/m-lab/locate/blob/main/api/locate/client.go) — cliente Go de referência (`reply.Results`, usa o 1º)
 - [`m-lab/ndt-server/html/ndt7.js`](https://github.com/m-lab/ndt-server/blob/main/html/ndt7.js) — cliente JS oficial (Locate padrão, `results[0]`, `config.server` para fixação manual)
 
 **Documentação e especificação:**
+
 - [`m-lab/locate/USAGE.md`](https://github.com/m-lab/locate/blob/main/USAGE.md) — uso da Locate API (serviços ndt/ndt5 e ndt/ndt7)
 - [`m-lab/ndt-server/spec/ndt7-protocol.md`](https://github.com/m-lab/ndt-server/blob/main/spec/ndt7-protocol.md) — seção "Server discovery" (manda usar o Locate; 204 = sem capacidade; aleatoriedade documentada)
 
 **Verificação empírica:**
+
 - Resposta real de `https://locate.measurementlab.net/v2/nearest/ndt/ndt7` (28/08/2026) — 4 targets com `index` e `metro_rank` nos URLs (tabela na seção 9.3)
 
 **Legado (ndt5):**
+
 - [`ndt-project/ndt`](https://github.com/ndt-project/ndt) — código legado: applet Java (`Tcpbw100.java`, servidor via parâmetro HTML), cliente C (`web100clt.c`, flag `-n`), modo federado do `fakewww.c` (redirecionamento por traceroute — ancestral do Locate, nunca usado no ndt7)
 
 ---
@@ -586,14 +599,14 @@ Query retornou: `null, null, 24728` — **24.728 testes sem `client_name` e sem 
 
 ### 10.5 Causas dos desvios da proximidade
 
-| Causa | Mecanismo | Evidência |
-|-------|-----------|-----------|
-| Sorteio de ~5% | Sempre presente | Confirmado pelo código (`GetExpDistributedInt(6)`) |
-| Servidor local rejeita por carga | Cliente tenta o 2º da lista | Documentado no protocolo ndt7 |
-| Servidor local fora do ar (lame duck) | Locate remove da lista | Teste 1 não encontrou buracos no período |
-| App fixa servidor manualmente | Pula o Locate | `client_name` null na maioria — não verificável |
-| Erro do GeoIP | Cliente geolocalizado errado | `region` vazia em muitos registros |
-| VPN | Muda o IP visto pelo GeoIP | Não detectado nos dados analisados |
+| Causa                                 | Mecanismo                    | Evidência                                          |
+| ------------------------------------- | ---------------------------- | -------------------------------------------------- |
+| Sorteio de ~5%                        | Sempre presente              | Confirmado pelo código (`GetExpDistributedInt(6)`) |
+| Servidor local rejeita por carga      | Cliente tenta o 2º da lista  | Documentado no protocolo ndt7                      |
+| Servidor local fora do ar (lame duck) | Locate remove da lista       | Teste 1 não encontrou buracos no período           |
+| App fixa servidor manualmente         | Pula o Locate                | `client_name` null na maioria — não verificável    |
+| Erro do GeoIP                         | Cliente geolocalizado errado | `region` vazia em muitos registros                 |
+| VPN                                   | Muda o IP visto pelo GeoIP   | Não detectado nos dados analisados                 |
 
 ### 10.6 Limitações da pesquisa
 
@@ -638,20 +651,20 @@ ORDER BY total_testes DESC;
 
 ### 11.2 Resultados (arquivo `c.csv`)
 
-| Cidade | RTT médio (ms) | Testes |
-|--------|----------------|--------|
-| Salvador | 86 | 188 |
-| Recife | 125 | 90 |
-| Fortaleza | 111 | 61 |
-| São Luís | 135 | 37 |
-| Maceió | 110 | 33 |
-| Natal | 80 | 30 |
-| João Pessoa | 103 | 21 |
-| Teresina | 73 | 19 |
-| Aracaju | 101 | 17 |
-| Vitória da Conquista | 60 | 15 |
-| Ilhéus | 102 | 15 |
-| **Média ponderada** | **~100** | **547** |
+| Cidade               | RTT médio (ms) | Testes  |
+| -------------------- | -------------- | ------- |
+| Salvador             | 86             | 188     |
+| Recife               | 125            | 90      |
+| Fortaleza            | 111            | 61      |
+| São Luís             | 135            | 37      |
+| Maceió               | 110            | 33      |
+| Natal                | 80             | 30      |
+| João Pessoa          | 103            | 21      |
+| Teresina             | 73             | 19      |
+| Aracaju              | 101            | 17      |
+| Vitória da Conquista | 60             | 15      |
+| Ilhéus               | 102            | 15      |
+| **Média ponderada**  | **~100**       | **547** |
 
 ### 11.3 Interpretação
 
@@ -702,10 +715,10 @@ Predição correta: com 2 máquinas saudáveis no site, o split deve ser ~50/50.
 ### 12.2 Dados observados (últimos 30 dias)
 
 | server_site | server_machine | testes | % do total | % dentro do site |
-|---|---|---|---|---|
-| gru15830 | mlab1 (única) | 33.861 | 59,1% | 100% |
-| gru02 | mlab2 | 11.730 | 20,5% | 50,05% |
-| gru02 | mlab3 | 11.707 | 20,4% | 49,95% |
+| ----------- | -------------- | ------ | ---------- | ---------------- |
+| gru15830    | mlab1 (única)  | 33.861 | 59,1%      | 100%             |
+| gru02       | mlab2          | 11.730 | 20,5%      | 50,05%           |
+| gru02       | mlab3          | 11.707 | 20,4%      | 49,95%           |
 
 ### 12.3 Interpretação
 
@@ -716,8 +729,63 @@ Predição correta: com 2 máquinas saudáveis no site, o split deve ser ~50/50.
 ### 12.4 Conclusão
 
 Terceira validação independente do algoritmo:
+
 - **Seção 9**: código fonte (exponencial entre sites, uniforme entre máquinas)
 - **Seção 11**: RTT ~100ms consistente com sorteio de 5% + rejeição por carga
 - **Seção 12**: split 50/50 entre máquinas = assinatura estatística do `GetRandomInt`
 
 O comportamento observado nos dados replica o código fonte com precisão estatística.
+
+---
+
+## 13. ATUALIZAÇÃO (17/09–08/10/2026): a prioridade por organização é real — via cadastro, não via algoritmo
+
+> **Esta seção corrige o veredito da hipótese 3** (marcada como refutada na seção 9.6 da época). A investigação continuou após a "conclusão" de 28/08 e descobriu que a prioridade existe — mas não no algoritmo: está no **cadastro** que o algoritmo consome.
+
+### 13.1 O que mudou
+
+A análise de 28/08 olhou o **algoritmo** (`filterSites` → `sortSites` → `pickTargets`) e concluiu corretamente que ele não trata RNP e M-Lab diferente. O que faltava: olhar o **dado de entrada** do algoritmo. Cada site chega ao Locate com um campo `Probability` no seu registro — e esse campo **é diferente por organização**.
+
+### 13.2 As três provas (resumo — detalhes em `09_validacao_selecao/COMPROVACAO_PRIORIDADES.md`)
+
+1. **Documental:** o cadastro público do M-Lab (`siteinfo.mlab-oti.measurementlab.net/v2/sites/registration.json`) mostra `Probability` por máquina: físicos 10G → P=1; virtuais 1G → P=0,05–0,5 (inclusive `mlab1-gru07` em SP com P=0,25).
+2. **No código:** `pickWithProbability(probability)` = `rand.Float64() < probability` — filtro antes da loteria. Para nós autojoined (RNP), a cadeia é: nó declara via flag `-probability` (default 1.0) → API do autojoin multiplica pelo `ProbabilityMultiplier` da organização → vira cadastro estático.
+3. **Empírica:** taxa de captura medida em 33M de testes (fev–ago/2026) bate com o cadastro: grupo SP (físicos) 98%, gig1916 21%, cwb10881 8,5%, maioria dos RNP 5–9%. Previsão aritmética 62,0% vs observado 61,9%.
+
+### 13.3 O experimento controlado de SP (a prova mais forte)
+
+`gru02` (M-Lab físico) e `gru1916` (RNP virtual) são **co-localizados** — mesma coordenada registrada, mesmo pool de clientes elegíveis. Medindo os dois no mesmo pool (`foco_gru.py` → `out_foco/RELATORIO_FOCO.md`):
+
+- **Perfis de clientes estatisticamente idênticos** (TVD 0,036; distância mediana idêntica até a 5ª casa decimal) → mesma população, sorteio aleatório
+- **Fatias do pool radicalmente diferentes:** gru02+gru03 ~77% vs gru1916 ~2% → a única diferença é o `Probability`
+- **Fatia do gru1916 estável por 6 meses** (1,6–2,4%) enquanto sites M-Lab/Equinix entravam e saíam de rotação → assinatura de campo estático de cadastro
+
+### 13.4 Modelo final completo (v2)
+
+```
+1. Cliente pede servidor ao Locate API
+2. Locate filtra: saúde (isHealthy) + PROBABILIDADE DO CADASTRO (pickWithProbability)
+   ← AQUI está a prioridade por organização: P=1 físico, P≈0,05-0,10 RNP
+3. Ordena os sobreviventes por distância haversine (GeoIP)
+4. Loteria exponencial: ~95% o mais próximo, ~5% o 2º (GetExpDistributedInt(6))
+5. Dentro do site: máquina uniforme (GetRandomInt)
+6. Cliente usa o 1º resultado (ou fixa manualmente via config.server)
+7. Rejeição por capacidade → tenta o próximo da lista
+```
+
+**A hierarquia de prioridade medida (6 meses):**
+
+| Nível                  | Exemplos               | Probability | Captura dos elegíveis |
+| ---------------------- | ---------------------- | ----------- | --------------------- |
+| Físico M-Lab           | gru02, gru03, fln01    | 1           | ~95–98%               |
+| Virtual Equinix        | gru15830               | ~0,34       | ~13% do pool          |
+| Virtual M-Lab          | gru06, gru07           | ~0,05–0,14  | 2,6–5,4% do pool      |
+| Virtual RNP (autojoin) | gig1916, cwb10881, +23 | ~0,05–0,10  | 2–9%                  |
+
+### 13.5 Implicação prática
+
+Os dados coletados nos servidores RNP são a **"fatia de escape"** da loteria — amostra enviesada da região. Qualquer análise que use só servidores RNP como se fossem representativos da região está errada. O dashboard "Visão por ISP" (Grafana) foi construído para tornar essa dimensão visível (piechart por dono, índice de localidade, mapa colorido por dono).
+
+### 13.6 Originalidade
+
+Revisão de literatura (17/09): **nenhum paper acadêmico documenta o campo `Probability` ou a loteria 95/5**. O paper do próprio M-Lab (Mathis 2026, arXiv:2603.25875) descreve o Locate como "uniform server selection" — válido apenas entre servidores de mesma prioridade. Nossa decomposição (filtro de probabilidade + loteria de distância) e a medição de captura por site são originais.

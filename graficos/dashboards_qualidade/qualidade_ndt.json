@@ -1,0 +1,1055 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 244,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Cada ponto representa uma cidade, posicionada pela coordenada média das medições; não representa um cliente individual. A cor indica a mediana da métrica e o tamanho, o volume de testes. A base não contém UF, então cidades homônimas podem ser agrupadas.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 200
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "qualidade",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.8,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "total_testes",
+                  "fixed": 6,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "value"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Mediana em ms",
+            "target": {
+              "refId": "A"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": false,
+          "id": "zero",
+          "lat": -14,
+          "lon": -53,
+          "zoom": 3.5
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(avg(d.client_latitude) AS DOUBLE) AS lat,\n    CAST(avg(d.client_longitude) AS DOUBLE) AS lon,\n    d.client_city AS cidade,\n    approx_median(d.min_rtt) AS qualidade,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.client_city IS NOT NULL\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_latitude IS NOT NULL\n    AND d.client_longitude IS NOT NULL\n    AND d.min_rtt >= 0\nGROUP BY cidade\nLIMIT 2000",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Latência por cidade",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Cada ponto representa uma cidade, posicionada pela coordenada média das medições; não representa um cliente individual. A cor indica a mediana da métrica e o tamanho, o volume de testes. A base não contém UF, então cidades homônimas podem ser agrupadas.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "orange",
+                "value": 2
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "qualidade",
+                  "mode": "thresholds"
+                },
+                "opacity": 0.8,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "total_testes",
+                  "fixed": 6,
+                  "max": 20,
+                  "min": 4,
+                  "mode": "value"
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "latitude": "lat",
+              "longitude": "lon",
+              "mode": "coords"
+            },
+            "name": "Mediana em %",
+            "target": {
+              "refId": "A"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": false,
+          "id": "zero",
+          "lat": -14,
+          "lon": -53,
+          "zoom": 3.5
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    CAST(avg(d.client_latitude) AS DOUBLE) AS lat,\n    CAST(avg(d.client_longitude) AS DOUBLE) AS lon,\n    d.client_city AS cidade,\n    approx_median(d.loss_rate) * 100 AS qualidade,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.client_city IS NOT NULL\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.client_latitude IS NOT NULL\n    AND d.client_longitude IS NOT NULL\n    AND d.loss_rate >= 0\nGROUP BY cidade\nLIMIT 2000",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Perda de pacotes por cidade",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Compara a mediana por ISP no período e nos servidores selecionados. Este gráfico inclui todos os ISPs com medições nesses servidores, independentemente do filtro ISP, para manter a comparação.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Latência (ms)",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 2,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor,\n    approx_median(d.min_rtt) AS qualidade,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND d.min_rtt >= 0\nGROUP BY provedor\nORDER BY total_testes DESC\nLIMIT 20",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Latência mediana por ISP",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Compara a mediana por ISP no período e nos servidores selecionados. Este gráfico inclui todos os ISPs com medições nesses servidores, independentemente do filtro ISP, para manter a comparação.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Perda (%)",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor,\n    approx_median(d.loss_rate) * 100 AS qualidade,\n    count() AS total_testes\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND d.loss_rate >= 0\nGROUP BY provedor\nORDER BY total_testes DESC\nLIMIT 20",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Perda mediana por ISP",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Compara a mediana por site entre máquinas classificadas como físicas e virtuais. Considera o cadastro mais recente de cada máquina; sites sem ambos os tipos aparecem com uma única série.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Latência (ms)",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    site,\n    tipo_servidor,\n    qualidade,\n    total_testes\nFROM (\nSELECT\n    d.server_site AS site,\n    s.server_type AS tipo_servidor,\n    approx_median(d.min_rtt) AS qualidade,\n    count() AS total_testes\nFROM download d\nJOIN (\n    SELECT site, machine, server_type\n    FROM server LATEST ON update_time PARTITION BY site, machine\n) s ON d.server_site = s.site AND d.server_machine = s.machine\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.min_rtt >= 0\n    AND s.server_type IN ('physical', 'virtual')\nGROUP BY site, tipo_servidor\n)\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Latência: servidores físicos × virtuais por site",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "tipo_servidor",
+            "rowField": "site",
+            "valueField": "qualidade"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Compara a mediana por site entre máquinas classificadas como físicas e virtuais. Considera o cadastro mais recente de cada máquina; sites sem ambos os tipos aparecem com uma única série.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Perda (%)",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 22
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    site,\n    tipo_servidor,\n    qualidade,\n    total_testes\nFROM (\nSELECT\n    d.server_site AS site,\n    s.server_type AS tipo_servidor,\n    approx_median(d.loss_rate) * 100 AS qualidade,\n    count() AS total_testes\nFROM download d\nJOIN (\n    SELECT site, machine, server_type\n    FROM server LATEST ON update_time PARTITION BY site, machine\n) s ON d.server_site = s.site AND d.server_machine = s.machine\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.loss_rate >= 0\n    AND s.server_type IN ('physical', 'virtual')\nGROUP BY site, tipo_servidor\n)\nORDER BY total_testes DESC\nLIMIT 10",
+          "refId": "A",
+          "selectedFormat": 1
+        }
+      ],
+      "title": "Perda: servidores físicos × virtuais por site",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "tipo_servidor",
+            "rowField": "site",
+            "valueField": "qualidade"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Uma linha por ISP selecionado, com mediana diária. Para facilitar a leitura, selecione um ISP ou poucos ISPs no filtro.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "ms",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 0,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    cast(cast(d.test_time as long) / 86400000000 * 86400000000 as timestamp) AS \"time\",\n    approx_median(d.min_rtt) AS qualidade,\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.min_rtt >= 0\nGROUP BY \"time\", provedor\nORDER BY \"time\" ASC",
+          "refId": "A",
+          "selectedFormat": 0
+        }
+      ],
+      "title": "Latência mediana diária por ISP",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "questdb-questdb-datasource",
+        "uid": "dfudvhox4xudce"
+      },
+      "description": "Uma linha por ISP selecionado, com mediana diária. Para facilitar a leitura, selecione um ISP ou poucos ISPs no filtro.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "percent",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "questdb-questdb-datasource",
+            "uid": "dfudvhox4xudce"
+          },
+          "format": 0,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": "",
+              "mode": "list",
+              "timeField": ""
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n    cast(cast(d.test_time as long) / 86400000000 * 86400000000 as timestamp) AS \"time\",\n    approx_median(d.loss_rate) * 100 AS qualidade,\n    COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') AS provedor\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE $__timeFilter(d.test_time)\n    AND d.client_country_code = 'BR'\n    AND d.server_site IN ($server)\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\n    AND d.loss_rate >= 0\nGROUP BY \"time\", provedor\nORDER BY \"time\" ASC",
+          "refId": "A",
+          "selectedFormat": 0
+        }
+      ],
+      "title": "Perda mediana diária por ISP",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "ndt",
+    "questdb",
+    "qualidade"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "includeAll": true,
+        "label": "ISP",
+        "multi": true,
+        "name": "isp",
+        "options": [],
+        "query": "SELECT ASN_owner AS __text, ASN_owner AS __value\nFROM ASNS\nWHERE ASN_owner IS NOT NULL AND ASN_owner != ''\nGROUP BY ASN_owner\nORDER BY ASN_owner",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "questdb-questdb-datasource",
+          "uid": "dfudvhox4xudce"
+        },
+        "definition": "SELECT d.server_site AS __text, d.server_site AS __value\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE d.server_site IS NOT NULL\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY d.server_site\nORDER BY d.server_site",
+        "includeAll": true,
+        "label": "Servidor",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "SELECT d.server_site AS __text, d.server_site AS __value\nFROM download d\nLEFT JOIN ASNS a ON d.client_asn = a.ASN\nWHERE d.server_site IS NOT NULL\n    AND d.client_country_code = 'BR'\n    AND COALESCE(a.ASN_owner, d.client_asname, 'Desconhecido') IN ($isp)\nGROUP BY d.server_site\nORDER BY d.server_site",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6M",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "NDT — Qualidade por ISP e servidor",
+  "uid": "ndt-qualidade-isp-regiao-servidor",
+  "version": 5
+}
